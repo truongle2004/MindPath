@@ -1,0 +1,10 @@
+{
+  "recommendations": [
+    "oxc.oxc-vscode",
+    "mikestead.dotenv",
+    "bradlc.vscode-tailwindcss",
+    "humao.rest-client",
+    "github.vscode-github-actions",
+    "lokalise.i18n-ally"
+  ]
+}
