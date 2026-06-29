@@ -9,9 +9,11 @@ const config: KnipConfig = {
     '@swc/helpers', // Avoid error in CI: "`npm ci` can only install packages when your package.json and package-lock.json or npm-shrinkwrap.json are in sync."
   ],
   // Binaries to ignore during analysis
-  ignoreBinaries: [
-    'production', // False positive raised with dotenv-cli
-  ],
+  ignoreBinaries: [],
+  // Shadcn UI components export variants and subcomponents for reuse
+  ignoreIssues: {
+    'src/components/ui/**': ['exports'],
+  },
   compilers: {
     css: (text: string) => [...text.matchAll(/(?<=@)import[^;]+/gu)].join('\n'),
   },
