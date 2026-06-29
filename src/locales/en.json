@@ -86,6 +86,7 @@
   "DashboardLayout": {
     "meta_title": "Dashboard",
     "meta_description": "Manage your account from the dashboard.",
+    "navigation_label": "Navigation",
     "dashboard_link": "Dashboard",
     "user_profile_link": "Manage your account",
     "sign_out": "Sign out"
