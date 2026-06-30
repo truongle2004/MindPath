@@ -17,11 +17,11 @@ export default async function DashboardPage(props: { params: Promise<{ locale: s
   setRequestLocale(locale);
 
   return (
-    <div className="[&_p]:my-6">
+    <div className="flex min-h-svh flex-col">
       <Header />
       <TooltipProvider>
-        <SidebarProvider>
-          <AppSidebar />
+        <SidebarProvider className="min-h-0 flex-1">
+          <AppSidebar className="top-14 h-[calc(100svh-3.5rem)]" />
           <SidebarInset>
             <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
               <div className="flex items-center gap-2 px-4">
@@ -43,7 +43,7 @@ export default async function DashboardPage(props: { params: Promise<{ locale: s
                 </Breadcrumb>
               </div>
             </header>
-            <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+            <div className="flex flex-1 flex-col gap-4 p-4 pt-0 [&_p]:my-6">
               <div className="grid auto-rows-min gap-4 md:grid-cols-3">
                 <div className="aspect-video rounded-xl bg-muted/50" />
                 <div className="aspect-video rounded-xl bg-muted/50" />
