@@ -1,5 +1,5 @@
 import { setRequestLocale } from 'next-intl/server';
-import { DemoBanner } from '@/components/DemoBanner';
+import { Header } from '@/components/Header';
 
 export default async function Layout(props: {
   children: React.ReactNode;
@@ -10,7 +10,7 @@ export default async function Layout(props: {
 
   return (
     <>
-      <DemoBanner />
+      <Header />
       <div className="py-5 text-xl [&_p]:my-6">{props.children}</div>
     </>
   );
