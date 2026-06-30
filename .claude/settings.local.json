@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(rtk git *)",
+      "Bash(rtk ls *)",
+      "PowerShell(wsl -e bash -c 'cd /home/truongls1/projects/MindPath && git log --oneline -20')",
+      "PowerShell(wsl -e bash -c 'cd /home/truongls1/projects/MindPath && git branch -a')",
+      "PowerShell(wsl -e bash -c 'cd /home/truongls1/projects/MindPath && git status')",
+      "PowerShell(wsl -e bash -c 'cd /home/truongls1/projects/MindPath && ls -la')",
+      "PowerShell(wsl bash -c \"ls -la /home/truongls1/projects/MindPath/\")",
+      "PowerShell(wsl bash -c \"ls -la /home/truongls1/projects/MindPath/src/\")",
+      "PowerShell(wsl bash -c \"ls -la /home/truongls1/projects/MindPath/src/app/ 2>/dev/null || echo 'no app dir'\")",
+      "PowerShell(wsl bash -c \"find /home/truongls1/projects/MindPath/src -maxdepth 2 -type d | sort\")",
+      "PowerShell(wsl bash -c \"find /home/truongls1/projects/MindPath/src/app -type f | sort\")",
+      "PowerShell(wsl bash -c \"find /home/truongls1/projects/MindPath/src/components -type f | sort\")",
+      "PowerShell(wsl bash -c \"find /home/truongls1/projects/MindPath/src/lib /home/truongls1/projects/MindPath/src/libs -type f | sort\")",
+      "Bash(wsl bash *)"
+    ]
+  }
+}
