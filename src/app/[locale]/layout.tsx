@@ -4,6 +4,7 @@ import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import '@/styles/global.css';
+import { ThemeProvider } from '@/components/theme-provider';
 import { routing } from '@/libs/I18nRouting';
 
 export const metadata: Metadata = {
@@ -54,9 +55,18 @@ export default async function RootLayout(props: {
 
   return (
     <ClerkProvider>
-      <html lang={locale}>
+      <html lang={locale} suppressHydrationWarning>
         <body>
-          <NextIntlClientProvider>{props.children}</NextIntlClientProvider>
+          <NextIntlClientProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              {props.children}
+            </ThemeProvider>
+          </NextIntlClientProvider>
         </body>
       </html>
     </ClerkProvider>
