@@ -1,13 +1,9 @@
 import { Compass, HeartHandshake, TrendingUp } from 'lucide-react';
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import Image from 'next/image';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Link } from '@/libs/I18nNavigation';
-import crowdinLogo from '@/public/assets/images/crowdin-dark.png';
 
 type AboutPageProps = {
   params: Promise<{ locale: string }>;
@@ -52,84 +48,49 @@ export default async function AboutPage(props: AboutPageProps) {
     },
   ];
 
-  const techStack = [
-    t('tech_nextjs'),
-    t('tech_typescript'),
-    t('tech_tailwind'),
-    t('tech_clerk'),
-    t('tech_postgresql'),
-    t('tech_drizzle'),
-  ];
-
   return (
-    <div className="space-y-10 text-base">
-      <section className="space-y-3">
-        <h2 className="text-3xl font-bold tracking-tight text-foreground">{t('hero_title')}</h2>
+    <div className="mx-auto max-w-7xl space-y-0 text-base">
+      {/* Hero */}
+      <section className="mx-auto max-w-4xl px-6 py-16 md:py-24">
+        <h1 className="mb-4 text-3xl font-bold tracking-tight md:text-4xl">{t('hero_title')}</h1>
         <p className="max-w-2xl text-muted-foreground">{t('hero_description')}</p>
       </section>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-xl">{t('mission_title')}</CardTitle>
-          <CardDescription>{t('mission_description')}</CardDescription>
-        </CardHeader>
-      </Card>
+      {/* Mission — muted band */}
+      <section className="bg-muted px-6 py-16 md:py-24">
+        <div className="mx-auto max-w-4xl">
+          <h2 className="mb-4 text-2xl font-semibold">{t('mission_title')}</h2>
+          <p className="max-w-2xl text-muted-foreground">{t('mission_description')}</p>
+        </div>
+      </section>
 
-      <section className="space-y-4">
-        <h3 className="text-2xl font-semibold text-foreground">{t('values_title')}</h3>
-        <div className="grid gap-4 md:grid-cols-3">
+      {/* Values */}
+      <section className="px-6 py-16 md:py-24">
+        <h2 className="mb-8 text-2xl font-semibold">{t('values_title')}</h2>
+        <div className="grid gap-6 md:grid-cols-3">
           {values.map((value) => (
-            <Card key={value.title} size="sm">
+            <Card key={value.title}>
               <CardHeader>
-                <value.icon aria-hidden className="size-5 text-primary" />
-                <CardTitle>{value.title}</CardTitle>
-                <CardDescription>{value.description}</CardDescription>
+                <value.icon aria-hidden className="mb-2 size-5 text-muted-foreground" />
+                <CardTitle className="text-lg">{value.title}</CardTitle>
               </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground">{value.description}</p>
+              </CardContent>
             </Card>
           ))}
         </div>
       </section>
 
-      <Separator />
-
-      <section className="space-y-4">
-        <h3 className="text-2xl font-semibold text-foreground">{t('tech_title')}</h3>
-        <div className="flex flex-wrap gap-2">
-          {techStack.map((tech) => (
-            <Badge key={tech} variant="secondary">
-              {tech}
-            </Badge>
-          ))}
-        </div>
-      </section>
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-xl">{t('cta_title')}</CardTitle>
-          <CardDescription>{t('cta_description')}</CardDescription>
-        </CardHeader>
-        <CardContent>
+      {/* CTA */}
+      <section className="bg-muted px-6 py-16 md:py-24">
+        <div className="mx-auto max-w-xl text-center">
+          <h2 className="mb-2 text-2xl font-semibold">{t('cta_title')}</h2>
+          <p className="mb-8 text-muted-foreground">{t('cta_description')}</p>
           <Button asChild>
             <Link href="/sign-up/">{t('cta_button')}</Link>
           </Button>
-        </CardContent>
-      </Card>
-
-      <Separator />
-
-      <section className="space-y-2 text-center text-sm text-muted-foreground">
-        <p>
-          {`${t('translation_powered_by')} `}
-          <a
-            className="font-medium text-primary underline-offset-4 hover:underline"
-            href="https://l.crowdin.com/next-js"
-          >
-            Crowdin
-          </a>
-        </p>
-        <a href="https://l.crowdin.com/next-js">
-          <Image className="mx-auto" src={crowdinLogo} alt={t('crowdin_logo_alt')} width={130} />
-        </a>
+        </div>
       </section>
     </div>
   );
