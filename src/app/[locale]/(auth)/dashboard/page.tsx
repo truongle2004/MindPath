@@ -1,5 +1,6 @@
 import { setRequestLocale } from 'next-intl/server';
 import { AppSidebar } from '@/components/app-sidebar';
+import { Header } from '@/components/Header';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -17,6 +18,7 @@ export default async function DashboardPage(props: { params: Promise<{ locale: s
 
   return (
     <div className="[&_p]:my-6">
+      <Header />
       <TooltipProvider>
         <SidebarProvider>
           <AppSidebar />
