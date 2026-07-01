@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { DashboardShell } from '@/components/DashboardShell';
 
 type DashboardLayoutProps = {
   children: React.ReactNode;
@@ -23,5 +24,5 @@ export default async function DashboardLayout(props: DashboardLayoutProps) {
   const { locale } = await props.params;
   setRequestLocale(locale);
 
-  return <>{props.children}</>;
+  return <DashboardShell>{props.children}</DashboardShell>;
 }
