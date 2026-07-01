@@ -1,14 +1,20 @@
-import { UserProfile } from '@clerk/nextjs';
 import { setRequestLocale } from 'next-intl/server';
+import { UserProfileOverlay } from '@/components/UserProfileOverlay';
 import { getI18nPath } from '@/utils/Helpers';
 
-export default async function UserProfilePage(props: { params: Promise<{ locale: string }> }) {
-  const { locale } = await props.params;
+type UserProfilePageProps = {
+  params: Promise<{ locale: string; 'user-profile'?: string[] }>;
+};
+
+export default async function UserProfilePage(props: UserProfilePageProps) {
+  const { locale, 'user-profile': userProfileSegments } = await props.params;
   setRequestLocale(locale);
 
+  const profileSubPath = userProfileSegments?.length ? `/${userProfileSegments.join('/')}` : '';
+
   return (
-    <div className="my-6 lg:-ml-12">
-      <UserProfile path={getI18nPath('/dashboard/user-profile', locale)} />
-    </div>
+    <UserProfileOverlay
+      profilePath={getI18nPath(`/dashboard/user-profile${profileSubPath}`, locale)}
+    />
   );
 }

@@ -97,6 +97,14 @@
     "user_profile_link": "Manage your account",
     "sign_out": "Sign out"
   },
+  "UserProfilePage": {
+    "go_back": "Go back"
+  },
+  "NavUser": {
+    "account": "Account",
+    "billing": "Billing",
+    "security": "Security"
+  },
   "LocaleSwitcher": {
     "change_language": "Change language"
   }
