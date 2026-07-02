@@ -1,5 +1,6 @@
 'use client';
 
+import { useAuth } from '@clerk/nextjs';
 import { BadgeCheck, ChevronsUpDown, CreditCard, LogOut, Shield, Sparkles } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -32,6 +33,11 @@ export function NavUser({
   const { isMobile } = useSidebar();
   const t = useTranslations('NavUser');
   const { openUserProfile } = useUserProfileOverlay();
+  const { signOut } = useAuth();
+
+  const handleSignOut = async () => {
+    await signOut();
+  };
 
   return (
     <SidebarMenu>
@@ -106,7 +112,7 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={handleSignOut}>
               <LogOut />
               Log out
             </DropdownMenuItem>
