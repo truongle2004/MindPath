@@ -6,7 +6,6 @@ const config: KnipConfig = {
     "src/libs/I18n.ts",
     "src/types/I18n.ts",
     "src/components/Whiteboard.tsx",
-    "src/hooks/use-user-profile-overlay.tsx",
     "src/libs/I18nNavigation.ts",
   ],
   // Dependencies to ignore during analysis
