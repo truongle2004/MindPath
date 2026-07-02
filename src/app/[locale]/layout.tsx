@@ -4,7 +4,7 @@ import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import '@/styles/global.css';
-import { ThemeProvider } from '@/components/theme-provider';
+import { ThemeProvider } from '@/components/ThemeProvider';
 import { routing } from '@/libs/I18nRouting';
 
 export const metadata: Metadata = {
