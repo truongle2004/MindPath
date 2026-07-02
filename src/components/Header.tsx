@@ -1,6 +1,5 @@
 'use client';
 
-import { useUser, ClerkLoading, ClerkLoaded, SignInButton, UserButton } from '@clerk/nextjs';
 import { Moon, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import Link from 'next/link';
@@ -10,11 +9,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Skeleton } from '@/components/ui/skeleton';
 import { DropdownMenu } from './ui/dropdown-menu';
 
 export function Header() {
-  const { isSignedIn } = useUser();
   const { setTheme } = useTheme();
 
   return (
@@ -70,27 +67,27 @@ export function Header() {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <ClerkLoading>
-            <Skeleton className="h-8 w-8 rounded-full" />
-          </ClerkLoading>
+          {/* <ClerkLoading> */}
+          {/*   <Skeleton className="h-8 w-8 rounded-full" /> */}
+          {/* </ClerkLoading> */}
 
-          <ClerkLoaded>
-            {!isSignedIn && (
-              <SignInButton mode="modal">
-                <Button size="sm">Sign in</Button>
-              </SignInButton>
-            )}
-
-            {isSignedIn && (
-              <UserButton
-                appearance={{
-                  elements: {
-                    avatarBox: 'h-8 w-8',
-                  },
-                }}
-              />
-            )}
-          </ClerkLoaded>
+          {/* <ClerkLoaded> */}
+          {/*   {!isSignedIn && ( */}
+          {/*     <SignInButton mode="modal"> */}
+          {/*       <Button size="sm">Sign in</Button> */}
+          {/*     </SignInButton> */}
+          {/*   )} */}
+          {/**/}
+          {/*   {isSignedIn && ( */}
+          {/*     <UserButton */}
+          {/*       appearance={{ */}
+          {/*         elements: { */}
+          {/*           avatarBox: 'h-8 w-8', */}
+          {/*         }, */}
+          {/*       }} */}
+          {/*     /> */}
+          {/*   )} */}
+          {/* </ClerkLoaded> */}
         </div>
       </div>
     </header>

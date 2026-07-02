@@ -18,7 +18,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar';
-import { Link } from '@/libs/I18nNavigation';
+import { useUserProfileOverlay } from '@/hooks/useUserProfileOverlay';
 
 export function NavUser({
   user,
@@ -31,6 +31,7 @@ export function NavUser({
 }) {
   const { isMobile } = useSidebar();
   const t = useTranslations('NavUser');
+  const { openUserProfile } = useUserProfileOverlay();
 
   return (
     <SidebarMenu>
@@ -79,23 +80,29 @@ export function NavUser({
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem asChild>
-                <Link href="/dashboard/user-profile">
-                  <BadgeCheck />
-                  {t('account')}
-                </Link>
+              <DropdownMenuItem
+                onClick={() => {
+                  openUserProfile('account');
+                }}
+              >
+                <BadgeCheck />
+                {t('account')}
               </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/dashboard/user-profile/billing">
-                  <CreditCard />
-                  {t('billing')}
-                </Link>
+              <DropdownMenuItem
+                onClick={() => {
+                  openUserProfile('billing');
+                }}
+              >
+                <CreditCard />
+                {t('billing')}
               </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/dashboard/user-profile/security">
-                  <Shield />
-                  {t('security')}
-                </Link>
+              <DropdownMenuItem
+                onClick={() => {
+                  openUserProfile('security');
+                }}
+              >
+                <Shield />
+                {t('security')}
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
