@@ -27,9 +27,6 @@ const isHomePage = createRouteMatcher([
     .map((locale) => `/${locale}`),
 ]);
 
-/** Matches locale about routes. */
-const isAboutPage = createRouteMatcher(['/about(.*)', '/:locale/about(.*)']);
-
 /**
  * Resolves the active locale from a pathname.
  * @param pathname The request pathname.
@@ -75,7 +72,7 @@ const aj = arcjet.withRule(
 
 /**
  * Runs Arcjet bot protection, Clerk auth, and next-intl routing for incoming requests.
- * Clerk middleware runs only on auth, dashboard, home, and about routes because keyless mode does not work with i18n.
+ * Clerk middleware runs only on auth, dashboard, and home routes because keyless mode does not work with i18n.
  * Uses `process.env` instead of Env to reduce middleware bundle size.
  * @param request The incoming Next.js request.
  * @param event The fetch event for middleware composition.
@@ -90,12 +87,7 @@ const proxy: NextProxy = async (request, event) => {
     }
   }
 
-  if (
-    isAuthPage(request) ||
-    isProtectedRoute(request) ||
-    isHomePage(request) ||
-    isAboutPage(request)
-  ) {
+  if (isAuthPage(request) || isProtectedRoute(request) || isHomePage(request)) {
     // Match Clerk's documented middleware composition pattern, `return await` is not necessary.
     // oxlint-disable-next-line typescript/return-await
     return clerkMiddleware(async (auth, req): Promise<NextResponse> => {
@@ -109,7 +101,7 @@ const proxy: NextProxy = async (request, event) => {
         });
       }
 
-      if (isAuthPage(req) || isHomePage(req) || isAboutPage(req)) {
+      if (isAuthPage(req) || isHomePage(req)) {
         const { userId } = await auth();
 
         if (userId) {
