@@ -1,44 +1,27 @@
 'use client';
 
-import * as React from 'react';
-import { UserProfileOverlay } from '@/components/UserProfileOverlay';
+import { useLocale } from 'next-intl';
+import { useRouter } from '@/libs/I18nNavigation';
+import { getI18nPath } from '@/utils/Helpers';
 
 export type UserProfileSection = 'account' | 'billing' | 'security';
 
-type UserProfileOverlayContextValue = {
-  openUserProfile: (section?: UserProfileSection) => void;
+const profileSectionPaths: Record<UserProfileSection, string> = {
+  account: '/dashboard/user-profile',
+  billing: '/dashboard/user-profile/billing',
+  security: '/dashboard/user-profile/security',
 };
 
-const UserProfileOverlayContext = React.createContext<UserProfileOverlayContextValue | null>(null);
-
+/** Navigates to the user profile route for the given section.
+ * @returns Navigation helpers for opening user profile sections.
+ */
 export function useUserProfileOverlay() {
-  const context = React.useContext(UserProfileOverlayContext);
+  const router = useRouter();
+  const locale = useLocale();
 
-  if (!context) {
-    throw new Error('useUserProfileOverlay must be used within UserProfileOverlayProvider');
-  }
-
-  return context;
-}
-
-export function UserProfileOverlayProvider(props: { children: React.ReactNode }) {
-  const [section, setSection] = React.useState<UserProfileSection | null>(null);
-
-  const openUserProfile = (nextSection: UserProfileSection = 'account') => {
-    setSection(nextSection);
+  const openUserProfile = (section: UserProfileSection = 'account') => {
+    router.push(getI18nPath(profileSectionPaths[section], locale));
   };
 
-  return (
-    <UserProfileOverlayContext value={{ openUserProfile }}>
-      {props.children}
-      {section ? (
-        <UserProfileOverlay
-          section={section}
-          onClose={() => {
-            setSection(null);
-          }}
-        />
-      ) : null}
-    </UserProfileOverlayContext>
-  );
+  return { openUserProfile };
 }
