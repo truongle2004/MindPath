@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import { Moon, Sun } from 'lucide-react';
-import { useTheme } from 'next-themes';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
+import { Moon, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { DropdownMenu } from './ui/dropdown-menu';
+} from "@/components/ui/dropdown-menu";
+import { DropdownMenu } from "./ui/dropdown-menu";
 
 export function Header() {
   const { setTheme } = useTheme();
@@ -22,13 +22,22 @@ export function Header() {
         </Link>
 
         <nav className="hidden items-center gap-6 text-sm text-muted-foreground md:flex">
-          <Link href="/dashboard" className="transition-colors hover:text-foreground">
+          <Link
+            href="/dashboard"
+            className="transition-colors hover:text-foreground"
+          >
             Dashboard
           </Link>
-          <Link href="/pricing" className="transition-colors hover:text-foreground">
+          <Link
+            href="/pricing"
+            className="transition-colors hover:text-foreground"
+          >
             Pricing
           </Link>
-          <Link href="/docs" className="transition-colors hover:text-foreground">
+          <Link
+            href="/docs"
+            className="transition-colors hover:text-foreground"
+          >
             Docs
           </Link>
         </nav>
@@ -45,21 +54,21 @@ export function Header() {
             <DropdownMenuContent align="end">
               <DropdownMenuItem
                 onClick={() => {
-                  setTheme('light');
+                  setTheme("light");
                 }}
               >
                 Light
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => {
-                  setTheme('dark');
+                  setTheme("dark");
                 }}
               >
                 Dark
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => {
-                  setTheme('system');
+                  setTheme("system");
                 }}
               >
                 System

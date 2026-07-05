@@ -105,6 +105,15 @@
     "billing": "Billing",
     "security": "Security"
   },
+  "TodosPage": {
+    "meta_title": "Todos",
+    "meta_description": "Supabase example that lists todos from your database.",
+    "page_title": "Todos",
+    "loading_message": "Loading todos…",
+    "error_message": "Could not load todos.",
+    "empty_message": "No todos yet.",
+    "list_label": "Todo list"
+  },
   "LocaleSwitcher": {
     "change_language": "Change language"
   }

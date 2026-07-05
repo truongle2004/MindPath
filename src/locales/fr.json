@@ -105,6 +105,15 @@
     "billing": "Facturation",
     "security": "Sécurité"
   },
+  "TodosPage": {
+    "meta_title": "Tâches",
+    "meta_description": "Exemple Supabase qui liste les tâches depuis votre base de données.",
+    "page_title": "Tâches",
+    "loading_message": "Chargement des tâches…",
+    "error_message": "Impossible de charger les tâches.",
+    "empty_message": "Aucune tâche pour le moment.",
+    "list_label": "Liste de tâches"
+  },
   "LocaleSwitcher": {
     "change_language": "Changer de langue"
   }
