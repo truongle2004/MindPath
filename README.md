@@ -7,7 +7,7 @@ MindPath helps you move forward with clarity, structure, and support. It is a Ne
 - **Next.js App Router** with TypeScript and React 19
 - **Authentication** with [Clerk](https://clerk.com) — sign up, sign in, dashboard, and user profile
 - **Database** with Drizzle ORM and PostgreSQL (local Docker Compose for development)
-- **Internationalization** with next-intl (English and French)
+- **Internationalization** with next-intl (English and Vietnamese)
 - **UI** with Tailwind CSS v4 and [shadcn/ui](https://ui.shadcn.com)
 - **Whiteboard** with [Excalidraw](https://excalidraw.com) for visual thinking and planning
 - **Security** with optional [Arcjet](https://arcjet.com) bot protection and WAF
