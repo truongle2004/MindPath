@@ -1,10 +1,10 @@
 import type { IGetTodosUseCase } from '@/core/application/use-cases/get-todos.use-case.interface';
+import { UnauthenticatedError } from '@/core/entities/errors/unauthenticated-error';
+import type { Todo } from '@/core/entities/models/todo';
 import type {
   GetTodosResponse,
   IGetTodosController,
 } from '@/core/interface-adapters/controllers/todos/get-todos.controller.interface';
-import { UnauthenticatedError } from '@/core/entities/errors/auth';
-import type { Todo } from '@/core/entities/models/todo';
 
 function presenter(todos: Todo[]): GetTodosResponse {
   return {

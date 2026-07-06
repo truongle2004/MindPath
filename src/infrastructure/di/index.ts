@@ -1,23 +1,6 @@
-import { resolve, resolveRequest } from '@/infrastructure/di/container';
-import { Tokens as SupabaseTokens } from '@/infrastructure/supabase/di/tokens';
-import { isSupabaseConfigured } from '@/libs/Env';
 import { Tokens as TodosTokens } from '@/core/infrastructure/todos/di/tokens';
-
-export {
-  createRequestContainer,
-  getRootContainer,
-  resolve,
-  resolveRequest,
-} from '@/infrastructure/di/container';
-export { Tokens as DbTokens } from '@/infrastructure/di/tokens';
-
-/**
- * Resolves the request-scoped Supabase server client.
- * @returns The Supabase client for the current request.
- */
-export async function getSupabaseServerClient() {
-  return await resolveRequest(SupabaseTokens.SupabaseServerClient);
-}
+import { resolve, resolveRequest } from '@/infrastructure/di/container';
+import { isSupabaseConfigured } from '@/libs/Env';
 
 /**
  * Resolves the get-todos controller from the DI container.

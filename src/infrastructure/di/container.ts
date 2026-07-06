@@ -31,7 +31,7 @@ function registerRootDependencies(target: DependencyContainer) {
  * Returns the root dependency container with singleton registrations applied.
  * @returns The root TSyringe container.
  */
-export function getRootContainer() {
+function getRootContainer() {
   registerRootDependencies(rootContainer);
   return rootContainer;
 }
@@ -40,7 +40,7 @@ export function getRootContainer() {
  * Creates a request-scoped child container for Supabase dependencies.
  * @returns A child container bound to the current request cookies.
  */
-export async function createRequestContainer() {
+async function createRequestContainer() {
   const cookieStore = await cookies();
   const requestContainer = getRootContainer().createChildContainer();
 

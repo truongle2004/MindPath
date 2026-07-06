@@ -1,6 +1,6 @@
 import * as z from 'zod';
 
-export const todoSchema = z.object({
+const todoSchema = z.object({
   id: z.string(),
   name: z.string(),
 });

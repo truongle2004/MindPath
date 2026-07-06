@@ -9,8 +9,8 @@ import type { DbClient } from '@/utils/DBConnection';
  * @returns A todo repository instance.
  */
 export const createDrizzleTodoRepository = (db: DbClient): ITodoRepository => ({
-  findAll: (): Promise<Todo[]> =>
-    db
+  findAll: async (): Promise<Todo[]> =>
+    await db
       .select({
         id: todosSchema.id,
         name: todosSchema.name,

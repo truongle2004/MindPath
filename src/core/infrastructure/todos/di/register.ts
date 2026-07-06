@@ -1,10 +1,10 @@
 import type { cookies } from 'next/headers';
 import type { DependencyContainer } from 'tsyringe';
 import { getTodosUseCase } from '@/core/application/use-cases/todos/get-todos.use-case';
-import { getTodosController } from '@/core/interface-adapters/controllers/todos/get-todos.controller';
 import { Tokens } from '@/core/infrastructure/todos/di/tokens';
 import { createDrizzleTodoRepository } from '@/core/infrastructure/todos/repositories/drizzle-todo.repository';
 import { createSupabaseTodoRepository } from '@/core/infrastructure/todos/repositories/supabase-todo.repository';
+import { getTodosController } from '@/core/interface-adapters/controllers/todos/get-todos.controller';
 import { Tokens as DbTokens } from '@/infrastructure/di/tokens';
 import { isSupabaseConfigured } from '@/libs/Env';
 import { createClient } from '@/utils/supabase/server';

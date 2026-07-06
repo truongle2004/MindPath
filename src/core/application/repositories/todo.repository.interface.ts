@@ -1,5 +1,5 @@
 import type { Todo } from '@/core/entities/models/todo';
 
-export interface ITodoRepository {
+export type ITodoRepository = {
   findAll: () => Promise<Todo[]>;
-}
+};
