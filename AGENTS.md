@@ -47,7 +47,7 @@ rtk oc get services             # OpenShift service list
 rtk oc logs <pod>               # Deduplicated logs
 
 ## Commands
-Only these `bun run` scripts: `build-local`, `lint`, `check:types`, `check:deps`, `check:i18n`.
+Only these `npm run` scripts: `build-local`, `lint`, `check:types`, `check:deps`, `check:i18n`.
 
 ## Git Commits
 Conventional Commits: `type: summary` without scope. The summary should be a short, specific sentence that explains what changed and where or why, not a vague phrase. Types: `feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert`. `BREAKING CHANGE:` footer when needed.

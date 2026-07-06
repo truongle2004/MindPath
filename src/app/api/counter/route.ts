@@ -1,9 +1,9 @@
 import { sql } from 'drizzle-orm';
 import { NextResponse } from 'next/server';
 import * as z from 'zod';
+import { counterSchema } from '@/infrastructure/database/counter';
 import { db } from '@/libs/DB';
 import { logger } from '@/libs/Logger';
-import { counterSchema } from '@/models/Schema';
 import { CounterValidation } from '@/validations/CounterValidation';
 
 export const PUT = async (request: Request) => {

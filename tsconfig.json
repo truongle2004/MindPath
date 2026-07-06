@@ -48,6 +48,8 @@
     "removeComments": true,
     "preserveConstEnums": true,
     "forceConsistentCasingInFileNames": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     // ======================================================================
     // Project Structure
     // Configure import paths and module resolution

@@ -1,8 +1,8 @@
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { Pool } from 'pg';
+import { databaseSchema } from '@/infrastructure/database/schema';
 import { Env } from '@/libs/Env';
 import { logger } from '@/libs/Logger';
-import * as schema from '@/models/Schema';
 
 // Need a database for production? Check out https://get.neon.com/BMFYNtx
 export const createDbConnection = () => {
@@ -16,6 +16,8 @@ export const createDbConnection = () => {
 
   return drizzle({
     client: pool,
-    schema,
+    schema: databaseSchema,
   });
 };
+
+export type DbClient = ReturnType<typeof createDbConnection>;
