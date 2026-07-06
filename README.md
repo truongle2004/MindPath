@@ -6,7 +6,7 @@ MindPath helps you move forward with clarity, structure, and support. It is a Ne
 
 - **Next.js App Router** with TypeScript and React 19
 - **Authentication** with [Clerk](https://clerk.com) — sign up, sign in, dashboard, and user profile
-- **Database** with Drizzle ORM and PostgreSQL (local Docker Compose for development)
+- **Database** with Drizzle ORM and PostgreSQL
 - **Internationalization** with next-intl (English and Vietnamese)
 - **UI** with Tailwind CSS v4 and [shadcn/ui](https://ui.shadcn.com)
 - **Whiteboard** with [Excalidraw](https://excalidraw.com) for visual thinking and planning
@@ -19,7 +19,7 @@ MindPath helps you move forward with clarity, structure, and support. It is a Ne
 
 - Node.js 24+
 - npm
-- Docker Desktop or Docker Engine (for local PostgreSQL)
+- A hosted PostgreSQL database (e.g. Neon, Supabase, Railway)
 
 ## Getting started
 
@@ -37,15 +37,21 @@ Copy the environment template and fill in the required values:
 cp .env.example .env.local
 ```
 
-At minimum, set your Clerk keys in `.env.local`:
+At minimum, set these in `.env.local`:
 
 ```env
 NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_your_clerk_publishable_key
 CLERK_SECRET_KEY=sk_test_your_clerk_secret_key
-DATABASE_URL=postgresql://postgres:postgres@127.0.0.1:5432/postgres
+DATABASE_URL=postgresql://user:password@host:5432/database
 ```
 
 Create a Clerk application at [clerk.com](https://clerk.com) and copy the keys from the dashboard.
+
+Apply database migrations:
+
+```shell
+npm run db:migrate
+```
 
 Start the development server:
 
@@ -53,7 +59,7 @@ Start the development server:
 npm run dev
 ```
 
-This starts PostgreSQL in Docker, runs migrations, and launches Next.js with Sentry Spotlight. Open [http://localhost:3000](http://localhost:3000) in your browser.
+This launches Next.js with Sentry Spotlight. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## Environment variables
 
@@ -69,25 +75,15 @@ Optional integrations include Arcjet, Sentry, Better Stack, and PostHog. See `.e
 
 ## Database
 
-Local development uses PostgreSQL from `docker-compose.yml`.
+Use a hosted PostgreSQL instance and set `DATABASE_URL` in `.env.local`.
 
 | Command | Purpose |
 | --- | --- |
-| `npm run docker:up` | Start PostgreSQL and wait until ready |
-| `npm run docker:down` | Stop PostgreSQL |
-| `npm run docker:reset` | Stop PostgreSQL and delete persisted data |
 | `npm run db:migrate` | Apply database migrations |
 | `npm run db:generate` | Generate a migration from schema changes |
 | `npm run db:studio` | Open Drizzle Studio |
 
-Schema lives in `src/models/Schema.ts`. Migrations are stored in `migrations/`.
-
-To reset the local database:
-
-```shell
-npm run docker:reset
-npm run dev
-```
+Schema lives under `src/infrastructure/database/` and `src/core/infrastructure/`. Migrations are stored in `migrations/`.
 
 ## Pages
 
@@ -105,9 +101,9 @@ npm run dev
 
 | Command | Purpose |
 | --- | --- |
-| `npm run dev` | Start dev server with Docker PostgreSQL and migrations |
-| `npm run build-local` | Production build using local Docker PostgreSQL |
-| `npm run build` | Production build with remote `DATABASE_URL` |
+| `npm run dev` | Start dev server |
+| `npm run build-local` | Production build (same as `build`) |
+| `npm run build` | Production build with `DATABASE_URL` |
 | `npm run start` | Run production build locally |
 | `npm run lint` | Run linter |
 | `npm run lint:fix` | Fix lint issues |
@@ -133,7 +129,6 @@ npm run dev
 │   ├── templates/           # Page templates
 │   └── utils/               # App helpers and config
 ├── .env.example             # Environment variable template
-├── docker-compose.yml       # Local PostgreSQL
 └── drizzle.config.ts        # Drizzle ORM config
 ```
 
@@ -141,10 +136,10 @@ npm run dev
 
 Set `DATABASE_URL`, Clerk keys, and any optional service keys in your hosting provider. Migrations run automatically during `npm run build`.
 
-For a local production build with Docker PostgreSQL:
+For a local production build:
 
 ```shell
-npm run build-local
+npm run build
 npm run start
 ```
 
