@@ -1,76 +1,33 @@
 {
-  "RootLayout": {
-    "home_link": "Home",
-    "about_link": "About",
-    "counter_link": "Counter",
-    "portfolio_link": "Portfolio",
-    "sign_in_link": "Sign in",
-    "sign_up_link": "Sign up"
-  },
-  "BaseTemplate": {
-    "description": "Your path to clarity and growth",
-    "footer_text": "© {year} {name}. All rights reserved.",
-    "main_navigation_label": "Main navigation"
-  },
   "Index": {
     "meta_title": "MindPath",
-    "meta_description": "MindPath helps you move forward with clarity, structure, and support.",
-    "zap_emoji_label": "Zap"
+    "meta_description": "MindPath helps you move forward with clarity, structure, and support."
   },
-  "Counter": {
-    "meta_title": "Counter",
-    "meta_description": "An example of DB operation",
-    "security_powered_by": "Security, bot detection and rate limiting powered by"
-  },
-  "CounterForm": {
-    "presentation": "The counter is stored in the database and incremented by the value you provide.",
-    "label_increment": "Increment by",
-    "button_increment": "Increment",
-    "error_increment_range": "Value must be between 1 and 3"
-  },
-  "CurrentCount": {
-    "count": "Count: {count}"
-  },
-  "About": {
-    "meta_title": "About",
-    "meta_description": "Learn about MindPath — our mission, values, and the technology behind the platform.",
-    "hero_title": "About MindPath",
-    "hero_description": "MindPath helps you move forward with clarity, structure, and support. We build thoughtful tools for real product development.",
-    "mission_title": "Our mission",
-    "mission_description": "We help people turn ideas into progress with a calm, structured path — not more noise.",
-    "values_title": "What we believe",
-    "value_clarity_title": "Clarity",
-    "value_clarity_description": "Clear goals and simple workflows so you always know the next step.",
-    "value_growth_title": "Growth",
-    "value_growth_description": "Steady improvement through reflection, feedback, and measurable progress.",
-    "value_support_title": "Support",
-    "value_support_description": "Guidance and structure when you need direction, not pressure.",
-    "tech_title": "Built with",
-    "tech_nextjs": "Next.js",
-    "tech_typescript": "TypeScript",
-    "tech_tailwind": "Tailwind CSS",
-    "tech_clerk": "Clerk",
-    "tech_postgresql": "PostgreSQL",
-    "tech_drizzle": "Drizzle ORM",
-    "cta_title": "Ready to get started?",
-    "cta_description": "Create an account and begin your path with MindPath today.",
-    "cta_button": "Create an account",
-    "translation_powered_by": "Translation powered by",
-    "crowdin_logo_alt": "Crowdin translation management system"
-  },
-  "Portfolio": {
-    "meta_title": "Portfolio",
-    "meta_description": "Welcome to my portfolio page!",
-    "presentation": "Welcome to my portfolio page! Here you will find a carefully curated collection of my work and accomplishments. Through this portfolio, I'm to showcase my expertise, creativity, and the value I can bring to your projects.",
-    "portfolio_name": "Portfolio {name}",
-    "error_reporting_powered_by": "Error reporting powered by"
-  },
-  "PortfolioSlug": {
-    "meta_title": "Portfolio {slug}",
-    "meta_description": "Portfolio {slug} description",
-    "header": "Portfolio {slug}",
-    "content": "Created a set of promotional materials and branding elements for a corporate event. Crafted a visually unified theme, encompassing a logo, posters, banners, and digital assets. Integrated the client's brand identity while infusing it with a contemporary and innovative approach.",
-    "code_review_powered_by": "Code review powered by"
+  "AboutPage": {
+    "badge": "About our approach",
+    "hero_title": "Learning methods backed by cognitive science",
+    "hero_description": "We built this platform around decades of research on how memory actually works, not just what feels productive in the moment.",
+    "methods_title": "The methods we use",
+    "method_spaced_repetition_title": "Spaced repetition",
+    "method_spaced_repetition_description": "Reviews are scheduled right before you're about to forget, so material moves into long-term memory with far less time spent.",
+    "method_active_recall_title": "Active recall",
+    "method_active_recall_description": "Instead of re-reading notes, you're prompted to retrieve answers from memory — proven to build stronger, faster recall.",
+    "method_interleaving_title": "Interleaving",
+    "method_interleaving_description": "Topics are mixed rather than studied in isolated blocks, helping you tell concepts apart and apply them flexibly.",
+    "method_deliberate_practice_title": "Deliberate practice",
+    "method_deliberate_practice_description": "Sessions target your specific weak spots, with immediate feedback so effort goes exactly where it's needed.",
+    "why_title": "Why it works",
+    "why_description": "Most studying feels productive but doesn't stick, because re-reading and highlighting create a false sense of familiarity. Retrieval-based methods feel harder in the moment, but that difficulty is exactly what builds durable memory.",
+    "research_title": "Research-backed results",
+    "stat_retention_value": "2x",
+    "stat_retention_label": "Retention rate",
+    "stat_time_value": "40%",
+    "stat_time_label": "Less study time",
+    "stat_studies_value": "90+",
+    "stat_studies_label": "Studies cited",
+    "cta_title": "Ready to study smarter?",
+    "cta_description": "Start a session today and see how these methods feel in practice.",
+    "cta_button": "Get started"
   },
   "PricingPage": {
     "meta_title": "Pricing",
@@ -86,16 +43,9 @@
     "meta_title": "Sign up",
     "meta_description": "Effortlessly create an account through our intuitive sign-up process."
   },
-  "Dashboard": {
-    "hello_message": "Hello {email}!"
-  },
   "DashboardLayout": {
     "meta_title": "Dashboard",
-    "meta_description": "Manage your account from the dashboard.",
-    "navigation_label": "Navigation",
-    "dashboard_link": "Dashboard",
-    "user_profile_link": "Manage your account",
-    "sign_out": "Sign out"
+    "meta_description": "Manage your account from the dashboard."
   },
   "UserProfilePage": {
     "go_back": "Go back"
@@ -113,8 +63,5 @@
     "error_message": "Could not load todos.",
     "empty_message": "No todos yet.",
     "list_label": "Todo list"
-  },
-  "LocaleSwitcher": {
-    "change_language": "Change language"
   }
 }

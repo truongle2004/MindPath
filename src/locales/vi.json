@@ -1,76 +1,33 @@
 {
-  "RootLayout": {
-    "home_link": "Trang chủ",
-    "about_link": "Giới thiệu",
-    "counter_link": "Bộ đếm",
-    "portfolio_link": "Portfolio",
-    "sign_in_link": "Đăng nhập",
-    "sign_up_link": "Đăng ký"
-  },
-  "BaseTemplate": {
-    "description": "Con đường của bạn đến sự rõ ràng và phát triển",
-    "footer_text": "© {year} {name}. Bảo lưu mọi quyền.",
-    "main_navigation_label": "Điều hướng chính"
-  },
   "Index": {
     "meta_title": "MindPath",
-    "meta_description": "MindPath giúp bạn tiến lên với sự rõ ràng, cấu trúc và hỗ trợ.",
-    "zap_emoji_label": "Tia sáng"
+    "meta_description": "MindPath giúp bạn tiến lên với sự rõ ràng, cấu trúc và hỗ trợ."
   },
-  "Counter": {
-    "meta_title": "Bộ đếm",
-    "meta_description": "Ví dụ về thao tác cơ sở dữ liệu",
-    "security_powered_by": "Bảo mật, phát hiện bot và giới hạn tốc độ được hỗ trợ bởi"
-  },
-  "CounterForm": {
-    "presentation": "Bộ đếm được lưu trong cơ sở dữ liệu và tăng theo giá trị bạn cung cấp.",
-    "label_increment": "Tăng thêm",
-    "button_increment": "Tăng",
-    "error_increment_range": "Giá trị phải từ 1 đến 3"
-  },
-  "CurrentCount": {
-    "count": "Số lượng: {count}"
-  },
-  "About": {
-    "meta_title": "Giới thiệu",
-    "meta_description": "Tìm hiểu về MindPath — sứ mệnh, giá trị và công nghệ đằng sau nền tảng.",
-    "hero_title": "Về MindPath",
-    "hero_description": "MindPath giúp bạn tiến lên với sự rõ ràng, cấu trúc và hỗ trợ. Chúng tôi xây dựng công cụ chu đáo cho phát triển sản phẩm thực tế.",
-    "mission_title": "Sứ mệnh của chúng tôi",
-    "mission_description": "Chúng tôi giúp mọi người biến ý tưởng thành tiến bộ với con đường bình tĩnh, có cấu trúc — không thêm tiếng ồn.",
-    "values_title": "Chúng tôi tin vào",
-    "value_clarity_title": "Rõ ràng",
-    "value_clarity_description": "Mục tiêu rõ ràng và quy trình đơn giản để bạn luôn biết bước tiếp theo.",
-    "value_growth_title": "Phát triển",
-    "value_growth_description": "Cải thiện đều đặn qua phản chiếu, phản hồi và tiến bộ đo lường được.",
-    "value_support_title": "Hỗ trợ",
-    "value_support_description": "Định hướng và cấu trúc khi bạn cần lối đi, không phải áp lực.",
-    "tech_title": "Được xây dựng với",
-    "tech_nextjs": "Next.js",
-    "tech_typescript": "TypeScript",
-    "tech_tailwind": "Tailwind CSS",
-    "tech_clerk": "Clerk",
-    "tech_postgresql": "PostgreSQL",
-    "tech_drizzle": "Drizzle ORM",
-    "cta_title": "Sẵn sàng bắt đầu?",
-    "cta_description": "Tạo tài khoản và bắt đầu hành trình với MindPath ngay hôm nay.",
-    "cta_button": "Tạo tài khoản",
-    "translation_powered_by": "Bản dịch được hỗ trợ bởi",
-    "crowdin_logo_alt": "Hệ thống quản lý bản dịch Crowdin"
-  },
-  "Portfolio": {
-    "meta_title": "Portfolio",
-    "meta_description": "Chào mừng đến trang portfolio của tôi!",
-    "presentation": "Chào mừng đến trang portfolio của tôi! Tại đây bạn sẽ tìm thấy bộ sưu tập công việc và thành tựu được chọn lọc kỹ lưỡng. Qua portfolio này, tôi thể hiện chuyên môn, sáng tạo và giá trị tôi có thể mang đến cho dự án của bạn.",
-    "portfolio_name": "Portfolio {name}",
-    "error_reporting_powered_by": "Báo cáo lỗi được hỗ trợ bởi"
-  },
-  "PortfolioSlug": {
-    "meta_title": "Portfolio {slug}",
-    "meta_description": "Mô tả Portfolio {slug}",
-    "header": "Portfolio {slug}",
-    "content": "Đã tạo bộ tài liệu quảng bá và yếu tố thương hiệu cho sự kiện doanh nghiệp. Thiết kế chủ đề thống nhất về mặt hình ảnh, bao gồm logo, poster, banner và tài sản số. Tích hợp bản sắc thương hiệu của khách hàng với cách tiếp cận đương đại và sáng tạo.",
-    "code_review_powered_by": "Rà soát mã được hỗ trợ bởi"
+  "AboutPage": {
+    "badge": "Về phương pháp của chúng tôi",
+    "hero_title": "Phương pháp học được chứng minh bởi khoa học nhận thức",
+    "hero_description": "Chúng tôi xây dựng nền tảng này dựa trên hàng thập kỷ nghiên cứu về cách trí nhớ thực sự hoạt động, không chỉ những gì cảm thấy hiệu quả trong lúc học.",
+    "methods_title": "Các phương pháp chúng tôi sử dụng",
+    "method_spaced_repetition_title": "Lặp lại ngắt quãng",
+    "method_spaced_repetition_description": "Ôn tập được lên lịch ngay trước khi bạn sắp quên, giúp kiến thức chuyển vào trí nhớ dài hạn với ít thời gian hơn.",
+    "method_active_recall_title": "Gợi nhớ chủ động",
+    "method_active_recall_description": "Thay vì đọc lại ghi chú, bạn được yêu cầu nhớ lại câu trả lời từ trí nhớ — đã được chứng minh giúp ghi nhớ mạnh hơn và nhanh hơn.",
+    "method_interleaving_title": "Học xen kẽ",
+    "method_interleaving_description": "Các chủ đề được trộn lẫn thay vì học riêng từng khối, giúp bạn phân biệt khái niệm và áp dụng linh hoạt.",
+    "method_deliberate_practice_title": "Luyện tập có chủ đích",
+    "method_deliberate_practice_description": "Buổi học tập trung vào điểm yếu cụ thể của bạn, với phản hồi tức thì để nỗ lực đi đúng chỗ cần thiết.",
+    "why_title": "Tại sao hiệu quả",
+    "why_description": "Hầu hết cách học cảm thấy hiệu quả nhưng không bám lâu, vì đọc lại và tô sáng tạo cảm giác quen thuộc giả. Phương pháp dựa trên gợi nhớ khó hơn lúc học, nhưng chính sự khó đó xây dựng trí nhớ bền vững.",
+    "research_title": "Kết quả có cơ sở nghiên cứu",
+    "stat_retention_value": "2x",
+    "stat_retention_label": "Tỷ lệ ghi nhớ",
+    "stat_time_value": "40%",
+    "stat_time_label": "Ít thời gian học hơn",
+    "stat_studies_value": "90+",
+    "stat_studies_label": "Nghiên cứu được trích dẫn",
+    "cta_title": "Sẵn sàng học thông minh hơn?",
+    "cta_description": "Bắt đầu một buổi học hôm nay và cảm nhận các phương pháp này trong thực tế.",
+    "cta_button": "Bắt đầu"
   },
   "PricingPage": {
     "meta_title": "Bảng giá",
@@ -86,16 +43,9 @@
     "meta_title": "Đăng ký",
     "meta_description": "Tạo tài khoản dễ dàng qua quy trình đăng ký trực quan."
   },
-  "Dashboard": {
-    "hello_message": "Xin chào {email}!"
-  },
   "DashboardLayout": {
     "meta_title": "Bảng điều khiển",
-    "meta_description": "Quản lý tài khoản từ bảng điều khiển.",
-    "navigation_label": "Điều hướng",
-    "dashboard_link": "Bảng điều khiển",
-    "user_profile_link": "Quản lý tài khoản",
-    "sign_out": "Đăng xuất"
+    "meta_description": "Quản lý tài khoản từ bảng điều khiển."
   },
   "UserProfilePage": {
     "go_back": "Quay lại"
@@ -113,8 +63,5 @@
     "error_message": "Không thể tải việc cần làm.",
     "empty_message": "Chưa có việc cần làm.",
     "list_label": "Danh sách việc cần làm"
-  },
-  "LocaleSwitcher": {
-    "change_language": "Đổi ngôn ngữ"
   }
 }
