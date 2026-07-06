@@ -107,7 +107,7 @@
   },
   "TodosPage": {
     "meta_title": "Todos",
-    "meta_description": "Supabase example that lists todos from your database.",
+    "meta_description": "Lists todos from your Neon database.",
     "page_title": "Todos",
     "loading_message": "Loading todos…",
     "error_message": "Could not load todos.",

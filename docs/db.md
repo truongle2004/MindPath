@@ -1,6 +1,6 @@
 # MindPath — Database Schema
 
-**Platform:** PostgreSQL (recommended: Supabase or Railway)
+**Platform:** PostgreSQL on [Neon](https://neon.tech) with Drizzle ORM
 **Spaced repetition algorithm:** FSRS
 **Features:** Pomodoro · Flashcards · Spaced repetition · Progress tracking · Gamification
 

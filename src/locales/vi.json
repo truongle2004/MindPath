@@ -107,7 +107,7 @@
   },
   "TodosPage": {
     "meta_title": "Việc cần làm",
-    "meta_description": "Ví dụ Supabase liệt kê việc cần làm từ cơ sở dữ liệu.",
+    "meta_description": "Liệt kê việc cần làm từ cơ sở dữ liệu Neon.",
     "page_title": "Việc cần làm",
     "loading_message": "Đang tải việc cần làm…",
     "error_message": "Không thể tải việc cần làm.",
