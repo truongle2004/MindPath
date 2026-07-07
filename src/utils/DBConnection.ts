@@ -1,23 +1,19 @@
-import { drizzle } from 'drizzle-orm/node-postgres';
-import { Pool } from 'pg';
+import { neon } from '@neondatabase/serverless';
+import { drizzle } from 'drizzle-orm/neon-http';
 import { databaseSchema } from '@/infrastructure/database/schema';
 import { Env } from '@/libs/Env';
-import { logger } from '@/libs/Logger';
 
-// Need a database for production? Check out https://get.neon.com/BMFYNtx
-export const createDbConnection = () => {
-  const pool = new Pool({
-    connectionString: Env.DATABASE_URL,
-  });
+// Create a Neon project at https://console.neon.tech — see https://neon.com/docs/guides/drizzle
+const sql = neon(Env.DATABASE_URL);
 
-  pool.on('error', (error) => {
-    logger.error(`Database pool error: ${error.message}`);
-  });
-
-  return drizzle({
-    client: pool,
+/**
+ * Creates a Drizzle client backed by Neon's serverless HTTP driver.
+ * @returns A Drizzle database client for the current schema.
+ */
+export const createDbConnection = () =>
+  drizzle({
+    client: sql,
     schema: databaseSchema,
   });
-};
 
 export type DbClient = ReturnType<typeof createDbConnection>;

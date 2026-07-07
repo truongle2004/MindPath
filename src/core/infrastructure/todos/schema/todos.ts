@@ -1,6 +1,6 @@
 import { pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core';
 
-/** Todos table for local Postgres when Supabase is not configured. */
+/** Todos table stored in Neon Postgres via Drizzle. */
 export const todosSchema = pgTable('todos', {
   id: uuid('id').primaryKey().defaultRandom(),
   name: text('name').notNull(),
