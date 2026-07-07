@@ -272,82 +272,83 @@ export function DeckDetailPageContent(props: DeckDetailPageContentProps) {
           </CardContent>
         </Card>
       ) : (
-        <ul className="flex flex-col gap-3" aria-label={t('cards_list_label')}>
-          {cards.map((card) => (
-            <li key={card.id}>
-              <Card>
-                <CardHeader>
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="min-w-0 flex-1">
-                      <CardTitle className="text-base">{t('front_label')}</CardTitle>
-                      <CardDescription className="mt-1 whitespace-pre-wrap text-foreground">
-                        {card.front}
-                      </CardDescription>
-                    </div>
-                    <div className="flex shrink-0 flex-col items-end gap-1">
-                      {confirmDeleteCardId === card.id ? (
-                        <div className="flex flex-col items-end gap-1">
-                          <span className="text-xs text-muted-foreground">
-                            {t('delete_card_confirm')}
-                          </span>
-                          <div className="flex flex-wrap items-center justify-end gap-1">
-                            <Button
-                              variant="destructive"
-                              size="sm"
-                              onClick={() => {
-                                void handleDeleteCard(card.id);
-                              }}
-                            >
-                              {t('confirm_delete_button')}
-                            </Button>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => {
-                                setConfirmDeleteCardId(null);
-                              }}
-                            >
-                              {t('cancel_delete_button')}
-                            </Button>
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="flex gap-1">
-                          <Button
-                            variant="ghost"
-                            size="icon-sm"
-                            aria-label={t('edit_card_button')}
-                            onClick={() => {
-                              openEditCardSheet(card);
-                            }}
-                          >
-                            <Pencil />
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="icon-sm"
-                            aria-label={t('delete_card_button')}
-                            onClick={() => {
-                              setConfirmDeleteCardId(card.id);
-                            }}
-                          >
-                            <Trash2 />
-                          </Button>
-                        </div>
-                      )}
-                    </div>
+        <div
+          className="overflow-hidden rounded-lg border border-border"
+          aria-label={t('cards_list_label')}
+        >
+          <div className="grid grid-cols-[1fr_1px_1fr_auto] bg-muted/50 px-4 py-2">
+            <span className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
+              {t('front_label')}
+            </span>
+            <span />
+            <span className="pl-4 text-xs font-medium tracking-wide text-muted-foreground uppercase">
+              {t('back_label')}
+            </span>
+            <span />
+          </div>
+          {cards.map((card, index) => (
+            <div
+              key={card.id}
+              className={`grid grid-cols-[1fr_1px_1fr_auto] items-start${index > 0 ? ' border-t border-border' : ''}`}
+            >
+              <p className="px-4 py-3 text-sm whitespace-pre-wrap">{card.front}</p>
+              <div className="self-stretch bg-border" />
+              <p className="px-4 py-3 text-sm whitespace-pre-wrap text-muted-foreground">
+                {card.back}
+              </p>
+              <div className="flex items-center gap-1 px-2 py-2">
+                {confirmDeleteCardId === card.id ? (
+                  <div className="flex items-center gap-1">
+                    <span className="text-xs text-muted-foreground">
+                      {t('delete_card_confirm')}
+                    </span>
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      onClick={() => {
+                        void handleDeleteCard(card.id);
+                      }}
+                    >
+                      {t('confirm_delete_button')}
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        setConfirmDeleteCardId(null);
+                      }}
+                    >
+                      {t('cancel_delete_button')}
+                    </Button>
                   </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm font-medium">{t('back_label')}</p>
-                  <p className="mt-1 text-sm whitespace-pre-wrap text-muted-foreground">
-                    {card.back}
-                  </p>
-                </CardContent>
-              </Card>
-            </li>
+                ) : (
+                  <>
+                    <Button
+                      variant="ghost"
+                      size="icon-sm"
+                      aria-label={t('edit_card_button')}
+                      onClick={() => {
+                        openEditCardSheet(card);
+                      }}
+                    >
+                      <Pencil />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon-sm"
+                      aria-label={t('delete_card_button')}
+                      onClick={() => {
+                        setConfirmDeleteCardId(card.id);
+                      }}
+                    >
+                      <Trash2 />
+                    </Button>
+                  </>
+                )}
+              </div>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
 
       <Sheet open={isCardSheetOpen} onOpenChange={setIsCardSheetOpen}>
