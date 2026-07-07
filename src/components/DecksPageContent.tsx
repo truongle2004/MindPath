@@ -220,8 +220,8 @@ export function DecksPageContent() {
                 />
               </div>
 
-              <div className="flex flex-col gap-2">
-                <Label>{t('color_label')}</Label>
+              <fieldset className="flex flex-col gap-2 border-0 p-0">
+                <legend className="text-sm font-medium text-foreground">{t('color_label')}</legend>
                 <div className="flex flex-wrap gap-2">
                   {deckColors.map((color) => (
                     <button
@@ -237,7 +237,7 @@ export function DecksPageContent() {
                     />
                   ))}
                 </div>
-              </div>
+              </fieldset>
 
               {formError ? <p className="text-sm text-destructive">{formError}</p> : null}
             </div>
