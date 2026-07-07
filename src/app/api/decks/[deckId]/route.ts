@@ -6,18 +6,15 @@ import {
   updateDeckController,
 } from '@/infrastructure/di/flashcard';
 
-type DeckRouteProps = {
-  params: Promise<{ deckId: string }>;
-};
-
 /**
  * Returns a deck and its cards for the authenticated user.
- * @param props Route params containing the deck id.
+ * @param _request The incoming request.
+ * @param context Route params containing the deck id.
  * @returns JSON response with deck and cards or an error payload.
  */
-export async function GET(props: DeckRouteProps) {
+export async function GET(_request: Request, context: { params: Promise<{ deckId: string }> }) {
   try {
-    const { deckId } = await props.params;
+    const { deckId } = await context.params;
     const auth = await getAuthContext();
     const controller = getDeckController();
     const body = await controller(auth, deckId);
@@ -31,12 +28,12 @@ export async function GET(props: DeckRouteProps) {
 /**
  * Updates a deck for the authenticated user.
  * @param request The incoming request with deck fields in the body.
- * @param props Route params containing the deck id.
+ * @param context Route params containing the deck id.
  * @returns JSON response with the updated deck or an error payload.
  */
-export async function PATCH(request: Request, props: DeckRouteProps) {
+export async function PATCH(request: Request, context: { params: Promise<{ deckId: string }> }) {
   try {
-    const { deckId } = await props.params;
+    const { deckId } = await context.params;
     const auth = await getAuthContext();
     const input: unknown = await request.json();
     const controller = updateDeckController();
@@ -50,12 +47,13 @@ export async function PATCH(request: Request, props: DeckRouteProps) {
 
 /**
  * Deletes a deck for the authenticated user.
- * @param props Route params containing the deck id.
+ * @param _request The incoming request.
+ * @param context Route params containing the deck id.
  * @returns Empty response or an error payload.
  */
-export async function DELETE(props: DeckRouteProps) {
+export async function DELETE(_request: Request, context: { params: Promise<{ deckId: string }> }) {
   try {
-    const { deckId } = await props.params;
+    const { deckId } = await context.params;
     const auth = await getAuthContext();
     const controller = deleteDeckController();
     await controller(auth, deckId);
