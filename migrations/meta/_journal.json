@@ -22,6 +22,13 @@
       "when": 1783220369593,
       "tag": "0002_steep_supreme_intelligence",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1783392779033,
+      "tag": "0003_bitter_tana_nile",
+      "breakpoints": true
     }
   ]
 }

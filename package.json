@@ -9,7 +9,7 @@
     "dev": "run-s dev:app",
     "build:next": "next build",
     "build-local": "run-s db:migrate build:next",
-    "build": "run-s db:migrate build:next",
+    "build": "run-s build:next",
     "start": "next start",
     "build-stats": "cross-env ANALYZE=true npm run build",
     "clean": "rimraf .next out",
