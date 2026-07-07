@@ -7,6 +7,7 @@ import {
   Command,
   Frame,
   GalleryVerticalEnd,
+  Layers,
   Map,
   PieChart,
   Settings2,
@@ -50,6 +51,18 @@ const data = {
     },
   ],
   navMain: [
+    {
+      title: 'Flashcards',
+      url: '/dashboard/decks',
+      icon: Layers,
+      isActive: true,
+      items: [
+        {
+          title: 'All decks',
+          url: '/dashboard/decks',
+        },
+      ],
+    },
     {
       title: 'Playground',
       url: '#',

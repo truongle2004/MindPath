@@ -8,8 +8,6 @@ const config: KnipConfig = {
     'src/components/Whiteboard.tsx',
     'src/libs/I18nNavigation.ts',
     'src/core/entities/errors/unauthorized-error.ts',
-    'src/core/entities/errors/input-parse-error.ts',
-    'src/core/entities/errors/not-found-error.ts',
   ],
   // Dependencies to ignore during analysis
   ignoreDependencies: [
