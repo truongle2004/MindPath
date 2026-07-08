@@ -1,6 +1,6 @@
 'use client';
 
-import { ArrowLeft, Check, Pencil, Plus, Trash2, X } from 'lucide-react';
+import { ArrowLeft, BookOpen, Check, Pencil, Plus, Trash2, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -258,6 +258,13 @@ export function DeckDetailPageContent(props: DeckDetailPageContentProps) {
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
+            <Button asChild>
+              <Link href={`/dashboard/decks/${props.deckId}/study`}>
+                <BookOpen data-icon="inline-start" />
+                {t('study_button')}
+              </Link>
+            </Button>
+
             {confirmDeleteDeck ? (
               <>
                 <span className="text-sm text-muted-foreground">{t('delete_deck_confirm')}</span>

@@ -95,6 +95,7 @@
     "error_message": "Could not load deck.",
     "back_to_decks": "Back to decks",
     "add_card_button": "Add card",
+    "study_button": "Study",
     "delete_deck_button": "Delete deck",
     "delete_deck_confirm": "Delete this deck and all its cards?",
     "empty_cards_title": "No cards yet",
@@ -114,5 +115,28 @@
     "cancel_delete_button": "Cancel",
     "save_error_message": "Could not save card.",
     "delete_error_message": "Could not delete."
+  },
+  "StudyPage": {
+    "meta_title": "Study",
+    "meta_description": "Review flashcards with spaced repetition.",
+    "loading_message": "Loading cards…",
+    "error_message": "Could not load cards.",
+    "no_cards_title": "No cards due",
+    "no_cards_description": "All caught up! Come back later to review more.",
+    "back_to_deck": "Back to deck",
+    "progress": "{current} / {total}",
+    "show_answer": "Show answer",
+    "rating_again": "Again",
+    "rating_hard": "Hard",
+    "rating_good": "Good",
+    "rating_easy": "Easy",
+    "submitting": "Saving…",
+    "done_title": "Session complete",
+    "done_description": "{count, plural, =1 {1 card reviewed} other {# cards reviewed}}",
+    "done_again": "Again: {count}",
+    "done_hard": "Hard: {count}",
+    "done_good": "Good: {count}",
+    "done_easy": "Easy: {count}",
+    "study_again": "Study again"
   }
 }
