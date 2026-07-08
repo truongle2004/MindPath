@@ -29,6 +29,13 @@
       "when": 1783392779033,
       "tag": "0003_bitter_tana_nile",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1783415631156,
+      "tag": "0004_nifty_meltdown",
+      "breakpoints": true
     }
   ]
 }

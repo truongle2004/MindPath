@@ -19,6 +19,9 @@ const isAuthPage = createRouteMatcher([
   '/:locale/sign-up(.*)',
 ]);
 
+/** Matches API routes that call auth() in route handlers. */
+const isApiRoute = createRouteMatcher(['/api(.*)']);
+
 /** Matches locale home routes. */
 const isHomePage = createRouteMatcher([
   '/',
@@ -72,7 +75,7 @@ const aj = arcjet.withRule(
 
 /**
  * Runs Arcjet bot protection, Clerk auth, and next-intl routing for incoming requests.
- * Clerk middleware runs only on auth, dashboard, and home routes because keyless mode does not work with i18n.
+ * Clerk runs on API routes (for auth() in handlers), auth pages, dashboard, and home routes.
  * Uses `process.env` instead of Env to reduce middleware bundle size.
  * @param request The incoming Next.js request.
  * @param event The fetch event for middleware composition.
@@ -85,6 +88,10 @@ const proxy: NextProxy = async (request, event) => {
     if (decision.isDenied()) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
+  }
+
+  if (isApiRoute(request)) {
+    return await clerkMiddleware()(request, event);
   }
 
   if (isAuthPage(request) || isProtectedRoute(request) || isHomePage(request)) {
@@ -122,9 +129,10 @@ const proxy: NextProxy = async (request, event) => {
 export default proxy;
 
 /**
- * Middleware matcher config.
- * Excludes Next.js internals, Vercel, monitoring, API routes, and static files with extensions.
+ * Proxy matcher config.
+ * Excludes Next.js internals, Vercel, monitoring, and static files with extensions.
+ * API routes are matched separately so clerkMiddleware runs before auth() in route handlers.
  */
 export const config = {
-  matcher: '/((?!_next|_vercel|monitoring|api|.*\\..*).*)',
+  matcher: ['/((?!_next|_vercel|monitoring|api|.*\\..*).*)', '/api/:path*'],
 };
