@@ -5,16 +5,16 @@ import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-} from '@/components/ui/sheet';
 import { Textarea } from '@/components/ui/textarea';
 import { httpJson } from '@/libs/Fetcher';
 import { Link } from '@/libs/I18nNavigation';
@@ -25,6 +25,7 @@ import {
 } from '@/modules/flashcard/entities/models/deck.schema';
 
 const deckColors = ['#7F77DD', '#4A90A4', '#6B8F71', '#C17C74', '#D4A056'];
+const defaultColor = deckColors[0] ?? '#7F77DD';
 
 /**
  * Client UI for listing and creating flashcard decks.
@@ -37,7 +38,7 @@ export function DecksPageContent() {
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [colorHex, setColorHex] = useState(deckColors[0] ?? '#7F77DD');
+  const [colorHex, setColorHex] = useState(defaultColor);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
 
@@ -58,6 +59,20 @@ export function DecksPageContent() {
     void loadDecks();
   }, []);
 
+  function resetForm() {
+    setTitle('');
+    setDescription('');
+    setColorHex(defaultColor);
+    setFormError(null);
+  }
+
+  function handleDialogOpenChange(open: boolean) {
+    setIsCreateOpen(open);
+    if (!open) {
+      resetForm();
+    }
+  }
+
   async function handleCreateDeck(event: React.SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     setFormError(null);
@@ -74,9 +89,7 @@ export function DecksPageContent() {
         },
       });
 
-      setTitle('');
-      setDescription('');
-      setColorHex(deckColors[0] ?? '#7F77DD');
+      resetForm();
       setIsCreateOpen(false);
       await loadDecks();
     } catch {
@@ -87,34 +100,44 @@ export function DecksPageContent() {
   }
 
   if (status === 'loading') {
-    return <p className="text-muted-foreground">{t('loading_message')}</p>;
+    return <p className="text-sm text-muted-foreground">{t('loading_message')}</p>;
   }
 
   if (status === 'error') {
-    return <p className="text-muted-foreground">{t('error_message')}</p>;
+    return <p className="text-sm text-muted-foreground">{t('error_message')}</p>;
   }
+
+  const isEmpty = decks.length === 0;
 
   return (
     <>
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex flex-wrap items-center justify-between gap-4">
         <p className="text-sm text-muted-foreground">{t('page_description')}</p>
-        <Button
-          onClick={() => {
-            setIsCreateOpen(true);
-          }}
-        >
-          <Plus data-icon="inline-start" />
-          {t('create_deck_button')}
-        </Button>
+        {!isEmpty && (
+          <Button
+            onClick={() => {
+              setIsCreateOpen(true);
+            }}
+          >
+            <Plus data-icon="inline-start" />
+            {t('create_deck_button')}
+          </Button>
+        )}
       </div>
 
-      {decks.length === 0 ? (
-        <Card>
-          <CardHeader>
+      {isEmpty ? (
+        <Card className="border-dashed">
+          <CardHeader className="items-center text-center">
+            <div
+              aria-hidden
+              className="mb-2 flex size-10 items-center justify-center rounded-full bg-muted text-muted-foreground"
+            >
+              <Layers />
+            </div>
             <CardTitle>{t('empty_title')}</CardTitle>
-            <CardDescription>{t('empty_description')}</CardDescription>
+            <CardDescription className="max-w-sm">{t('empty_description')}</CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="flex justify-center">
             <Button
               onClick={() => {
                 setIsCreateOpen(true);
@@ -130,13 +153,13 @@ export function DecksPageContent() {
           {decks.map((deck) => (
             <li key={deck.id}>
               <Link href={`/dashboard/decks/${deck.id}`} className="block h-full">
-                <Card className="h-full transition-colors hover:bg-muted/30">
+                <Card className="h-full transition-colors hover:bg-muted/40">
                   <CardHeader>
                     <div className="flex items-start gap-3">
                       <span
                         aria-hidden
-                        className="mt-0.5 size-3 shrink-0 rounded-full"
-                        style={{ backgroundColor: deck.colorHex ?? '#7F77DD' }}
+                        className="mt-1 size-2.5 shrink-0 rounded-full"
+                        style={{ backgroundColor: deck.colorHex ?? defaultColor }}
                       />
                       <div className="min-w-0 flex-1">
                         <CardTitle className="truncate">{deck.title}</CardTitle>
@@ -161,15 +184,15 @@ export function DecksPageContent() {
         </ul>
       )}
 
-      <Sheet open={isCreateOpen} onOpenChange={setIsCreateOpen}>
-        <SheetContent side="right">
-          <form className="flex h-full flex-col" onSubmit={handleCreateDeck}>
-            <SheetHeader>
-              <SheetTitle>{t('create_sheet_title')}</SheetTitle>
-              <SheetDescription>{t('create_sheet_description')}</SheetDescription>
-            </SheetHeader>
+      <Dialog open={isCreateOpen} onOpenChange={handleDialogOpenChange}>
+        <DialogContent className="sm:max-w-md">
+          <form className="flex flex-col gap-4" onSubmit={handleCreateDeck}>
+            <DialogHeader>
+              <DialogTitle>{t('create_dialog_title')}</DialogTitle>
+              <DialogDescription>{t('create_dialog_description')}</DialogDescription>
+            </DialogHeader>
 
-            <div className="flex flex-1 flex-col gap-4 px-4">
+            <div className="flex flex-col gap-4">
               <div className="flex flex-col gap-2">
                 <Label htmlFor="deck-title">{t('title_label')}</Label>
                 <Input
@@ -181,6 +204,7 @@ export function DecksPageContent() {
                   placeholder={t('title_placeholder')}
                   required
                   maxLength={100}
+                  autoFocus
                 />
               </div>
 
@@ -194,6 +218,7 @@ export function DecksPageContent() {
                   }}
                   placeholder={t('description_placeholder')}
                   maxLength={500}
+                  rows={3}
                 />
               </div>
 
@@ -206,7 +231,7 @@ export function DecksPageContent() {
                       type="button"
                       aria-label={t('color_option_label', { color })}
                       aria-pressed={colorHex === color}
-                      className="size-8 rounded-full ring-1 ring-foreground/10 transition-transform hover:scale-105 aria-pressed:ring-2 aria-pressed:ring-ring"
+                      className="size-7 rounded-full ring-1 ring-foreground/10 transition-transform hover:scale-105 aria-pressed:ring-2 aria-pressed:ring-ring"
                       style={{ backgroundColor: color }}
                       onClick={() => {
                         setColorHex(color);
@@ -216,17 +241,31 @@ export function DecksPageContent() {
                 </div>
               </fieldset>
 
-              {formError ? <p className="text-sm text-destructive">{formError}</p> : null}
+              {formError ? (
+                <p role="alert" className="text-sm text-destructive">
+                  {formError}
+                </p>
+              ) : null}
             </div>
 
-            <SheetFooter>
-              <Button type="submit" disabled={isSubmitting || title.trim().length === 0}>
-                {t('create_deck_button')}
+            <DialogFooter>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => {
+                  handleDialogOpenChange(false);
+                }}
+                disabled={isSubmitting}
+              >
+                {t('cancel_button')}
               </Button>
-            </SheetFooter>
+              <Button type="submit" disabled={isSubmitting || title.trim().length === 0}>
+                {isSubmitting ? t('creating_button') : t('create_deck_button')}
+              </Button>
+            </DialogFooter>
           </form>
-        </SheetContent>
-      </Sheet>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
