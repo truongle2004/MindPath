@@ -6,6 +6,8 @@ import { deleteCardUseCase } from '@/modules/flashcard/application/use-cases/del
 import { deleteDeckUseCase } from '@/modules/flashcard/application/use-cases/delete-deck.use-case';
 import { getDeckWithCardsUseCase } from '@/modules/flashcard/application/use-cases/get-deck-with-cards.use-case';
 import { getDecksUseCase } from '@/modules/flashcard/application/use-cases/get-decks.use-case';
+import { getDueCardsUseCase } from '@/modules/flashcard/application/use-cases/get-due-cards.use-case';
+import { reviewCardUseCase } from '@/modules/flashcard/application/use-cases/review-card.use-case';
 import { updateCardUseCase } from '@/modules/flashcard/application/use-cases/update-card.use-case';
 import { updateDeckUseCase } from '@/modules/flashcard/application/use-cases/update-deck.use-case';
 import { Tokens } from '@/modules/flashcard/infrastructure/di/tokens';
@@ -19,6 +21,8 @@ import {
 import { createDeckController } from '@/modules/flashcard/interface-adapters/controllers/create-deck.controller';
 import { getDeckController } from '@/modules/flashcard/interface-adapters/controllers/get-deck.controller';
 import { getDecksController } from '@/modules/flashcard/interface-adapters/controllers/get-decks.controller';
+import { getDueCardsController } from '@/modules/flashcard/interface-adapters/controllers/get-due-cards.controller';
+import { reviewCardController } from '@/modules/flashcard/interface-adapters/controllers/review-card.controller';
 import {
   deleteDeckController,
   updateDeckController,
@@ -153,6 +157,38 @@ export function registerFlashcardModule(container: DependencyContainer) {
       deleteCardController(
         dependencyContainer.resolve(UserTokens.EnsureUserUseCase),
         dependencyContainer.resolve(Tokens.DeleteCardUseCase),
+      ),
+  });
+
+  container.register(Tokens.GetDueCardsUseCase, {
+    useFactory: (dependencyContainer) =>
+      getDueCardsUseCase(
+        dependencyContainer.resolve(Tokens.DeckRepository),
+        dependencyContainer.resolve(Tokens.CardRepository),
+      ),
+  });
+
+  container.register(Tokens.ReviewCardUseCase, {
+    useFactory: (dependencyContainer) =>
+      reviewCardUseCase(
+        dependencyContainer.resolve(Tokens.DeckRepository),
+        dependencyContainer.resolve(Tokens.CardRepository),
+      ),
+  });
+
+  container.register(Tokens.GetDueCardsController, {
+    useFactory: (dependencyContainer) =>
+      getDueCardsController(
+        dependencyContainer.resolve(UserTokens.EnsureUserUseCase),
+        dependencyContainer.resolve(Tokens.GetDueCardsUseCase),
+      ),
+  });
+
+  container.register(Tokens.ReviewCardController, {
+    useFactory: (dependencyContainer) =>
+      reviewCardController(
+        dependencyContainer.resolve(UserTokens.EnsureUserUseCase),
+        dependencyContainer.resolve(Tokens.ReviewCardUseCase),
       ),
   });
 }

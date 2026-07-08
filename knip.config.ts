@@ -16,7 +16,6 @@ const config: KnipConfig = {
     '@excalidraw/excalidraw',
     '@hookform/resolvers',
     'react-hook-form',
-    'ts-fsrs',
   ],
   // Binaries to ignore during analysis
   ignoreBinaries: [],

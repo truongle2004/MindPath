@@ -64,3 +64,19 @@ export function updateCardController() {
 export function deleteCardController() {
   return resolve(FlashcardTokens.DeleteCardController);
 }
+
+/**
+ * Resolves the get-due-cards controller from the DI container.
+ * @returns The get-due-cards controller.
+ */
+export function getDueCardsController() {
+  return resolve(FlashcardTokens.GetDueCardsController);
+}
+
+/**
+ * Resolves the review-card controller from the DI container.
+ * @returns The review-card controller.
+ */
+export function reviewCardController() {
+  return resolve(FlashcardTokens.ReviewCardController);
+}
