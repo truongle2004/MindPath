@@ -16,6 +16,7 @@ const config: KnipConfig = {
     '@excalidraw/excalidraw',
     '@hookform/resolvers',
     'react-hook-form',
+    'ts-fsrs',
   ],
   // Binaries to ignore during analysis
   ignoreBinaries: [],
@@ -23,6 +24,8 @@ const config: KnipConfig = {
   ignoreIssues: {
     'src/components/ui/**': ['exports'],
     'src/libs/Fetcher.ts': ['exports'],
+    'src/modules/flashcard/entities/models/card.schema.ts': ['exports', 'types'],
+    'src/modules/flashcard/application/repositories/card.repository.interface.ts': ['types'],
   },
   compilers: {
     css: (text: string) => [...text.matchAll(/(?<=@)import[^;]+/gu)].join('\n'),

@@ -8,6 +8,14 @@ export const cardSchema = z.object({
   cardType: z.string(),
   createdAt: z.string(),
   state: z.string(),
+  stability: z.number(),
+  difficulty: z.number(),
+  due: z.string(),
+  elapsedDays: z.number(),
+  scheduledDays: z.number(),
+  reps: z.number(),
+  lapses: z.number(),
+  lastReview: z.string().nullable(),
 });
 
 export const createCardInputSchema = z.object({
@@ -17,5 +25,10 @@ export const createCardInputSchema = z.object({
 
 export const updateCardInputSchema = createCardInputSchema.partial();
 
+export const reviewCardInputSchema = z.object({
+  rating: z.union([z.literal(1), z.literal(2), z.literal(3), z.literal(4)]),
+});
+
 export type CreateCardInput = z.infer<typeof createCardInputSchema>;
 export type UpdateCardInput = z.infer<typeof updateCardInputSchema>;
+export type ReviewCardInput = z.infer<typeof reviewCardInputSchema>;
