@@ -22,6 +22,7 @@ const config: KnipConfig = {
   // Shadcn UI components export variants and subcomponents for reuse
   ignoreIssues: {
     'src/components/ui/**': ['exports'],
+    'src/libs/Fetcher.ts': ['exports'],
   },
   compilers: {
     css: (text: string) => [...text.matchAll(/(?<=@)import[^;]+/gu)].join('\n'),

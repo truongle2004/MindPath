@@ -23,5 +23,13 @@ export const createDeckInputSchema = z.object({
 
 export const updateDeckInputSchema = createDeckInputSchema.partial();
 
+export const getDecksResponseSchema = z.object({
+  decks: z.array(deckSchema),
+});
+
+export const createDeckResponseSchema = z.object({
+  deck: deckSchema,
+});
+
 export type CreateDeckInput = z.infer<typeof createDeckInputSchema>;
 export type UpdateDeckInput = z.infer<typeof updateDeckInputSchema>;
