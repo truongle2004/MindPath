@@ -122,7 +122,10 @@ export function DeckDetailPageContent(props: DeckDetailPageContentProps) {
       const response = await fetch(`/api/decks/${props.deckId}/cards`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ front: inlineFront.trim(), back: inlineBack.trim() }),
+        body: JSON.stringify({
+          front: inlineFront.trim(),
+          back: inlineBack.trim(),
+        }),
       });
 
       if (!response.ok) {
@@ -157,7 +160,10 @@ export function DeckDetailPageContent(props: DeckDetailPageContentProps) {
       const response = await fetch(`/api/decks/${props.deckId}/cards/${editingCardId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ front: editFront.trim(), back: editBack.trim() }),
+        body: JSON.stringify({
+          front: editFront.trim(),
+          back: editBack.trim(),
+        }),
       });
 
       if (!response.ok) {
