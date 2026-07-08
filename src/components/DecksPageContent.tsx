@@ -89,10 +89,6 @@ export function DecksPageContent() {
         },
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to create deck');
-      }
-
       resetForm();
       setIsCreateOpen(false);
       await loadDecks();
