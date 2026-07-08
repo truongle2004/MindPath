@@ -16,27 +16,16 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { httpJson } from '@/libs/Fetcher';
 import { Link } from '@/libs/I18nNavigation';
 import type { Deck } from '@/modules/flashcard/entities/models/deck';
-import type { GetDecksResponse } from '@/modules/flashcard/interface-adapters/controllers/get-decks.controller.interface';
+import {
+  createDeckResponseSchema,
+  getDecksResponseSchema,
+} from '@/modules/flashcard/entities/models/deck.schema';
 
 const deckColors = ['#7F77DD', '#4A90A4', '#6B8F71', '#C17C74', '#D4A056'];
 const defaultColor = deckColors[0] ?? '#7F77DD';
-
-/**
- * Checks whether a value matches the decks list response shape.
- * @param value The parsed JSON body.
- * @returns True when the body contains a decks array.
- */
-function isDecksResponse(value: unknown): value is GetDecksResponse {
-  if (typeof value !== 'object' || value === null || !('decks' in value)) {
-    return false;
-  }
-
-  const { decks } = value;
-
-  return Array.isArray(decks);
-}
 
 /**
  * Client UI for listing and creating flashcard decks.
@@ -55,19 +44,11 @@ export function DecksPageContent() {
 
   async function loadDecks() {
     try {
-      const response = await fetch('/api/decks');
+      const { decks: loaded } = await httpJson('/api/decks', {
+        schema: getDecksResponseSchema,
+      });
 
-      if (!response.ok) {
-        throw new Error('Failed to load decks');
-      }
-
-      const body: unknown = await response.json();
-
-      if (!isDecksResponse(body)) {
-        throw new Error('Invalid decks response');
-      }
-
-      setDecks(body.decks);
+      setDecks(loaded);
       setStatus('ready');
     } catch {
       setStatus('error');
@@ -98,14 +79,14 @@ export function DecksPageContent() {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch('/api/decks', {
+      await httpJson('/api/decks', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
+        schema: createDeckResponseSchema,
+        body: {
           title,
           description: description.trim() || null,
           colorHex,
-        }),
+        },
       });
 
       if (!response.ok) {
