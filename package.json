@@ -31,7 +31,7 @@
     "@excalidraw/excalidraw": "^0.18.1",
     "@hookform/resolvers": "^5.2.2",
     "@logtape/logtape": "^2.1.1",
-    "@neondatabase/serverless": "^1.0.2",
+    "postgres": "^3.4.7",
     "@sentry/nextjs": "^10.53.1",
     "@t3-oss/env-nextjs": "^0.13.11",
     "class-variance-authority": "^0.7.1",

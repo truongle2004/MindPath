@@ -4,7 +4,7 @@ import { UnauthenticatedError } from '@/core/entities/errors/unauthenticated-err
 import { getTodosController } from '@/infrastructure/di';
 
 /**
- * Returns todos from Neon Postgres through the controller layer.
+ * Returns todos from Postgres through the controller layer.
  * @param request The incoming request with a userId query parameter.
  * @returns JSON response with todos or an error payload.
  */
@@ -17,6 +17,8 @@ export async function GET(request: Request) {
 
     return NextResponse.json(body);
   } catch (error) {
+    console.error('[api/todos] GET failed', error);
+
     if (error instanceof UnauthenticatedError) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
