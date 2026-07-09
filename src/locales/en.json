@@ -57,10 +57,11 @@
   },
   "TodosPage": {
     "meta_title": "Todos",
-    "meta_description": "Lists todos from your Neon database.",
+    "meta_description": "Lists todos from your database.",
     "page_title": "Todos",
     "loading_message": "Loading todos…",
     "error_message": "Could not load todos.",
+    "auth_error_message": "Sign in to view todos.",
     "empty_message": "No todos yet.",
     "list_label": "Todo list"
   },
@@ -138,5 +139,16 @@
     "done_good": "Good: {count}",
     "done_easy": "Easy: {count}",
     "study_again": "Study again"
+  },
+  "ThemeToggle": {
+    "toggle_label": "Toggle theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "LocaleSwitcher": {
+    "toggle_label": "Change language",
+    "language_en": "English",
+    "language_vi": "Vietnamese"
   }
 }

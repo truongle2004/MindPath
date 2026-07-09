@@ -41,7 +41,7 @@ export function TodosPageContent() {
   const t = useTranslations('TodosPage');
   const { isLoaded, userId } = useAuth();
   const [todos, setTodos] = useState<GetTodosResponse['todos']>([]);
-  const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading');
+  const [status, setStatus] = useState<'loading' | 'ready' | 'error' | 'auth-error'>('loading');
 
   useEffect(() => {
     if (!isLoaded) {
@@ -49,7 +49,7 @@ export function TodosPageContent() {
     }
 
     if (!userId) {
-      setStatus('error');
+      setStatus('auth-error');
       return;
     }
 
@@ -62,18 +62,25 @@ export function TodosPageContent() {
         );
 
         if (!response.ok) {
+          const errorBody: unknown = await response.json().catch(() => null);
+          console.error('[TodosPage] API error', {
+            status: response.status,
+            body: errorBody,
+          });
           throw new Error('Failed to load todos');
         }
 
         const body: unknown = await response.json();
 
         if (!isTodosResponse(body)) {
+          console.error('[TodosPage] Invalid response shape', body);
           throw new Error('Invalid todos response');
         }
 
         setTodos(body.todos);
         setStatus('ready');
-      } catch {
+      } catch (error) {
+        console.error('[TodosPage] Failed to load todos', error);
         setStatus('error');
       }
     }
@@ -83,6 +90,10 @@ export function TodosPageContent() {
 
   if (status === 'loading') {
     return <p className="text-muted-foreground">{t('loading_message')}</p>;
+  }
+
+  if (status === 'auth-error') {
+    return <p className="text-muted-foreground">{t('auth_error_message')}</p>;
   }
 
   if (status === 'error') {

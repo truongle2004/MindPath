@@ -6,7 +6,7 @@ MindPath helps you move forward with clarity, structure, and support. It is a Ne
 
 - **Next.js App Router** with TypeScript and React 19
 - **Authentication** with [Clerk](https://clerk.com) — sign up, sign in, dashboard, and user profile
-- **Database** with [Drizzle ORM](https://orm.drizzle.team) and [Neon](https://neon.tech) Postgres
+- **Database** with [Drizzle ORM](https://orm.drizzle.team) and [Supabase](https://supabase.com) Postgres
 - **Internationalization** with next-intl (English and Vietnamese)
 - **UI** with Tailwind CSS v4 and [shadcn/ui](https://ui.shadcn.com)
 - **Whiteboard** with [Excalidraw](https://excalidraw.com) for visual thinking and planning
@@ -19,7 +19,7 @@ MindPath helps you move forward with clarity, structure, and support. It is a Ne
 
 - Node.js 24+
 - npm
-- A [Neon](https://neon.tech) Postgres database (see [Drizzle + Neon guide](https://neon.com/docs/guides/drizzle))
+- A [Supabase](https://supabase.com) Postgres database (see [Supabase + Drizzle guide](https://supabase.com/docs/guides/database/drizzle))
 
 ## Getting started
 
@@ -42,7 +42,7 @@ At minimum, set these in `.env.local`:
 ```env
 NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_your_clerk_publishable_key
 CLERK_SECRET_KEY=sk_test_your_clerk_secret_key
-DATABASE_URL=postgresql://user:password@your-neon-host/neondb?sslmode=require
+DATABASE_URL=postgresql://postgres.[project-ref]:[password]@aws-0-[region].pooler.supabase.com:6543/postgres?sslmode=require
 ```
 
 Create a Clerk application at [clerk.com](https://clerk.com) and copy the keys from the dashboard.
@@ -69,13 +69,13 @@ All environment variables are documented in [`.env.example`](.env.example). Requ
 | --- | --- |
 | `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Clerk publishable key |
 | `CLERK_SECRET_KEY` | Clerk secret key |
-| `DATABASE_URL` | Neon Postgres connection string |
+| `DATABASE_URL` | Supabase Postgres connection string (transaction pooler) |
 
 Optional integrations include Arcjet, Sentry, Better Stack, and PostHog. See `.env.example` for details.
 
 ## Database
 
-Use a [Neon](https://neon.tech) Postgres database and set `DATABASE_URL` in `.env.local`. See the [Neon + Drizzle guide](https://neon.com/docs/guides/drizzle) for setup.
+Use a [Supabase](https://supabase.com) Postgres database and set `DATABASE_URL` in `.env.local`. Use the **transaction pooler** connection string (port 6543). See the [Supabase Drizzle guide](https://supabase.com/docs/guides/database/drizzle) for setup.
 
 | Command | Purpose |
 | --- | --- |
