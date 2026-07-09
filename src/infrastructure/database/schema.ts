@@ -1,4 +1,3 @@
-import { todosSchema } from '@/core/infrastructure/todos/schema/todos';
 import { counterSchema } from '@/infrastructure/database/counter';
 import { cardsSchema } from '@/modules/flashcard/infrastructure/schema/cards';
 import { decksSchema } from '@/modules/flashcard/infrastructure/schema/decks';
@@ -15,7 +14,6 @@ import { usersSchema } from '@/modules/user/infrastructure/schema/users';
 
 export const databaseSchema = {
   counterSchema,
-  todosSchema,
   usersSchema,
   decksSchema,
   cardsSchema,

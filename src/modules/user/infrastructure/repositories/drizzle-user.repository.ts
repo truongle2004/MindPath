@@ -1,5 +1,5 @@
 import { eq } from 'drizzle-orm';
-import { DatabaseOperationError } from '@/core/entities/errors/database-operation-error';
+import { DatabaseOperationError } from '@/entities/errors/database-operation-error';
 import type { IUserRepository } from '@/modules/user/application/repositories/user.repository.interface';
 import type { User } from '@/modules/user/entities/models/user';
 import { usersSchema } from '@/modules/user/infrastructure/schema/users';

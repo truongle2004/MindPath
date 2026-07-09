@@ -1,4 +1,4 @@
-import { InputParseError } from '@/core/entities/errors/input-parse-error';
+import { InputParseError } from '@/entities/errors/input-parse-error';
 import type { IReviewCardUseCase } from '@/modules/flashcard/application/use-cases/review-card.use-case';
 import { reviewCardInputSchema } from '@/modules/flashcard/entities/models/card.schema';
 import type {

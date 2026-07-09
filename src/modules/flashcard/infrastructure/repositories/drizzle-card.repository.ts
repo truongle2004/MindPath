@@ -1,5 +1,5 @@
 import { and, eq, lte } from 'drizzle-orm';
-import { DatabaseOperationError } from '@/core/entities/errors/database-operation-error';
+import { DatabaseOperationError } from '@/entities/errors/database-operation-error';
 import type { ICardRepository } from '@/modules/flashcard/application/repositories/card.repository.interface';
 import type { Card } from '@/modules/flashcard/entities/models/card';
 import { cardsSchema } from '@/modules/flashcard/infrastructure/schema/cards';
