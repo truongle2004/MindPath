@@ -1,14 +1,23 @@
-import { InputParseError } from '@/core/entities/errors/input-parse-error';
+import { InputParseError } from '@/entities/errors/input-parse-error';
 import type { IDeleteDeckUseCase } from '@/modules/flashcard/application/use-cases/delete-deck.use-case';
 import type { IUpdateDeckUseCase } from '@/modules/flashcard/application/use-cases/update-deck.use-case';
+import type { Deck } from '@/modules/flashcard/entities/models/deck';
 import { updateDeckInputSchema } from '@/modules/flashcard/entities/models/deck.schema';
-import type {
-  IDeleteDeckController,
-  IUpdateDeckController,
-  UpdateDeckResponse,
-} from '@/modules/flashcard/interface-adapters/controllers/update-deck.controller.interface';
 import type { IEnsureUserUseCase } from '@/modules/user/application/use-cases/ensure-user.use-case';
+import type { AuthContext } from '@/modules/user/interface-adapters/auth-context';
 import { resolveUserId } from '@/modules/user/interface-adapters/resolve-user-id';
+
+export type UpdateDeckResponse = {
+  deck: Deck;
+};
+
+export type IUpdateDeckController = (
+  auth: AuthContext | null,
+  deckId: string,
+  input: unknown,
+) => Promise<UpdateDeckResponse>;
+
+export type IDeleteDeckController = (auth: AuthContext | null, deckId: string) => Promise<void>;
 
 /**
  * Updates a deck for the authenticated user.

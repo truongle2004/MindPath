@@ -1,4 +1,4 @@
-import { NotFoundError } from '@/core/entities/errors/not-found-error';
+import { NotFoundError } from '@/entities/errors/not-found-error';
 import type { ICardRepository } from '@/modules/flashcard/application/repositories/card.repository.interface';
 import type { IDeckRepository } from '@/modules/flashcard/application/repositories/deck.repository.interface';
 

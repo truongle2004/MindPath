@@ -18,7 +18,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Link, useRouter } from '@/libs/I18nNavigation';
 import type { Card as Flashcard } from '@/modules/flashcard/entities/models/card';
 import type { Deck } from '@/modules/flashcard/entities/models/deck';
-import type { GetDeckResponse } from '@/modules/flashcard/interface-adapters/controllers/get-deck.controller.interface';
+import type { GetDeckResponse } from '@/modules/flashcard/interface-adapters/controllers/get-deck.controller';
 
 type DeckDetailPageContentProps = {
   deckId: string;

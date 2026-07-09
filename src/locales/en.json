@@ -55,16 +55,6 @@
     "billing": "Billing",
     "security": "Security"
   },
-  "TodosPage": {
-    "meta_title": "Todos",
-    "meta_description": "Lists todos from your database.",
-    "page_title": "Todos",
-    "loading_message": "Loading todos…",
-    "error_message": "Could not load todos.",
-    "auth_error_message": "Sign in to view todos.",
-    "empty_message": "No todos yet.",
-    "list_label": "Todo list"
-  },
   "DecksPage": {
     "meta_title": "Flashcard decks",
     "meta_description": "Create and manage your flashcard decks.",

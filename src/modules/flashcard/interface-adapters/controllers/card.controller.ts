@@ -1,20 +1,42 @@
-import { InputParseError } from '@/core/entities/errors/input-parse-error';
+import { InputParseError } from '@/entities/errors/input-parse-error';
 import type { ICreateCardUseCase } from '@/modules/flashcard/application/use-cases/create-card.use-case';
 import type { IDeleteCardUseCase } from '@/modules/flashcard/application/use-cases/delete-card.use-case';
 import type { IUpdateCardUseCase } from '@/modules/flashcard/application/use-cases/update-card.use-case';
+import type { Card } from '@/modules/flashcard/entities/models/card';
 import {
   createCardInputSchema,
   updateCardInputSchema,
 } from '@/modules/flashcard/entities/models/card.schema';
-import type {
-  CreateCardResponse,
-  ICreateCardController,
-  IDeleteCardController,
-  IUpdateCardController,
-  UpdateCardResponse,
-} from '@/modules/flashcard/interface-adapters/controllers/card.controller.interface';
 import type { IEnsureUserUseCase } from '@/modules/user/application/use-cases/ensure-user.use-case';
+import type { AuthContext } from '@/modules/user/interface-adapters/auth-context';
 import { resolveUserId } from '@/modules/user/interface-adapters/resolve-user-id';
+
+export type CreateCardResponse = {
+  card: Card;
+};
+
+export type UpdateCardResponse = {
+  card: Card;
+};
+
+export type ICreateCardController = (
+  auth: AuthContext | null,
+  deckId: string,
+  input: unknown,
+) => Promise<CreateCardResponse>;
+
+export type IUpdateCardController = (
+  auth: AuthContext | null,
+  deckId: string,
+  cardId: string,
+  input: unknown,
+) => Promise<UpdateCardResponse>;
+
+export type IDeleteCardController = (
+  auth: AuthContext | null,
+  deckId: string,
+  cardId: string,
+) => Promise<void>;
 
 /**
  * Creates a card in a deck for the authenticated user.

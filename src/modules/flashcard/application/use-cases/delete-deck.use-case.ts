@@ -1,4 +1,4 @@
-import { NotFoundError } from '@/core/entities/errors/not-found-error';
+import { NotFoundError } from '@/entities/errors/not-found-error';
 import type { IDeckRepository } from '@/modules/flashcard/application/repositories/deck.repository.interface';
 
 export type IDeleteDeckUseCase = (deckId: string, userId: string) => Promise<void>;
