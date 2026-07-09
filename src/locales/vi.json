@@ -114,5 +114,16 @@
     "cancel_delete_button": "Hủy",
     "save_error_message": "Không thể lưu thẻ.",
     "delete_error_message": "Không thể xóa."
+  },
+  "ThemeToggle": {
+    "toggle_label": "Chuyển giao diện",
+    "light": "Sáng",
+    "dark": "Tối",
+    "system": "Hệ thống"
+  },
+  "LocaleSwitcher": {
+    "toggle_label": "Đổi ngôn ngữ",
+    "language_en": "English",
+    "language_vi": "Tiếng Việt"
   }
 }
