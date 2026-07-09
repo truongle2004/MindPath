@@ -1,7 +1,6 @@
 import 'reflect-metadata';
 import type { DependencyContainer, InjectionToken } from 'tsyringe';
 import { container as rootContainer } from 'tsyringe';
-import { registerTodosModule } from '@/core/infrastructure/todos/di/register';
 import { Tokens as DbTokens } from '@/infrastructure/di/tokens';
 import { db } from '@/libs/DB';
 import { registerFlashcardModule } from '@/modules/flashcard/infrastructure/di/register';
@@ -20,7 +19,6 @@ function registerRootDependencies(target: DependencyContainer) {
 
   target.register(DbTokens.DbClient, { useValue: db });
   registerUserModule(target);
-  registerTodosModule(target);
   registerFlashcardModule(target);
 
   isRootRegistered = true;

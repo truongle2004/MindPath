@@ -1,13 +1,19 @@
-import { InputParseError } from '@/core/entities/errors/input-parse-error';
+import { InputParseError } from '@/entities/errors/input-parse-error';
 import type { ICreateDeckUseCase } from '@/modules/flashcard/application/use-cases/create-deck.use-case';
+import type { Deck } from '@/modules/flashcard/entities/models/deck';
 import { createDeckInputSchema } from '@/modules/flashcard/entities/models/deck.schema';
-import type {
-  CreateDeckResponse,
-  ICreateDeckController,
-} from '@/modules/flashcard/interface-adapters/controllers/create-deck.controller.interface';
 import type { IEnsureUserUseCase } from '@/modules/user/application/use-cases/ensure-user.use-case';
 import type { AuthContext } from '@/modules/user/interface-adapters/auth-context';
 import { resolveUserId } from '@/modules/user/interface-adapters/resolve-user-id';
+
+export type CreateDeckResponse = {
+  deck: Deck;
+};
+
+export type ICreateDeckController = (
+  auth: AuthContext | null,
+  input: unknown,
+) => Promise<CreateDeckResponse>;
 
 /**
  * Creates a deck for the authenticated user.

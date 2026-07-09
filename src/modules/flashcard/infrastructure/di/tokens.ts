@@ -13,14 +13,14 @@ import type {
   ICreateCardController,
   IDeleteCardController,
   IUpdateCardController,
-} from '@/modules/flashcard/interface-adapters/controllers/card.controller.interface';
-import type { ICreateDeckController } from '@/modules/flashcard/interface-adapters/controllers/create-deck.controller.interface';
-import type { IGetDeckController } from '@/modules/flashcard/interface-adapters/controllers/get-deck.controller.interface';
-import type { IGetDecksController } from '@/modules/flashcard/interface-adapters/controllers/get-decks.controller.interface';
+} from '@/modules/flashcard/interface-adapters/controllers/card.controller';
+import type { ICreateDeckController } from '@/modules/flashcard/interface-adapters/controllers/create-deck.controller';
+import type { IGetDeckController } from '@/modules/flashcard/interface-adapters/controllers/get-deck.controller';
+import type { IGetDecksController } from '@/modules/flashcard/interface-adapters/controllers/get-decks.controller';
 import type {
   IDeleteDeckController,
   IUpdateDeckController,
-} from '@/modules/flashcard/interface-adapters/controllers/update-deck.controller.interface';
+} from '@/modules/flashcard/interface-adapters/controllers/update-deck.controller';
 
 /** Flashcard module injection tokens. */
 export const Tokens = {

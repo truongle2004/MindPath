@@ -7,7 +7,7 @@ const config: KnipConfig = {
     'src/types/I18n.ts',
     'src/components/Whiteboard.tsx',
     'src/libs/I18nNavigation.ts',
-    'src/core/entities/errors/unauthorized-error.ts',
+    'src/entities/errors/unauthorized-error.ts',
   ],
   // Dependencies to ignore during analysis
   ignoreDependencies: [

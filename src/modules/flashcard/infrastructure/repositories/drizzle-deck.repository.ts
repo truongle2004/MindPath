@@ -1,5 +1,5 @@
 import { count, eq } from 'drizzle-orm';
-import { DatabaseOperationError } from '@/core/entities/errors/database-operation-error';
+import { DatabaseOperationError } from '@/entities/errors/database-operation-error';
 import type { IDeckRepository } from '@/modules/flashcard/application/repositories/deck.repository.interface';
 import type { Deck } from '@/modules/flashcard/entities/models/deck';
 import { cardsSchema } from '@/modules/flashcard/infrastructure/schema/cards';
