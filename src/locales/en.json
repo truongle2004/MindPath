@@ -114,5 +114,16 @@
     "cancel_delete_button": "Cancel",
     "save_error_message": "Could not save card.",
     "delete_error_message": "Could not delete."
+  },
+  "ThemeToggle": {
+    "toggle_label": "Toggle theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "LocaleSwitcher": {
+    "toggle_label": "Change language",
+    "language_en": "English",
+    "language_vi": "Vietnamese"
   }
 }

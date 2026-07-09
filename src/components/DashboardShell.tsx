@@ -1,6 +1,8 @@
 'use client';
 
 import { AppSidebar } from '@/components/AppSideBar';
+import { LocaleSwitcher } from '@/components/LocaleSwitcher';
+import { ThemeToggle } from '@/components/ThemeToggle';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -38,6 +40,10 @@ export function DashboardShell(props: { children: React.ReactNode }) {
                     </BreadcrumbItem>
                   </BreadcrumbList>
                 </Breadcrumb>
+              </div>
+              <div className="ml-auto flex items-center gap-2 px-4">
+                <LocaleSwitcher />
+                <ThemeToggle />
               </div>
             </header>
             {props.children}
