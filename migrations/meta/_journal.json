@@ -8,6 +8,13 @@
       "when": 1783952325562,
       "tag": "0000_init",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1783928052685,
+      "tag": "0006_drop-counter-and-todos",
+      "breakpoints": true
     }
   ]
 }

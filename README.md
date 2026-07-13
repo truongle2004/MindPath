@@ -91,7 +91,6 @@ Schema lives under `src/modules/*/infrastructure/schema/` and `src/infrastructur
 | --- | --- |
 | `/` | Home |
 | `/about` | About MindPath |
-| `/counter` | Example database operation |
 | `/portfolio` | Portfolio listing |
 | `/test` | Excalidraw whiteboard |
 | `/sign-in`, `/sign-up` | Authentication |
