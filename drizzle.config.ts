@@ -8,7 +8,6 @@ export default defineConfig({
     './src/modules/flashcard/infrastructure/schema/cards.ts',
     './src/modules/flashcard/infrastructure/schema/pomodoro-sessions.ts',
     './src/modules/gamification/infrastructure/schema/gamification.ts',
-    './src/infrastructure/database/counter.ts',
   ],
   dialect: 'postgresql',
   dbCredentials: {
