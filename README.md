@@ -75,7 +75,7 @@ Optional integrations include Arcjet, Sentry, Better Stack, and PostHog. See `.e
 
 ## Database
 
-Use a [Supabase](https://supabase.com) Postgres database and set `DATABASE_URL` in `.env.local`. Use the **transaction pooler** connection string (port 6543). See the [Supabase Drizzle guide](https://supabase.com/docs/guides/database/drizzle) for setup.
+Use a [Supabase](https://supabase.com) Postgres database and set `DATABASE_URL` in `.env.local`. Use the **transaction pooler** connection string (port 6543). `npm run db:migrate` switches to the session pooler (5432) automatically for DDL. See the [Supabase Drizzle guide](https://supabase.com/docs/guides/database/drizzle) for setup.
 
 | Command | Purpose |
 | --- | --- |
@@ -83,7 +83,7 @@ Use a [Supabase](https://supabase.com) Postgres database and set `DATABASE_URL` 
 | `npm run db:generate` | Generate a migration from schema changes |
 | `npm run db:studio` | Open Drizzle Studio |
 
-Schema lives under `src/infrastructure/database/` and `src/core/infrastructure/`. Migrations are stored in `migrations/`.
+Schema lives under `src/modules/*/infrastructure/schema/` and `src/infrastructure/database/`. Migrations are stored in `migrations/`.
 
 ## Pages
 

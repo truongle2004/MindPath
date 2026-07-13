@@ -12,6 +12,7 @@ import {
   uuid,
   varchar,
 } from 'drizzle-orm/pg-core';
+import { cardsSchema } from '@/modules/flashcard/infrastructure/schema/cards';
 import { usersSchema } from '@/modules/user/infrastructure/schema/users';
 
 /** Badge definitions seeded at deployment. */
@@ -96,7 +97,9 @@ export const cardReviewsSchema = pgTable(
   'card_reviews',
   {
     id: uuid('id').primaryKey().defaultRandom(),
-    cardId: uuid('card_id').notNull(),
+    cardId: uuid('card_id')
+      .notNull()
+      .references(() => cardsSchema.id, { onDelete: 'cascade' }),
     userId: uuid('user_id')
       .notNull()
       .references(() => usersSchema.id, { onDelete: 'cascade' }),

@@ -5,43 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1745518076143,
-      "tag": "0000_init-db",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1783062887864,
-      "tag": "0001_mindpath-schema",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1783220369593,
-      "tag": "0002_steep_supreme_intelligence",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1783392779033,
-      "tag": "0003_bitter_tana_nile",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1783415631156,
-      "tag": "0004_nifty_meltdown",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "7",
-      "when": 1783500000000,
-      "tag": "0005_supabase_test_todo",
+      "when": 1783952325562,
+      "tag": "0000_init",
       "breakpoints": true
     }
   ]

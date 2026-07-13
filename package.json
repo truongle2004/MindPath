@@ -20,7 +20,7 @@
     "check:i18n": "i18n-check -l src/locales -s en -u src -f next-intl",
     "commit": "commit",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "dotenv -c -- drizzle-kit migrate",
+    "db:migrate": "dotenv -c -- node scripts/db-migrate.mjs",
     "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
