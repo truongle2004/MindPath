@@ -1,6 +1,12 @@
 {
   "version": 1,
   "skills": {
+    "nextjs-react-typescript": {
+      "source": "mindrally/skills",
+      "sourceType": "github",
+      "skillPath": "nextjs-react-typescript/SKILL.md",
+      "computedHash": "2e08d754d7c097d66761bec641400638f900dcc529660f3515946d2dc773e6bd"
+    },
     "shadcn": {
       "source": "shadcn/ui",
       "sourceType": "github",
