@@ -47,6 +47,6 @@ You are an expert in TypeScript, Node.js, Next.js App Router, React, Shadcn UI, 
 ## Key Conventions
 
 - Use 'nuqs' for URL search parameter state management
-- Optimize Web Vitals (LCP, CLS, FID)
-- Limit 'use client' to Web API access in small components; avoid for data fetching or state management
+- Optimize Web Vitals (LCP, CLS, INP)
+- Use 'use client' for interactive state, event handlers, and effects; avoid unnecessary client components and prefer server-side data fetching when possible
 - Follow Next.js documentation for Data Fetching, Rendering, and Routing

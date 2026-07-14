@@ -5,7 +5,7 @@
       "source": "mindrally/skills",
       "sourceType": "github",
       "skillPath": "nextjs-react-typescript/SKILL.md",
-      "computedHash": "eb995cc826bf48498e0e90969fc7dadfa2ec634002c26cfcfde565134cefa738"
+      "computedHash": "2e08d754d7c097d66761bec641400638f900dcc529660f3515946d2dc773e6bd"
     },
     "shadcn": {
       "source": "shadcn/ui",
