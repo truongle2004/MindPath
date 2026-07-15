@@ -95,9 +95,8 @@ const proxy: NextProxy = async (request, event) => {
   }
 
   if (isAuthPage(request) || isProtectedRoute(request) || isHomePage(request)) {
-    // Match Clerk's documented middleware composition pattern, `return await` is not necessary.
-    // oxlint-disable-next-line typescript/return-await
-    return clerkMiddleware(async (auth, req): Promise<NextResponse> => {
+    // Match Clerk's documented middleware composition pattern; `return await` is not necessary.
+    return await clerkMiddleware(async (auth, req): Promise<NextResponse> => {
       if (isProtectedRoute(req)) {
         const locale = req.nextUrl.pathname.match(/(\/.*)\/dashboard/u)?.at(1) ?? '';
 
