@@ -107,6 +107,28 @@
     "save_error_message": "Không thể lưu thẻ.",
     "delete_error_message": "Không thể xóa."
   },
+  "Flashcards": {
+    "title": "Thẻ ghi nhớ",
+    "hint": "Nhấp vào thẻ để lật. Dùng phím mũi tên để điều hướng.",
+    "progress": "{current} / {total}",
+    "mastered_count": "{count} đã thuộc",
+    "question_label": "Câu hỏi",
+    "answer_label": "Đáp án",
+    "click_to_reveal": "Nhấp để xem đáp án",
+    "still_learning": "Vẫn đang học",
+    "mastered": "Đã thuộc",
+    "shuffle_title": "Xáo trộn",
+    "reset_title": "Đặt lại",
+    "previous_label": "Thẻ trước",
+    "next_label": "Thẻ sau",
+    "keyboard_hint": "Nhấn Space để lật • Phím mũi tên để điều hướng"
+  },
+  "FlashcardsExamplePage": {
+    "meta_title": "Ví dụ thẻ ghi nhớ",
+    "meta_description": "Demo trình ôn tập thẻ ghi nhớ tương tác.",
+    "page_title": "Cơ bản React",
+    "page_description": "Ôn các thẻ bên dưới. Tiến độ được theo dõi khi bạn học."
+  },
   "StudyPage": {
     "meta_title": "Học",
     "meta_description": "Ôn tập thẻ ghi nhớ với lịch học thông minh.",
