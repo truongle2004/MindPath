@@ -5,6 +5,7 @@ import react from 'ultracite/oxlint/react';
 
 export default defineConfig({
   extends: [core, react, next],
+  ignorePatterns: ['.opencode/**'],
   rules: {
     'no-warning-comments': 'off', // Allow TODO and FIXME comments
     'no-inline-comments': 'off', // Allow nearby comments

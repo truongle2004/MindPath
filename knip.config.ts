@@ -8,6 +8,7 @@ const config: KnipConfig = {
     'src/components/Whiteboard.tsx',
     'src/libs/I18nNavigation.ts',
     'src/entities/errors/unauthorized-error.ts',
+    '.opencode/**',
   ],
   // Dependencies to ignore during analysis
   ignoreDependencies: [
