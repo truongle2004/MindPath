@@ -128,7 +128,8 @@
     "done_hard": "Hard: {count}",
     "done_good": "Good: {count}",
     "done_easy": "Easy: {count}",
-    "study_again": "Study again"
+    "study_again": "Study again",
+    "sync_failed_message": "Review could not sync."
   },
   "ThemeToggle": {
     "toggle_label": "Toggle theme",

@@ -2,30 +2,15 @@
 
 import { ArrowLeft, Check } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
+import { Rating, useStudySession } from '@/features/decks/hooks/useStudySession';
+import type { RatingValue } from '@/features/decks/hooks/useStudySession';
 import { Link } from '@/libs/I18nNavigation';
-import type { Card } from '@/modules/flashcard/entities/models/card';
 
 type StudyPageContentProps = {
   deckId: string;
 };
-
-type Phase = 'loading' | 'error' | 'empty' | 'question' | 'answer' | 'submitting' | 'done';
-
-type Results = { again: number; hard: number; good: number; easy: number };
-
-/**
- * Checks whether a value matches the study response shape.
- * @param value The parsed JSON body.
- * @returns True when the body contains a cards array.
- */
-function isStudyResponse(value: unknown): value is { cards: Card[] } {
-  if (typeof value !== 'object' || value === null || !('cards' in value)) {
-    return false;
-  }
-  return Array.isArray(value.cards);
-}
 
 /**
  * Full-page study session component that presents due cards one by one for review.
@@ -34,103 +19,27 @@ function isStudyResponse(value: unknown): value is { cards: Card[] } {
  */
 export function StudyPageContent(props: StudyPageContentProps) {
   const t = useTranslations('StudyPage');
-  const [cards, setCards] = useState<Card[]>([]);
-  const [index, setIndex] = useState(0);
-  const [phase, setPhase] = useState<Phase>('loading');
-  const [results, setResults] = useState<Results>({ again: 0, hard: 0, good: 0, easy: 0 });
-
-  useEffect(() => {
-    async function load() {
-      try {
-        const response = await fetch(`/api/decks/${props.deckId}/study`);
-
-        if (!response.ok) {
-          setPhase('error');
-          return;
-        }
-
-        const body: unknown = await response.json();
-
-        if (!isStudyResponse(body)) {
-          setPhase('error');
-          return;
-        }
-
-        if (body.cards.length === 0) {
-          setPhase('empty');
-          return;
-        }
-
-        setCards(body.cards);
-        setPhase('question');
-      } catch {
-        setPhase('error');
-      }
-    }
-
-    void load();
-  }, [props.deckId]);
-
-  async function submitRating(rating: 1 | 2 | 3 | 4) {
-    const card = cards[index];
-
-    if (!card) {
-      return;
-    }
-
-    setPhase('submitting');
-
-    try {
-      await fetch(`/api/decks/${props.deckId}/cards/${card.id}/review`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ rating }),
-      });
-    } catch {
-      // continue session even if network fails
-    }
-
-    let key: keyof Results;
-    if (rating === 1) {
-      key = 'again';
-    } else if (rating === 2) {
-      key = 'hard';
-    } else if (rating === 3) {
-      key = 'good';
-    } else {
-      key = 'easy';
-    }
-    setResults((prev) => ({ ...prev, [key]: prev[key] + 1 }));
-
-    const nextIndex = index + 1;
-
-    if (nextIndex >= cards.length) {
-      setPhase('done');
-    } else {
-      setIndex(nextIndex);
-      setPhase('question');
-    }
-  }
+  const { phase, card, index, total, results, syncFailed, showAnswer, submitRating, restart } =
+    useStudySession({ deckId: props.deckId });
 
   useEffect(() => {
     function handleKey(event: KeyboardEvent) {
       if (phase === 'question' && (event.key === ' ' || event.key === 'Enter')) {
         event.preventDefault();
-        setPhase('answer');
+        showAnswer();
       }
 
       if (phase === 'answer') {
-        if (event.key === '1') {
-          void submitRating(1);
-        }
-        if (event.key === '2') {
-          void submitRating(2);
-        }
-        if (event.key === '3') {
-          void submitRating(3);
-        }
-        if (event.key === '4') {
-          void submitRating(4);
+        const ratingByKey: Record<string, RatingValue> = {
+          '1': Rating.Again,
+          '2': Rating.Hard,
+          '3': Rating.Good,
+          '4': Rating.Easy,
+        };
+        const rating = ratingByKey[event.key];
+
+        if (rating) {
+          void submitRating(rating);
         }
       }
     }
@@ -140,11 +49,8 @@ export function StudyPageContent(props: StudyPageContentProps) {
     return () => {
       window.removeEventListener('keydown', handleKey);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [phase, index, cards]);
+  }, [phase, showAnswer, submitRating]);
 
-  const card = cards[index];
-  const total = cards.length;
   const backHref = `/dashboard/decks/${props.deckId}`;
 
   if (phase === 'loading') {
@@ -205,15 +111,7 @@ export function StudyPageContent(props: StudyPageContentProps) {
               {t('back_to_deck')}
             </Link>
           </Button>
-          <Button
-            onClick={() => {
-              setIndex(0);
-              setResults({ again: 0, hard: 0, good: 0, easy: 0 });
-              setPhase('question');
-            }}
-          >
-            {t('study_again')}
-          </Button>
+          <Button onClick={restart}>{t('study_again')}</Button>
         </div>
       </div>
     );
@@ -233,6 +131,8 @@ export function StudyPageContent(props: StudyPageContentProps) {
         </span>
       </div>
 
+      {syncFailed ? <p className="text-sm text-destructive">{t('sync_failed_message')}</p> : null}
+
       <div className="w-full overflow-hidden rounded-xl border border-border bg-card">
         <div className="flex min-h-48 flex-col items-center justify-center gap-2 p-8 text-center">
           <p className="text-lg font-semibold whitespace-pre-wrap">{card?.front}</p>
@@ -249,22 +149,14 @@ export function StudyPageContent(props: StudyPageContentProps) {
       </div>
 
       <div className="flex justify-center gap-2">
-        {phase === 'question' && (
-          <Button
-            onClick={() => {
-              setPhase('answer');
-            }}
-          >
-            {t('show_answer')}
-          </Button>
-        )}
+        {phase === 'question' && <Button onClick={showAnswer}>{t('show_answer')}</Button>}
 
         {phase === 'answer' && (
           <>
             <Button
               variant="destructive"
               onClick={() => {
-                void submitRating(1);
+                void submitRating(Rating.Again);
               }}
             >
               {t('rating_again')}
@@ -272,14 +164,14 @@ export function StudyPageContent(props: StudyPageContentProps) {
             <Button
               variant="outline"
               onClick={() => {
-                void submitRating(2);
+                void submitRating(Rating.Hard);
               }}
             >
               {t('rating_hard')}
             </Button>
             <Button
               onClick={() => {
-                void submitRating(3);
+                void submitRating(Rating.Good);
               }}
             >
               {t('rating_good')}
@@ -287,7 +179,7 @@ export function StudyPageContent(props: StudyPageContentProps) {
             <Button
               variant="secondary"
               onClick={() => {
-                void submitRating(4);
+                void submitRating(Rating.Easy);
               }}
             >
               {t('rating_easy')}
