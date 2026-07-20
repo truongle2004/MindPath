@@ -10,6 +10,7 @@ import type {
   StudySessionAction,
   StudySessionResults,
   StudySessionState,
+  UseStudySessionProps,
 } from './study-session.types';
 
 export { Rating };
@@ -76,7 +77,7 @@ function reducer(state: StudySessionState, action: StudySessionAction): StudySes
   return state;
 }
 
-export function useStudySession(props: { deckId: string }) {
+export function useStudySession(props: UseStudySessionProps) {
   const { cards, status } = useStudyCards({ deckId: props.deckId });
   const reviewCardMutation = useMutation({ mutationFn: reviewCard });
   const [state, dispatch] = useReducer(reducer, initialState);

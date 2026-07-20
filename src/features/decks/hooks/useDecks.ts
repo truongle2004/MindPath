@@ -3,8 +3,7 @@
 import { useEffect, useState } from 'react';
 import { getDecks } from '@/features/decks/services/decks.api';
 import type { DeckDto } from '@/features/decks/services/decks.types';
-
-type DecksStatus = 'loading' | 'ready' | 'error';
+import type { DecksStatus } from '@/features/decks/types/decks.types';
 
 export function useDecks() {
   const [decks, setDecks] = useState<DeckDto[]>([]);

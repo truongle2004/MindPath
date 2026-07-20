@@ -1,3 +1,5 @@
+import type { StudyCardsStatus } from '@/features/decks/types/study-cards.types';
+
 export const Rating = {
   Again: 1,
   Hard: 2,
@@ -7,7 +9,9 @@ export const Rating = {
 
 export type RatingValue = (typeof Rating)[keyof typeof Rating];
 
-export type StudyCardsStatus = 'loading' | 'error' | 'empty' | 'ready';
+export type UseStudySessionProps = {
+  deckId: string;
+};
 
 type StudySessionPhase =
   | 'loading'

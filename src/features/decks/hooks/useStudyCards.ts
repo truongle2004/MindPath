@@ -2,7 +2,10 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { getStudyCards } from '@/features/decks/services/decks.api';
-import type { StudyCardsStatus } from './study-session.types';
+import type {
+  StudyCardsStatus,
+  UseStudyCardsProps,
+} from '@/features/decks/types/study-cards.types';
 
 function getStudyCardsStatus(props: {
   isLoading: boolean;
@@ -24,7 +27,7 @@ function getStudyCardsStatus(props: {
   return 'ready';
 }
 
-export function useStudyCards(props: { deckId: string }) {
+export function useStudyCards(props: UseStudyCardsProps) {
   const query = useQuery({
     queryKey: ['study-cards', props.deckId],
     queryFn: async () => await getStudyCards({ deckId: props.deckId }),
