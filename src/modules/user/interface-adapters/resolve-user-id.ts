@@ -1,4 +1,4 @@
-import { UnauthenticatedError } from '@/entities/errors/unauthenticated-error';
+import { UnauthenticatedError } from '@/lib/errors/unauthenticated-error';
 import type { IEnsureUserUseCase } from '@/modules/user/application/use-cases/ensure-user.use-case';
 import type { AuthContext } from '@/modules/user/interface-adapters/auth-context';
 

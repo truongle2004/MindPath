@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { getDeck } from '@/features/decks/services/decks.api';
-import type { CardDto, DeckDto } from '@/features/decks/services/decks.types';
 import type { DeckStatus, UseDeckProps } from '@/features/decks/types/deck.types';
+import type { CardDto, DeckDto } from '@/features/decks/types/decks-api.types';
 
 export function useDeck(props: UseDeckProps) {
   const [deck, setDeck] = useState<DeckDto | null>(null);

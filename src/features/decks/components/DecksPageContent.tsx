@@ -18,7 +18,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useDecks } from '@/features/decks/hooks/useDecks';
 import { createDeck } from '@/features/decks/services/decks.api';
-import { Link } from '@/libs/I18nNavigation';
+import { Link } from '@/lib/I18nNavigation';
 
 const deckColors = ['#7F77DD', '#4A90A4', '#6B8F71', '#C17C74', '#D4A056'];
 const defaultColor = deckColors[0] ?? '#7F77DD';

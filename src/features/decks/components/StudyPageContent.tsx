@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Rating, useStudySession } from '@/features/decks/hooks/useStudySession';
 import type { RatingValue } from '@/features/decks/hooks/useStudySession';
-import { Link } from '@/libs/I18nNavigation';
+import { Link } from '@/lib/I18nNavigation';
 
 type StudyPageContentProps = {
   deckId: string;

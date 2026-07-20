@@ -3,11 +3,11 @@ import type { KnipConfig } from 'knip';
 const config: KnipConfig = {
   // Files to exclude from Knip analysis
   ignore: [
-    'src/libs/I18n.ts',
+    'src/lib/I18n.ts',
     'src/types/I18n.ts',
     'src/components/Whiteboard.tsx',
-    'src/libs/I18nNavigation.ts',
-    'src/entities/errors/unauthorized-error.ts',
+    'src/lib/I18nNavigation.ts',
+    'src/lib/errors/unauthorized-error.ts',
   ],
   // Dependencies to ignore during analysis
   ignoreDependencies: [
@@ -22,7 +22,7 @@ const config: KnipConfig = {
   // Shadcn UI components export variants and subcomponents for reuse
   ignoreIssues: {
     'src/components/ui/**': ['exports'],
-    'src/libs/Fetcher.ts': ['exports'],
+    'src/lib/Fetcher.ts': ['exports'],
     'src/modules/flashcard/entities/models/card.schema.ts': ['exports', 'types'],
     'src/modules/flashcard/application/repositories/card.repository.interface.ts': ['types'],
   },

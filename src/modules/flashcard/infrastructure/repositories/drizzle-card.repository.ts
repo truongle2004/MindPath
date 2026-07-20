@@ -1,10 +1,10 @@
 import { and, eq, lte } from 'drizzle-orm';
-import { DatabaseOperationError } from '@/entities/errors/database-operation-error';
+import type { DbClient } from '@/lib/DBConnection';
+import { DatabaseOperationError } from '@/lib/errors/database-operation-error';
 import type { ICardRepository } from '@/modules/flashcard/application/repositories/card.repository.interface';
 import type { Card } from '@/modules/flashcard/entities/models/card';
 import { cardsSchema } from '@/modules/flashcard/infrastructure/schema/cards';
 import { cardReviewsSchema } from '@/modules/gamification/infrastructure/schema/gamification';
-import type { DbClient } from '@/utils/DBConnection';
 
 function mapCard(row: typeof cardsSchema.$inferSelect): Card {
   return {

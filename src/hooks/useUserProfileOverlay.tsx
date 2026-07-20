@@ -1,8 +1,8 @@
 'use client';
 
 import { useLocale } from 'next-intl';
-import { useRouter } from '@/libs/I18nNavigation';
-import { getI18nPath } from '@/utils/Helpers';
+import { getI18nPath } from '@/lib/Helpers';
+import { useRouter } from '@/lib/I18nNavigation';
 
 export type UserProfileSection = 'account' | 'billing' | 'security';
 

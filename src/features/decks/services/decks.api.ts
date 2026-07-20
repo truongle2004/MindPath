@@ -1,11 +1,4 @@
 import * as z from 'zod';
-import { httpJson } from '@/libs/Fetcher';
-import { cardSchema } from '@/modules/flashcard/entities/models/card.schema';
-import {
-  createDeckResponseSchema,
-  getDecksResponseSchema,
-  deckSchema,
-} from '@/modules/flashcard/entities/models/deck.schema';
 import type {
   CreateCardDto,
   CreateCardResponseDto,
@@ -19,7 +12,14 @@ import type {
   StudyCardsResponseDto,
   UpdateCardDto,
   UpdateCardResponseDto,
-} from './decks.types';
+} from '@/features/decks/types/decks-api.types';
+import { httpJson } from '@/lib/Fetcher';
+import { cardSchema } from '@/modules/flashcard/entities/models/card.schema';
+import {
+  createDeckResponseSchema,
+  deckSchema,
+  getDecksResponseSchema,
+} from '@/modules/flashcard/entities/models/deck.schema';
 
 const deckWithCardsResponseSchema = z.object({
   deck: deckSchema,

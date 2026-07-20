@@ -4,14 +4,14 @@ import { useMutation } from '@tanstack/react-query';
 import { useEffect, useReducer, useRef } from 'react';
 import { useStudyCards } from '@/features/decks/hooks/useStudyCards';
 import { reviewCard } from '@/features/decks/services/decks.api';
-import { Rating } from './study-session.types';
+import { Rating } from '@/features/decks/types/study-session.types';
 import type {
   RatingValue,
   StudySessionAction,
   StudySessionResults,
   StudySessionState,
   UseStudySessionProps,
-} from './study-session.types';
+} from '@/features/decks/types/study-session.types';
 
 export { Rating };
 export type { RatingValue };

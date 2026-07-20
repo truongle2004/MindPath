@@ -1,4 +1,4 @@
-import { InputParseError } from '@/entities/errors/input-parse-error';
+import { InputParseError } from '@/lib/errors/input-parse-error';
 import type { ICreateCardUseCase } from '@/modules/flashcard/application/use-cases/create-card.use-case';
 import type { IDeleteCardUseCase } from '@/modules/flashcard/application/use-cases/delete-card.use-case';
 import type { IUpdateCardUseCase } from '@/modules/flashcard/application/use-cases/update-card.use-case';

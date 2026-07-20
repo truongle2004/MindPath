@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { getDecks } from '@/features/decks/services/decks.api';
-import type { DeckDto } from '@/features/decks/services/decks.types';
+import type { DeckDto } from '@/features/decks/types/decks-api.types';
 import type { DecksStatus } from '@/features/decks/types/decks.types';
 
 export function useDecks() {

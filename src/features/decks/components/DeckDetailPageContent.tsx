@@ -22,8 +22,8 @@ import {
   deleteDeck,
   updateCard,
 } from '@/features/decks/services/decks.api';
-import type { CardDto } from '@/features/decks/services/decks.types';
-import { Link, useRouter } from '@/libs/I18nNavigation';
+import type { CardDto } from '@/features/decks/types/decks-api.types';
+import { Link, useRouter } from '@/lib/I18nNavigation';
 
 type DeckDetailPageContentProps = {
   deckId: string;
