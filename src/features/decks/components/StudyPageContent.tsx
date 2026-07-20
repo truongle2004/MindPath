@@ -12,12 +12,7 @@ type StudyPageContentProps = {
   deckId: string;
 };
 
-/**
- * Full-page study session component that presents due cards one by one for review.
- * @param props The deck id from the route.
- * @returns The study session UI.
- */
-export function StudyPageContent(props: StudyPageContentProps) {
+export function StudyPageContent(props: Readonly<StudyPageContentProps>) {
   const t = useTranslations('StudyPage');
   const { phase, card, index, total, results, syncFailed, showAnswer, submitRating, restart } =
     useStudySession({ deckId: props.deckId });

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { DeckDetailPageContent } from '@/components/DeckDetailPageContent';
+import { DeckDetailPageContent } from '@/features/decks/components/DeckDetailPageContent';
 
 type DeckDetailPageProps = {
   params: Promise<{ locale: string; deckId: string }>;

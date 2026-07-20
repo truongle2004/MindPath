@@ -23,10 +23,6 @@ import { Link } from '@/libs/I18nNavigation';
 const deckColors = ['#7F77DD', '#4A90A4', '#6B8F71', '#C17C74', '#D4A056'];
 const defaultColor = deckColors[0] ?? '#7F77DD';
 
-/**
- * Client UI for listing and creating flashcard decks.
- * @returns The decks page content.
- */
 export function DecksPageContent() {
   const t = useTranslations('DecksPage');
   const { decks, status, reloadDecks } = useDecks();
@@ -135,7 +131,9 @@ export function DecksPageContent() {
                       <span
                         aria-hidden
                         className="mt-1 size-2.5 shrink-0 rounded-full"
-                        style={{ backgroundColor: deck.colorHex ?? defaultColor }}
+                        style={{
+                          backgroundColor: deck.colorHex ?? defaultColor,
+                        }}
                       />
                       <div className="min-w-0 flex-1">
                         <CardTitle className="truncate">{deck.title}</CardTitle>

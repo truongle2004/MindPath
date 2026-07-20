@@ -29,11 +29,6 @@ type DeckDetailPageContentProps = {
   deckId: string;
 };
 
-/**
- * Client UI for managing cards within a deck.
- * @param props The deck id from the route.
- * @returns The deck detail page content.
- */
 export function DeckDetailPageContent(props: DeckDetailPageContentProps) {
   const t = useTranslations('DeckDetailPage');
   const router = useRouter();
