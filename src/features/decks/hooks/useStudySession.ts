@@ -1,61 +1,42 @@
 'use client';
 
+import { useMutation } from '@tanstack/react-query';
 import { useEffect, useReducer, useRef } from 'react';
 import { useStudyCards } from '@/features/decks/hooks/useStudyCards';
 import { reviewCard } from '@/features/decks/services/decks.api';
+import { Rating } from './study-session.types';
+import type {
+  RatingValue,
+  StudySessionAction,
+  StudySessionResults,
+  StudySessionState,
+} from './study-session.types';
 
-export const Rating = {
-  Again: 1,
-  Hard: 2,
-  Good: 3,
-  Easy: 4,
-} as const;
+export { Rating };
+export type { RatingValue };
 
-export type RatingValue = (typeof Rating)[keyof typeof Rating];
-
-type Phase = 'loading' | 'error' | 'empty' | 'question' | 'answer' | 'submitting' | 'done';
-
-type Results = { again: number; hard: number; good: number; easy: number };
-
-type StudyCardsStatus = 'loading' | 'error' | 'empty' | 'ready';
-
-type State = {
-  phase: Phase;
-  index: number;
-  results: Results;
-  syncFailed: boolean;
+const emptyResults: StudySessionResults = {
+  again: 0,
+  hard: 0,
+  good: 0,
+  easy: 0,
 };
 
-type Action =
-  | { type: 'reset' }
-  | { type: 'setStatus'; status: StudyCardsStatus }
-  | { type: 'showAnswer' }
-  | { type: 'submitStart' }
-  | {
-      type: 'submitDone';
-      rating: RatingValue;
-      syncFailed: boolean;
-      hasNext: boolean;
-    }
-  | { type: 'restart' };
-
-const emptyResults: Results = { again: 0, hard: 0, good: 0, easy: 0 };
-
-const initialState: State = {
+const initialState: StudySessionState = {
   phase: 'loading',
   index: 0,
   results: emptyResults,
   syncFailed: false,
 };
 
-const ratingKeyByValue: Record<RatingValue, keyof Results> = {
+const ratingKeyByValue: Record<RatingValue, keyof StudySessionResults> = {
   [Rating.Again]: 'again',
   [Rating.Hard]: 'hard',
   [Rating.Good]: 'good',
   [Rating.Easy]: 'easy',
 };
 
-function reducer(state: State, action: Action): State {
+function reducer(state: StudySessionState, action: StudySessionAction): StudySessionState {
   if (action.type === 'reset') {
     return initialState;
   }
@@ -95,13 +76,9 @@ function reducer(state: State, action: Action): State {
   return state;
 }
 
-/**
- * Encapsulates state transitions and review submission for a study session.
- * @param props The deck id whose due cards are being studied.
- * @returns Study session state and event handlers.
- */
 export function useStudySession(props: { deckId: string }) {
   const { cards, status } = useStudyCards({ deckId: props.deckId });
+  const reviewCardMutation = useMutation({ mutationFn: reviewCard });
   const [state, dispatch] = useReducer(reducer, initialState);
   const isMountedRef = useRef(true);
 
@@ -136,7 +113,7 @@ export function useStudySession(props: { deckId: string }) {
 
     let syncFailed = false;
     try {
-      await reviewCard({
+      await reviewCardMutation.mutateAsync({
         deckId: props.deckId,
         cardId: card.id,
         input: { rating },

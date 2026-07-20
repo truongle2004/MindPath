@@ -1,30 +1,42 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { getStudyCards } from '@/features/decks/services/decks.api';
-import type { CardDto } from '@/features/decks/services/decks.types';
+import type { StudyCardsStatus } from './study-session.types';
 
-type StudyCardsStatus = 'loading' | 'error' | 'empty' | 'ready';
+function getStudyCardsStatus(props: {
+  isLoading: boolean;
+  isError: boolean;
+  cardCount: number;
+}): StudyCardsStatus {
+  if (props.isLoading) {
+    return 'loading';
+  }
+
+  if (props.isError) {
+    return 'error';
+  }
+
+  if (props.cardCount === 0) {
+    return 'empty';
+  }
+
+  return 'ready';
+}
 
 export function useStudyCards(props: { deckId: string }) {
-  const [cards, setCards] = useState<CardDto[]>([]);
-  const [status, setStatus] = useState<StudyCardsStatus>('loading');
+  const query = useQuery({
+    queryKey: ['study-cards', props.deckId],
+    queryFn: async () => await getStudyCards({ deckId: props.deckId }),
+    refetchOnWindowFocus: false,
+  });
 
-  useEffect(() => {
-    async function loadStudyCards() {
-      try {
-        setStatus('loading');
-        const body = await getStudyCards({ deckId: props.deckId });
-
-        setCards(body.cards);
-        setStatus(body.cards.length === 0 ? 'empty' : 'ready');
-      } catch {
-        setStatus('error');
-      }
-    }
-
-    void loadStudyCards();
-  }, [props.deckId]);
+  const cards = query.data?.cards ?? [];
+  const status = getStudyCardsStatus({
+    isLoading: query.isLoading,
+    isError: query.isError,
+    cardCount: cards.length,
+  });
 
   return { cards, status };
 }
