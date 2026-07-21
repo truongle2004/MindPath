@@ -1,4 +1,4 @@
-import { NotFoundError } from '@/entities/errors/not-found-error';
+import { NotFoundError } from '@/lib/errors/not-found-error';
 import type { IDeckRepository } from '@/modules/flashcard/application/repositories/deck.repository.interface';
 import type { Deck } from '@/modules/flashcard/entities/models/deck';
 import type { UpdateDeckInput } from '@/modules/flashcard/entities/models/deck.schema';

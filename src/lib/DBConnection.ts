@@ -1,7 +1,7 @@
 import { drizzle } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
 import { databaseSchema } from '@/infrastructure/database/schema';
-import { Env } from '@/libs/Env';
+import { Env } from '@/lib/Env';
 
 declare global {
   var cachedPostgresClient: ReturnType<typeof postgres> | undefined;

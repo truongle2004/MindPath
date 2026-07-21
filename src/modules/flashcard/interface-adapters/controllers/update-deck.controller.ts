@@ -1,4 +1,4 @@
-import { InputParseError } from '@/entities/errors/input-parse-error';
+import { InputParseError } from '@/lib/errors/input-parse-error';
 import type { IDeleteDeckUseCase } from '@/modules/flashcard/application/use-cases/delete-deck.use-case';
 import type { IUpdateDeckUseCase } from '@/modules/flashcard/application/use-cases/update-deck.use-case';
 import type { Deck } from '@/modules/flashcard/entities/models/deck';

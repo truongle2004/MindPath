@@ -2,7 +2,7 @@
 
 import { Layers, Plus } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
@@ -16,48 +16,22 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { httpJson } from '@/libs/Fetcher';
-import { Link } from '@/libs/I18nNavigation';
-import type { Deck } from '@/modules/flashcard/entities/models/deck';
-import {
-  createDeckResponseSchema,
-  getDecksResponseSchema,
-} from '@/modules/flashcard/entities/models/deck.schema';
+import { useDecks } from '@/features/decks/hooks/useDecks';
+import { createDeck } from '@/features/decks/services/decks.api';
+import { Link } from '@/lib/I18nNavigation';
 
 const deckColors = ['#7F77DD', '#4A90A4', '#6B8F71', '#C17C74', '#D4A056'];
 const defaultColor = deckColors[0] ?? '#7F77DD';
 
-/**
- * Client UI for listing and creating flashcard decks.
- * @returns The decks page content.
- */
 export function DecksPageContent() {
   const t = useTranslations('DecksPage');
-  const [decks, setDecks] = useState<Deck[]>([]);
-  const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading');
+  const { decks, status, reloadDecks } = useDecks();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [colorHex, setColorHex] = useState(defaultColor);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
-
-  async function loadDecks() {
-    try {
-      const { decks: loaded } = await httpJson('/api/decks', {
-        schema: getDecksResponseSchema,
-      });
-
-      setDecks(loaded);
-      setStatus('ready');
-    } catch {
-      setStatus('error');
-    }
-  }
-
-  useEffect(() => {
-    void loadDecks();
-  }, []);
 
   function resetForm() {
     setTitle('');
@@ -79,10 +53,8 @@ export function DecksPageContent() {
     setIsSubmitting(true);
 
     try {
-      await httpJson('/api/decks', {
-        method: 'POST',
-        schema: createDeckResponseSchema,
-        body: {
+      await createDeck({
+        input: {
           title,
           description: description.trim() || null,
           colorHex,
@@ -91,7 +63,7 @@ export function DecksPageContent() {
 
       resetForm();
       setIsCreateOpen(false);
-      await loadDecks();
+      await reloadDecks();
     } catch {
       setFormError(t('create_error_message'));
     } finally {
@@ -159,7 +131,9 @@ export function DecksPageContent() {
                       <span
                         aria-hidden
                         className="mt-1 size-2.5 shrink-0 rounded-full"
-                        style={{ backgroundColor: deck.colorHex ?? defaultColor }}
+                        style={{
+                          backgroundColor: deck.colorHex ?? defaultColor,
+                        }}
                       />
                       <div className="min-w-0 flex-1">
                         <CardTitle className="truncate">{deck.title}</CardTitle>

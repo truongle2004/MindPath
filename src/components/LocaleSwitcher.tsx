@@ -10,17 +10,13 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { usePathname, useRouter } from '@/libs/I18nNavigation';
+import { usePathname, useRouter } from '@/lib/I18nNavigation';
 
 const localeMessageKeys = {
   en: 'language_en',
   vi: 'language_vi',
 } as const satisfies Record<string, 'language_en' | 'language_vi'>;
 
-/**
- * Dropdown control for switching the active locale while preserving the current path.
- * @returns The language switcher button and menu.
- */
 export function LocaleSwitcher() {
   const t = useTranslations('LocaleSwitcher');
   const locale = useLocale();

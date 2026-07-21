@@ -2,7 +2,7 @@
 
 import { ArrowLeft, BookOpen, Check, Pencil, Plus, Trash2, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
@@ -15,39 +15,24 @@ import {
   SheetTitle,
 } from '@/components/ui/sheet';
 import { Textarea } from '@/components/ui/textarea';
-import { Link, useRouter } from '@/libs/I18nNavigation';
-import type { Card as Flashcard } from '@/modules/flashcard/entities/models/card';
-import type { Deck } from '@/modules/flashcard/entities/models/deck';
-import type { GetDeckResponse } from '@/modules/flashcard/interface-adapters/controllers/get-deck.controller';
+import { useDeck } from '@/features/decks/hooks/useDeck';
+import {
+  createCard,
+  deleteCard,
+  deleteDeck,
+  updateCard,
+} from '@/features/decks/services/decks.api';
+import type { CardDto } from '@/features/decks/types/decks-api.types';
+import { Link, useRouter } from '@/lib/I18nNavigation';
 
 type DeckDetailPageContentProps = {
   deckId: string;
 };
 
-/**
- * Checks whether a value matches the deck detail response shape.
- * @param value The parsed JSON body.
- * @returns True when the body contains deck and cards fields.
- */
-function isDeckResponse(value: unknown): value is GetDeckResponse {
-  if (typeof value !== 'object' || value === null) {
-    return false;
-  }
-
-  return 'deck' in value && 'cards' in value;
-}
-
-/**
- * Client UI for managing cards within a deck.
- * @param props The deck id from the route.
- * @returns The deck detail page content.
- */
 export function DeckDetailPageContent(props: DeckDetailPageContentProps) {
   const t = useTranslations('DeckDetailPage');
   const router = useRouter();
-  const [deck, setDeck] = useState<Deck | null>(null);
-  const [cards, setCards] = useState<Flashcard[]>([]);
-  const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading');
+  const { deck, cards, status, reloadDeck } = useDeck({ deckId: props.deckId });
   const [confirmDeleteDeck, setConfirmDeleteDeck] = useState(false);
   const [confirmDeleteCardId, setConfirmDeleteCardId] = useState<string | null>(null);
   const [deleteError, setDeleteError] = useState<string | null>(null);
@@ -67,34 +52,6 @@ export function DeckDetailPageContent(props: DeckDetailPageContentProps) {
   const [editBack, setEditBack] = useState('');
   const [editError, setEditError] = useState<string | null>(null);
   const [editSubmitting, setEditSubmitting] = useState(false);
-
-  async function loadDeck() {
-    try {
-      const response = await fetch(`/api/decks/${props.deckId}`);
-
-      if (!response.ok) {
-        throw new Error('Failed to load deck');
-      }
-
-      const body: unknown = await response.json();
-
-      if (!isDeckResponse(body)) {
-        throw new Error('Invalid deck response');
-      }
-
-      setDeck(body.deck);
-      setCards(body.cards);
-      setStatus('ready');
-    } catch {
-      setStatus('error');
-    }
-  }
-
-  useEffect(() => {
-    void loadDeck();
-    // loadDeck is stable for a given deckId during this page visit.
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- reload when deckId changes only
-  }, [props.deckId]);
 
   function openAddCard() {
     setInlineFront('');
@@ -119,23 +76,18 @@ export function DeckDetailPageContent(props: DeckDetailPageContentProps) {
     setInlineSubmitting(true);
 
     try {
-      const response = await fetch(`/api/decks/${props.deckId}/cards`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
+      await createCard({
+        deckId: props.deckId,
+        input: {
           front: inlineFront.trim(),
           back: inlineBack.trim(),
-        }),
+        },
       });
-
-      if (!response.ok) {
-        throw new Error('Failed to save card');
-      }
 
       setInlineFront('');
       setInlineBack('');
       setIsAddingCard(false);
-      await loadDeck();
+      await reloadDeck();
     } catch {
       setInlineError(t('save_error_message'));
     } finally {
@@ -143,7 +95,7 @@ export function DeckDetailPageContent(props: DeckDetailPageContentProps) {
     }
   }
 
-  function openEditSheet(card: Flashcard) {
+  function openEditSheet(card: CardDto) {
     setEditingCardId(card.id);
     setEditFront(card.front);
     setEditBack(card.back);
@@ -154,24 +106,25 @@ export function DeckDetailPageContent(props: DeckDetailPageContentProps) {
   async function handleUpdateCard(event: React.SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     setEditError(null);
+
+    if (!editingCardId) {
+      return;
+    }
+
     setEditSubmitting(true);
 
     try {
-      const response = await fetch(`/api/decks/${props.deckId}/cards/${editingCardId}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
+      await updateCard({
+        deckId: props.deckId,
+        cardId: editingCardId,
+        input: {
           front: editFront.trim(),
           back: editBack.trim(),
-        }),
+        },
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to save card');
-      }
-
       setIsEditSheetOpen(false);
-      await loadDeck();
+      await reloadDeck();
     } catch {
       setEditError(t('save_error_message'));
     } finally {
@@ -181,16 +134,10 @@ export function DeckDetailPageContent(props: DeckDetailPageContentProps) {
 
   async function handleDeleteCard(cardId: string) {
     try {
-      const response = await fetch(`/api/decks/${props.deckId}/cards/${cardId}`, {
-        method: 'DELETE',
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to delete card');
-      }
+      await deleteCard({ deckId: props.deckId, cardId });
 
       setConfirmDeleteCardId(null);
-      await loadDeck();
+      await reloadDeck();
     } catch {
       setDeleteError(t('delete_error_message'));
     }
@@ -198,13 +145,7 @@ export function DeckDetailPageContent(props: DeckDetailPageContentProps) {
 
   async function handleDeleteDeck() {
     try {
-      const response = await fetch(`/api/decks/${props.deckId}`, {
-        method: 'DELETE',
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to delete deck');
-      }
+      await deleteDeck({ deckId: props.deckId });
 
       router.push('/dashboard/decks');
     } catch {

@@ -1,4 +1,4 @@
-import { InputParseError } from '@/entities/errors/input-parse-error';
+import { InputParseError } from '@/lib/errors/input-parse-error';
 import type { ICreateDeckUseCase } from '@/modules/flashcard/application/use-cases/create-deck.use-case';
 import type { Deck } from '@/modules/flashcard/entities/models/deck';
 import { createDeckInputSchema } from '@/modules/flashcard/entities/models/deck.schema';

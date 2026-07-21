@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import type { DependencyContainer, InjectionToken } from 'tsyringe';
 import { container as rootContainer } from 'tsyringe';
 import { Tokens as DbTokens } from '@/infrastructure/di/tokens';
-import { db } from '@/libs/DB';
+import { db } from '@/lib/DB';
 import { registerFlashcardModule } from '@/modules/flashcard/infrastructure/di/register';
 import { registerUserModule } from '@/modules/user/infrastructure/di/register';
 

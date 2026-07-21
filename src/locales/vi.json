@@ -128,7 +128,8 @@
     "done_hard": "Khó: {count}",
     "done_good": "Ổn: {count}",
     "done_easy": "Dễ: {count}",
-    "study_again": "Học lại"
+    "study_again": "Học lại",
+    "sync_failed_message": "Không thể đồng bộ lượt ôn tập."
   },
   "ThemeToggle": {
     "toggle_label": "Chuyển giao diện",

@@ -4,8 +4,9 @@ import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import '@/styles/global.css';
+import { QueryProvider } from '@/components/QueryProvider';
 import { ThemeProvider } from '@/components/ThemeProvider';
-import { routing } from '@/libs/I18nRouting';
+import { routing } from '@/lib/I18nRouting';
 
 export const metadata: Metadata = {
   icons: [
@@ -64,7 +65,7 @@ export default async function RootLayout(props: {
               enableSystem
               disableTransitionOnChange
             >
-              {props.children}
+              <QueryProvider>{props.children}</QueryProvider>
             </ThemeProvider>
           </NextIntlClientProvider>
         </body>

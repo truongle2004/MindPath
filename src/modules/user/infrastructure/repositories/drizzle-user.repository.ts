@@ -1,9 +1,9 @@
 import { eq } from 'drizzle-orm';
-import { DatabaseOperationError } from '@/entities/errors/database-operation-error';
+import type { DbClient } from '@/lib/DBConnection';
+import { DatabaseOperationError } from '@/lib/errors/database-operation-error';
 import type { IUserRepository } from '@/modules/user/application/repositories/user.repository.interface';
 import type { User } from '@/modules/user/entities/models/user';
 import { usersSchema } from '@/modules/user/infrastructure/schema/users';
-import type { DbClient } from '@/utils/DBConnection';
 
 /**
  * Maps a database row to a user entity.

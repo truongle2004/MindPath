@@ -1,10 +1,10 @@
 import { count, eq } from 'drizzle-orm';
-import { DatabaseOperationError } from '@/entities/errors/database-operation-error';
+import type { DbClient } from '@/lib/DBConnection';
+import { DatabaseOperationError } from '@/lib/errors/database-operation-error';
 import type { IDeckRepository } from '@/modules/flashcard/application/repositories/deck.repository.interface';
 import type { Deck } from '@/modules/flashcard/entities/models/deck';
 import { cardsSchema } from '@/modules/flashcard/infrastructure/schema/cards';
 import { decksSchema } from '@/modules/flashcard/infrastructure/schema/decks';
-import type { DbClient } from '@/utils/DBConnection';
 
 /**
  * Maps a database row to a deck entity.
