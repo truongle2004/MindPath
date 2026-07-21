@@ -1,16 +1,6 @@
 'use client';
 
-import {
-  ArrowLeft,
-  BookOpen,
-  Check,
-  ChevronLeft,
-  ChevronRight,
-  RotateCcw,
-  Shuffle,
-  Sparkles,
-  X,
-} from 'lucide-react';
+import { ArrowLeft, BookOpen, Check, RotateCcw, Shuffle, Sparkles } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
@@ -30,12 +20,9 @@ export function StudyPageContent(props: Readonly<StudyPageContentProps>) {
     index,
     total,
     reviewedCount,
-    isCurrentCardReviewed,
     results,
     syncFailed,
     showAnswer,
-    previousCard,
-    nextCard,
     shuffle,
     submitRating,
     restart,
@@ -49,16 +36,6 @@ export function StudyPageContent(props: Readonly<StudyPageContentProps>) {
       if (phase === 'question' && (event.key === ' ' || event.key === 'Enter')) {
         event.preventDefault();
         showAnswer();
-      }
-
-      if (['question', 'answer'].includes(phase) && event.key === 'ArrowLeft') {
-        event.preventDefault();
-        previousCard();
-      }
-
-      if (['question', 'answer'].includes(phase) && event.key === 'ArrowRight') {
-        event.preventDefault();
-        nextCard();
       }
 
       if (phase === 'answer') {
@@ -81,7 +58,7 @@ export function StudyPageContent(props: Readonly<StudyPageContentProps>) {
     return () => {
       window.removeEventListener('keydown', handleKey);
     };
-  }, [nextCard, phase, previousCard, showAnswer, submitRating]);
+  }, [phase, showAnswer, submitRating]);
 
   const backHref = `/dashboard/decks/${props.deckId}`;
 
@@ -150,132 +127,140 @@ export function StudyPageContent(props: Readonly<StudyPageContentProps>) {
   }
 
   return (
-    <section className="mx-auto flex w-full max-w-2xl flex-col gap-4 rounded-xl border border-border bg-card p-6 shadow-sm sm:p-8">
-      <header className="flex items-start justify-between gap-4">
-        <div className="space-y-2">
-          <div className="flex items-center gap-2">
-            <BookOpen className="size-5 text-muted-foreground" aria-hidden="true" />
-            <h1 className="text-xl font-semibold tracking-tight">{t('title')}</h1>
-          </div>
-          <p className="text-sm text-muted-foreground">{t('instruction')}</p>
+    <section className="mx-auto flex w-full max-w-3xl flex-col gap-6 pb-6">
+      <header className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+        <div className="flex items-center gap-2">
+          <BookOpen className="size-5 text-muted-foreground" aria-hidden="true" />
+          <h1 className="text-xl font-semibold tracking-tight">{t('title')}</h1>
         </div>
-        <div className="flex items-center gap-1">
-          <Button variant="ghost" size="icon" aria-label={t('shuffle_label')} onClick={shuffle}>
-            <Shuffle className="size-4" />
+        <div className="flex flex-wrap items-center gap-1">
+          <Button variant="ghost" size="sm" onClick={shuffle}>
+            <Shuffle data-icon="inline-start" />
+            {t('shuffle_label')}
           </Button>
-          <Button variant="ghost" size="icon" aria-label={t('restart_label')} onClick={restart}>
-            <RotateCcw className="size-4" />
+          <Button variant="ghost" size="sm" onClick={restart}>
+            <RotateCcw data-icon="inline-start" />
+            {t('restart_label')}
           </Button>
-          <Button variant="ghost" size="icon" aria-label={t('close_label')} asChild>
+          <Button variant="ghost" size="sm" asChild>
             <Link href={backHref}>
-              <X className="size-4" />
+              <ArrowLeft data-icon="inline-start" />
+              {t('back_to_deck')}
             </Link>
           </Button>
         </div>
       </header>
 
-      <div className="space-y-3 pt-4">
-        <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-muted-foreground">
-          <span className="rounded-full bg-muted px-3 py-1">
-            {t('progress', { current: index + 1, total })}
-          </span>
-          <div className="flex items-center gap-3">
-            <span className="flex items-center gap-2">
-              <X className="size-4" aria-hidden="true" />
+      <div className="space-y-3">
+        <div className="flex flex-wrap items-center justify-between gap-3 text-sm">
+          <span className="font-medium">{t('progress', { current: index + 1, total })}</span>
+          <div className="flex items-center gap-4 text-muted-foreground">
+            <span className="flex items-center gap-1.5">
+              <span className="size-2 rounded-full bg-muted-foreground" aria-hidden="true" />
               {t('still_learning_count', { count: stillLearningCount })}
             </span>
-            <span className="flex items-center gap-2">
+            <span className="flex items-center gap-1.5">
               <Sparkles className="size-4" aria-hidden="true" />
               {t('mastered_count', { count: masteredCount })}
             </span>
           </div>
         </div>
-        <div className="h-2 rounded-full bg-muted">
-          <div
-            className="h-full rounded-full bg-primary transition-all"
-            style={{ width: `${progressValue}%` }}
-          />
-        </div>
+        <progress
+          className="h-1.5 w-full accent-primary"
+          aria-label={t('progress', { current: index + 1, total })}
+          max={total}
+          value={reviewedCount}
+        >
+          {progressValue}%
+        </progress>
       </div>
 
       {syncFailed ? <p className="text-sm text-destructive">{t('sync_failed_message')}</p> : null}
 
-      <div className="grid grid-cols-[auto_1fr_auto] items-center gap-2">
-        <Button variant="ghost" size="icon" aria-label={t('previous_label')} onClick={previousCard}>
-          <ChevronLeft className="size-4" />
-        </Button>
+      {phase === 'question' ? (
         <button
           type="button"
-          className="flex min-h-64 flex-col items-center justify-center gap-6 rounded-lg px-4 py-10 text-center transition-colors hover:bg-muted/50 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
-          aria-disabled={phase !== 'question'}
-          onClick={phase === 'question' ? showAnswer : undefined}
-          tabIndex={phase === 'question' ? 0 : -1}
+          className="flex min-h-80 w-full cursor-pointer flex-col items-center justify-center rounded-xl border border-border bg-card px-6 py-10 text-center shadow-sm transition-colors hover:bg-muted/40 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+          onClick={showAnswer}
         >
-          <div className="space-y-3">
-            <p className="text-sm text-muted-foreground">
-              {phase === 'question' ? t('question_label') : t('answer_label')}
-            </p>
-            <p className="text-xl font-medium whitespace-pre-wrap sm:text-2xl">
-              {phase === 'question' ? card?.front : card?.back}
-            </p>
-          </div>
-          {phase === 'question' ? (
-            <p className="text-sm text-muted-foreground">{t('reveal_hint')}</p>
-          ) : null}
+          <span className="text-sm font-medium text-muted-foreground">{t('question_label')}</span>
+          <span className="mt-4 text-2xl font-medium whitespace-pre-wrap sm:text-3xl">
+            {card?.front}
+          </span>
+          <span className="mt-10 text-sm text-muted-foreground">{t('reveal_hint')}</span>
         </button>
-        <Button variant="ghost" size="icon" aria-label={t('next_label')} onClick={nextCard}>
-          <ChevronRight className="size-4" />
-        </Button>
-      </div>
+      ) : (
+        <article className="flex min-h-80 flex-col items-center justify-center rounded-xl border border-border bg-card px-6 py-10 text-center shadow-sm">
+          <p className="text-sm font-medium text-muted-foreground">{t('answer_label')}</p>
+          <p className="mt-4 text-2xl font-medium whitespace-pre-wrap sm:text-3xl">{card?.back}</p>
+        </article>
+      )}
 
-      <div className="flex flex-col items-center gap-4">
-        {phase === 'question' && <Button onClick={showAnswer}>{t('show_answer')}</Button>}
-
-        {phase === 'answer' && !isCurrentCardReviewed && (
-          <div className="flex w-full flex-col justify-center gap-2 sm:flex-row">
-            <Button
-              variant="ghost"
-              className="text-destructive hover:text-destructive"
-              onClick={() => {
-                void submitRating(Rating.Again);
-              }}
-            >
-              <X data-icon="inline-start" />
-              {t('still_learning')}
-            </Button>
-            <Button
-              variant="outline"
-              onClick={() => {
-                void submitRating(Rating.Hard);
-              }}
-            >
-              {t('rating_hard')}
-            </Button>
-            <Button
-              onClick={() => {
-                void submitRating(Rating.Good);
-              }}
-            >
-              <Check data-icon="inline-start" />
-              {t('mastered')}
-            </Button>
-            <Button
-              variant="outline"
-              onClick={() => {
-                void submitRating(Rating.Easy);
-              }}
-            >
-              {t('rating_easy')}
-            </Button>
-          </div>
-        )}
-
-        {phase === 'answer' && isCurrentCardReviewed ? (
-          <p className="text-sm text-muted-foreground">{t('already_reviewed')}</p>
+      <div className="border-t border-border pt-5">
+        {phase === 'question' ? (
+          <p className="text-center text-sm text-muted-foreground">{t('keyboard_reveal_hint')}</p>
         ) : null}
 
-        {phase === 'submitting' && <Button disabled>{t('submitting')}</Button>}
-        <p className="text-center text-sm text-muted-foreground">{t('keyboard_hint')}</p>
+        {phase === 'answer' ? (
+          <div className="space-y-3">
+            <p className="text-center text-sm font-medium">{t('rating_prompt')}</p>
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+              <Button
+                variant="outline"
+                className="justify-start text-destructive hover:text-destructive"
+                onClick={() => {
+                  void submitRating(Rating.Again);
+                }}
+              >
+                <span className="text-muted-foreground" aria-hidden="true">
+                  1
+                </span>
+                {t('rating_again')}
+              </Button>
+              <Button
+                variant="outline"
+                className="justify-start"
+                onClick={() => {
+                  void submitRating(Rating.Hard);
+                }}
+              >
+                <span className="text-muted-foreground" aria-hidden="true">
+                  2
+                </span>
+                {t('rating_hard')}
+              </Button>
+              <Button
+                className="justify-start"
+                onClick={() => {
+                  void submitRating(Rating.Good);
+                }}
+              >
+                <span className="text-primary-foreground/80" aria-hidden="true">
+                  3
+                </span>
+                {t('rating_good')}
+              </Button>
+              <Button
+                variant="outline"
+                className="justify-start"
+                onClick={() => {
+                  void submitRating(Rating.Easy);
+                }}
+              >
+                <span className="text-muted-foreground" aria-hidden="true">
+                  4
+                </span>
+                {t('rating_easy')}
+              </Button>
+            </div>
+          </div>
+        ) : null}
+
+        {phase === 'submitting' ? (
+          <output className="block text-center text-sm text-muted-foreground">
+            {t('submitting')}
+          </output>
+        ) : null}
       </div>
     </section>
   );
