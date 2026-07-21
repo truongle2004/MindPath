@@ -3,6 +3,7 @@ import type { KnipConfig } from 'knip';
 const config: KnipConfig = {
   // Files to exclude from Knip analysis
   ignore: [
+    '.codex/skills/**',
     'src/lib/I18n.ts',
     'src/types/I18n.ts',
     'src/components/Whiteboard.tsx',

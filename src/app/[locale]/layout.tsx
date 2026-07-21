@@ -1,4 +1,5 @@
 import { ClerkProvider } from '@clerk/nextjs';
+import { shadcn } from '@clerk/ui/themes';
 import type { Metadata, Viewport } from 'next';
 import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
@@ -6,6 +7,7 @@ import { notFound } from 'next/navigation';
 import '@/styles/global.css';
 import { QueryProvider } from '@/components/QueryProvider';
 import { ThemeProvider } from '@/components/ThemeProvider';
+import { ClerkLocalizations } from '@/lib/AppConfig';
 import { routing } from '@/lib/I18nRouting';
 
 export const metadata: Metadata = {
@@ -54,8 +56,21 @@ export default async function RootLayout(props: {
 
   setRequestLocale(locale);
 
+  const clerkLocale =
+    ClerkLocalizations.supportedLocales[locale] ?? ClerkLocalizations.defaultLocale;
+
   return (
-    <ClerkProvider>
+    <ClerkProvider
+      appearance={{
+        theme: shadcn,
+      }}
+      localization={clerkLocale}
+      signInUrl="/sign-in"
+      signUpUrl="/sign-up"
+      signInFallbackRedirectUrl="/dashboard"
+      signUpFallbackRedirectUrl="/dashboard"
+      afterSignOutUrl="/"
+    >
       <html lang={locale} suppressHydrationWarning>
         <body>
           <NextIntlClientProvider>
