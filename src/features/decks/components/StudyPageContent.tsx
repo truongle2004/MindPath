@@ -1,6 +1,16 @@
 'use client';
 
-import { ArrowLeft, Check } from 'lucide-react';
+import {
+  ArrowLeft,
+  BookOpen,
+  Check,
+  ChevronLeft,
+  ChevronRight,
+  RotateCcw,
+  Shuffle,
+  Sparkles,
+  X,
+} from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
@@ -14,14 +24,41 @@ type StudyPageContentProps = {
 
 export function StudyPageContent(props: Readonly<StudyPageContentProps>) {
   const t = useTranslations('StudyPage');
-  const { phase, card, index, total, results, syncFailed, showAnswer, submitRating, restart } =
-    useStudySession({ deckId: props.deckId });
+  const {
+    phase,
+    card,
+    index,
+    total,
+    reviewedCount,
+    isCurrentCardReviewed,
+    results,
+    syncFailed,
+    showAnswer,
+    previousCard,
+    nextCard,
+    shuffle,
+    submitRating,
+    restart,
+  } = useStudySession({ deckId: props.deckId });
+  const progressValue = total > 0 ? (reviewedCount / total) * 100 : 0;
+  const masteredCount = results.good + results.easy;
+  const stillLearningCount = results.again + results.hard;
 
   useEffect(() => {
     function handleKey(event: KeyboardEvent) {
       if (phase === 'question' && (event.key === ' ' || event.key === 'Enter')) {
         event.preventDefault();
         showAnswer();
+      }
+
+      if (['question', 'answer'].includes(phase) && event.key === 'ArrowLeft') {
+        event.preventDefault();
+        previousCard();
+      }
+
+      if (['question', 'answer'].includes(phase) && event.key === 'ArrowRight') {
+        event.preventDefault();
+        nextCard();
       }
 
       if (phase === 'answer') {
@@ -44,7 +81,7 @@ export function StudyPageContent(props: Readonly<StudyPageContentProps>) {
     return () => {
       window.removeEventListener('keydown', handleKey);
     };
-  }, [phase, showAnswer, submitRating]);
+  }, [nextCard, phase, previousCard, showAnswer, submitRating]);
 
   const backHref = `/dashboard/decks/${props.deckId}`;
 
@@ -113,48 +150,98 @@ export function StudyPageContent(props: Readonly<StudyPageContentProps>) {
   }
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex items-center justify-between">
-        <Button variant="ghost" className="w-fit" asChild>
-          <Link href={backHref}>
-            <ArrowLeft data-icon="inline-start" />
-            {t('back_to_deck')}
-          </Link>
-        </Button>
-        <span className="text-sm text-muted-foreground">
-          {t('progress', { current: index + 1, total })}
-        </span>
+    <section className="mx-auto flex w-full max-w-2xl flex-col gap-4 rounded-xl border border-border bg-card p-6 shadow-sm sm:p-8">
+      <header className="flex items-start justify-between gap-4">
+        <div className="space-y-2">
+          <div className="flex items-center gap-2">
+            <BookOpen className="size-5 text-muted-foreground" aria-hidden="true" />
+            <h1 className="text-xl font-semibold tracking-tight">{t('title')}</h1>
+          </div>
+          <p className="text-sm text-muted-foreground">{t('instruction')}</p>
+        </div>
+        <div className="flex items-center gap-1">
+          <Button variant="ghost" size="icon" aria-label={t('shuffle_label')} onClick={shuffle}>
+            <Shuffle className="size-4" />
+          </Button>
+          <Button variant="ghost" size="icon" aria-label={t('restart_label')} onClick={restart}>
+            <RotateCcw className="size-4" />
+          </Button>
+          <Button variant="ghost" size="icon" aria-label={t('close_label')} asChild>
+            <Link href={backHref}>
+              <X className="size-4" />
+            </Link>
+          </Button>
+        </div>
+      </header>
+
+      <div className="space-y-3 pt-4">
+        <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-muted-foreground">
+          <span className="rounded-full bg-muted px-3 py-1">
+            {t('progress', { current: index + 1, total })}
+          </span>
+          <div className="flex items-center gap-3">
+            <span className="flex items-center gap-2">
+              <X className="size-4" aria-hidden="true" />
+              {t('still_learning_count', { count: stillLearningCount })}
+            </span>
+            <span className="flex items-center gap-2">
+              <Sparkles className="size-4" aria-hidden="true" />
+              {t('mastered_count', { count: masteredCount })}
+            </span>
+          </div>
+        </div>
+        <div className="h-2 rounded-full bg-muted">
+          <div
+            className="h-full rounded-full bg-primary transition-all"
+            style={{ width: `${progressValue}%` }}
+          />
+        </div>
       </div>
 
       {syncFailed ? <p className="text-sm text-destructive">{t('sync_failed_message')}</p> : null}
 
-      <div className="w-full overflow-hidden rounded-xl border border-border bg-card">
-        <div className="flex min-h-48 flex-col items-center justify-center gap-2 p-8 text-center">
-          <p className="text-lg font-semibold whitespace-pre-wrap">{card?.front}</p>
-        </div>
-
-        {(phase === 'answer' || phase === 'submitting') && (
-          <>
-            <div className="h-px w-full bg-border" />
-            <div className="flex min-h-32 flex-col items-center justify-center p-8 text-center">
-              <p className="text-base whitespace-pre-wrap text-muted-foreground">{card?.back}</p>
-            </div>
-          </>
-        )}
+      <div className="grid grid-cols-[auto_1fr_auto] items-center gap-2">
+        <Button variant="ghost" size="icon" aria-label={t('previous_label')} onClick={previousCard}>
+          <ChevronLeft className="size-4" />
+        </Button>
+        <button
+          type="button"
+          className="flex min-h-64 flex-col items-center justify-center gap-6 rounded-lg px-4 py-10 text-center transition-colors hover:bg-muted/50 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+          aria-disabled={phase !== 'question'}
+          onClick={phase === 'question' ? showAnswer : undefined}
+          tabIndex={phase === 'question' ? 0 : -1}
+        >
+          <div className="space-y-3">
+            <p className="text-sm text-muted-foreground">
+              {phase === 'question' ? t('question_label') : t('answer_label')}
+            </p>
+            <p className="text-xl font-medium whitespace-pre-wrap sm:text-2xl">
+              {phase === 'question' ? card?.front : card?.back}
+            </p>
+          </div>
+          {phase === 'question' ? (
+            <p className="text-sm text-muted-foreground">{t('reveal_hint')}</p>
+          ) : null}
+        </button>
+        <Button variant="ghost" size="icon" aria-label={t('next_label')} onClick={nextCard}>
+          <ChevronRight className="size-4" />
+        </Button>
       </div>
 
-      <div className="flex justify-center gap-2">
+      <div className="flex flex-col items-center gap-4">
         {phase === 'question' && <Button onClick={showAnswer}>{t('show_answer')}</Button>}
 
-        {phase === 'answer' && (
-          <>
+        {phase === 'answer' && !isCurrentCardReviewed && (
+          <div className="flex w-full flex-col justify-center gap-2 sm:flex-row">
             <Button
-              variant="destructive"
+              variant="ghost"
+              className="text-destructive hover:text-destructive"
               onClick={() => {
                 void submitRating(Rating.Again);
               }}
             >
-              {t('rating_again')}
+              <X data-icon="inline-start" />
+              {t('still_learning')}
             </Button>
             <Button
               variant="outline"
@@ -169,21 +256,27 @@ export function StudyPageContent(props: Readonly<StudyPageContentProps>) {
                 void submitRating(Rating.Good);
               }}
             >
-              {t('rating_good')}
+              <Check data-icon="inline-start" />
+              {t('mastered')}
             </Button>
             <Button
-              variant="secondary"
+              variant="outline"
               onClick={() => {
                 void submitRating(Rating.Easy);
               }}
             >
               {t('rating_easy')}
             </Button>
-          </>
+          </div>
         )}
 
+        {phase === 'answer' && isCurrentCardReviewed ? (
+          <p className="text-sm text-muted-foreground">{t('already_reviewed')}</p>
+        ) : null}
+
         {phase === 'submitting' && <Button disabled>{t('submitting')}</Button>}
+        <p className="text-center text-sm text-muted-foreground">{t('keyboard_hint')}</p>
       </div>
-    </div>
+    </section>
   );
 }

@@ -32,19 +32,25 @@ export type StudySessionResults = {
 export type StudySessionState = {
   phase: StudySessionPhase;
   index: number;
+  order: string[];
+  reviewedCardIds: string[];
   results: StudySessionResults;
   syncFailed: boolean;
 };
 
 export type StudySessionAction =
   | { type: 'reset' }
+  | { type: 'initialize'; cardIds: string[] }
   | { type: 'setStatus'; status: StudyCardsStatus }
   | { type: 'showAnswer' }
+  | { type: 'previousCard' }
+  | { type: 'nextCard' }
+  | { type: 'shuffle' }
   | { type: 'submitStart' }
   | {
       type: 'submitDone';
+      cardId: string;
       rating: RatingValue;
       syncFailed: boolean;
-      hasNext: boolean;
     }
   | { type: 'restart' };
