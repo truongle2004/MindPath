@@ -46,6 +46,8 @@ next-env.d.ts
 
 # clerk configuration (can include secrets)
 /.clerk/
-.codex
-.cursor
-.opencode
+
+# local Codex skills and generated assets
+/.codex/
+/.cursor/
+/.opencode/

@@ -1,7 +1,4 @@
-import { ClerkProvider } from '@clerk/nextjs';
-import { shadcn } from '@clerk/ui/themes';
 import { setRequestLocale } from 'next-intl/server';
-import { ClerkLocalizations } from '@/lib/AppConfig';
 
 export default async function AuthLayout(props: {
   children: React.ReactNode;
@@ -10,22 +7,5 @@ export default async function AuthLayout(props: {
   const { locale } = await props.params;
   setRequestLocale(locale);
 
-  const clerkLocale =
-    ClerkLocalizations.supportedLocales[locale] ?? ClerkLocalizations.defaultLocale;
-
-  return (
-    <ClerkProvider
-      appearance={{
-        theme: shadcn,
-      }}
-      localization={clerkLocale}
-      signInUrl="/sign-in"
-      signUpUrl="/sign-up"
-      signInFallbackRedirectUrl="/dashboard"
-      signUpFallbackRedirectUrl="/dashboard"
-      afterSignOutUrl="/"
-    >
-      {props.children}
-    </ClerkProvider>
-  );
+  return await props.children;
 }
