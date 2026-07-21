@@ -49,3 +49,5 @@ next-env.d.ts
 
 # local Codex skills and generated assets
 /.codex/
+/.cursor/
+/.opencode/
