@@ -146,7 +146,7 @@ function reducer(state: StudySessionState, action: StudySessionAction): StudySes
 
   if (action.type === 'shuffle') {
     return {
-      ...initialState,
+      ...state,
       phase: state.order.length > 0 ? 'question' : state.phase,
       order: shuffleCardIds(state.order),
     };
@@ -172,6 +172,7 @@ export function useStudySession(props: UseStudySessionProps) {
   const reviewCardMutation = useMutation({ mutationFn: reviewCard });
   const [state, dispatch] = useReducer(reducer, initialState);
   const isMountedRef = useRef(true);
+  const initializedDeckIdRef = useRef<string | null>(null);
 
   useEffect(() => {
     isMountedRef.current = true;
@@ -182,6 +183,7 @@ export function useStudySession(props: UseStudySessionProps) {
   }, []);
 
   useEffect(() => {
+    initializedDeckIdRef.current = null;
     dispatch({ type: 'reset' });
   }, [props.deckId]);
 
@@ -190,10 +192,11 @@ export function useStudySession(props: UseStudySessionProps) {
   }, [status]);
 
   useEffect(() => {
-    if (status === 'ready') {
+    if (status === 'ready' && initializedDeckIdRef.current !== props.deckId) {
+      initializedDeckIdRef.current = props.deckId;
       dispatch({ type: 'initialize', cardIds: cards.map((card) => card.id) });
     }
-  }, [cards, status]);
+  }, [cards, props.deckId, status]);
 
   const currentCardId = state.order[state.index];
   const currentCard = cards.find((card) => card.id === currentCardId);

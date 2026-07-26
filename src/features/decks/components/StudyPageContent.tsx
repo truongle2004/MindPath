@@ -167,7 +167,7 @@ export function StudyPageContent(props: Readonly<StudyPageContentProps>) {
         </div>
         <progress
           className="h-1.5 w-full accent-primary"
-          aria-label={t('progress', { current: index + 1, total })}
+          aria-label={t('progress', { current: reviewedCount, total })}
           max={total}
           value={reviewedCount}
         >
