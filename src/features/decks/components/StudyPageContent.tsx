@@ -1,6 +1,6 @@
 'use client';
 
-import { ArrowLeft, Check } from 'lucide-react';
+import { ArrowLeft, BookOpen, Check, RotateCcw, Shuffle, Sparkles } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
@@ -14,8 +14,22 @@ type StudyPageContentProps = {
 
 export function StudyPageContent(props: Readonly<StudyPageContentProps>) {
   const t = useTranslations('StudyPage');
-  const { phase, card, index, total, results, syncFailed, showAnswer, submitRating, restart } =
-    useStudySession({ deckId: props.deckId });
+  const {
+    phase,
+    card,
+    index,
+    total,
+    reviewedCount,
+    results,
+    syncFailed,
+    showAnswer,
+    shuffle,
+    submitRating,
+    restart,
+  } = useStudySession({ deckId: props.deckId });
+  const progressValue = total > 0 ? (reviewedCount / total) * 100 : 0;
+  const masteredCount = results.good + results.easy;
+  const stillLearningCount = results.again + results.hard;
 
   useEffect(() => {
     function handleKey(event: KeyboardEvent) {
@@ -113,77 +127,141 @@ export function StudyPageContent(props: Readonly<StudyPageContentProps>) {
   }
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex items-center justify-between">
-        <Button variant="ghost" className="w-fit" asChild>
-          <Link href={backHref}>
-            <ArrowLeft data-icon="inline-start" />
-            {t('back_to_deck')}
-          </Link>
-        </Button>
-        <span className="text-sm text-muted-foreground">
-          {t('progress', { current: index + 1, total })}
-        </span>
+    <section className="mx-auto flex w-full max-w-3xl flex-col gap-6 pb-6">
+      <header className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+        <div className="flex items-center gap-2">
+          <BookOpen className="size-5 text-muted-foreground" aria-hidden="true" />
+          <h1 className="text-xl font-semibold tracking-tight">{t('title')}</h1>
+        </div>
+        <div className="flex flex-wrap items-center gap-1">
+          <Button variant="ghost" size="sm" onClick={shuffle}>
+            <Shuffle data-icon="inline-start" />
+            {t('shuffle_label')}
+          </Button>
+          <Button variant="ghost" size="sm" onClick={restart}>
+            <RotateCcw data-icon="inline-start" />
+            {t('restart_label')}
+          </Button>
+          <Button variant="ghost" size="sm" asChild>
+            <Link href={backHref}>
+              <ArrowLeft data-icon="inline-start" />
+              {t('back_to_deck')}
+            </Link>
+          </Button>
+        </div>
+      </header>
+
+      <div className="space-y-3">
+        <div className="flex flex-wrap items-center justify-between gap-3 text-sm">
+          <span className="font-medium">{t('progress', { current: index + 1, total })}</span>
+          <div className="flex items-center gap-4 text-muted-foreground">
+            <span className="flex items-center gap-1.5">
+              <span className="size-2 rounded-full bg-muted-foreground" aria-hidden="true" />
+              {t('still_learning_count', { count: stillLearningCount })}
+            </span>
+            <span className="flex items-center gap-1.5">
+              <Sparkles className="size-4" aria-hidden="true" />
+              {t('mastered_count', { count: masteredCount })}
+            </span>
+          </div>
+        </div>
+        <progress
+          className="h-1.5 w-full accent-primary"
+          aria-label={t('progress', { current: reviewedCount, total })}
+          max={total}
+          value={reviewedCount}
+        >
+          {progressValue}%
+        </progress>
       </div>
 
       {syncFailed ? <p className="text-sm text-destructive">{t('sync_failed_message')}</p> : null}
 
-      <div className="w-full overflow-hidden rounded-xl border border-border bg-card">
-        <div className="flex min-h-48 flex-col items-center justify-center gap-2 p-8 text-center">
-          <p className="text-lg font-semibold whitespace-pre-wrap">{card?.front}</p>
-        </div>
+      {phase === 'question' ? (
+        <button
+          type="button"
+          className="flex min-h-80 w-full cursor-pointer flex-col items-center justify-center rounded-xl border border-border bg-card px-6 py-10 text-center shadow-sm transition-colors hover:bg-muted/40 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+          onClick={showAnswer}
+        >
+          <span className="text-sm font-medium text-muted-foreground">{t('question_label')}</span>
+          <span className="mt-4 text-2xl font-medium whitespace-pre-wrap sm:text-3xl">
+            {card?.front}
+          </span>
+          <span className="mt-10 text-sm text-muted-foreground">{t('reveal_hint')}</span>
+        </button>
+      ) : (
+        <article className="flex min-h-80 flex-col items-center justify-center rounded-xl border border-border bg-card px-6 py-10 text-center shadow-sm">
+          <p className="text-sm font-medium text-muted-foreground">{t('answer_label')}</p>
+          <p className="mt-4 text-2xl font-medium whitespace-pre-wrap sm:text-3xl">{card?.back}</p>
+        </article>
+      )}
 
-        {(phase === 'answer' || phase === 'submitting') && (
-          <>
-            <div className="h-px w-full bg-border" />
-            <div className="flex min-h-32 flex-col items-center justify-center p-8 text-center">
-              <p className="text-base whitespace-pre-wrap text-muted-foreground">{card?.back}</p>
+      <div className="border-t border-border pt-5">
+        {phase === 'question' ? (
+          <p className="text-center text-sm text-muted-foreground">{t('keyboard_reveal_hint')}</p>
+        ) : null}
+
+        {phase === 'answer' ? (
+          <div className="space-y-3">
+            <p className="text-center text-sm font-medium">{t('rating_prompt')}</p>
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+              <Button
+                variant="outline"
+                className="justify-start text-destructive hover:text-destructive"
+                onClick={() => {
+                  void submitRating(Rating.Again);
+                }}
+              >
+                <span className="text-muted-foreground" aria-hidden="true">
+                  1
+                </span>
+                {t('rating_again')}
+              </Button>
+              <Button
+                variant="outline"
+                className="justify-start"
+                onClick={() => {
+                  void submitRating(Rating.Hard);
+                }}
+              >
+                <span className="text-muted-foreground" aria-hidden="true">
+                  2
+                </span>
+                {t('rating_hard')}
+              </Button>
+              <Button
+                className="justify-start"
+                onClick={() => {
+                  void submitRating(Rating.Good);
+                }}
+              >
+                <span className="text-primary-foreground/80" aria-hidden="true">
+                  3
+                </span>
+                {t('rating_good')}
+              </Button>
+              <Button
+                variant="outline"
+                className="justify-start"
+                onClick={() => {
+                  void submitRating(Rating.Easy);
+                }}
+              >
+                <span className="text-muted-foreground" aria-hidden="true">
+                  4
+                </span>
+                {t('rating_easy')}
+              </Button>
             </div>
-          </>
-        )}
+          </div>
+        ) : null}
+
+        {phase === 'submitting' ? (
+          <output className="block text-center text-sm text-muted-foreground">
+            {t('submitting')}
+          </output>
+        ) : null}
       </div>
-
-      <div className="flex justify-center gap-2">
-        {phase === 'question' && <Button onClick={showAnswer}>{t('show_answer')}</Button>}
-
-        {phase === 'answer' && (
-          <>
-            <Button
-              variant="destructive"
-              onClick={() => {
-                void submitRating(Rating.Again);
-              }}
-            >
-              {t('rating_again')}
-            </Button>
-            <Button
-              variant="outline"
-              onClick={() => {
-                void submitRating(Rating.Hard);
-              }}
-            >
-              {t('rating_hard')}
-            </Button>
-            <Button
-              onClick={() => {
-                void submitRating(Rating.Good);
-              }}
-            >
-              {t('rating_good')}
-            </Button>
-            <Button
-              variant="secondary"
-              onClick={() => {
-                void submitRating(Rating.Easy);
-              }}
-            >
-              {t('rating_easy')}
-            </Button>
-          </>
-        )}
-
-        {phase === 'submitting' && <Button disabled>{t('submitting')}</Button>}
-      </div>
-    </div>
+    </section>
   );
 }
