@@ -1,8 +1,11 @@
 import type { InjectionToken } from 'tsyringe';
 import type { ICardRepository } from '@/modules/flashcard/application/repositories/card.repository.interface';
 import type { IDeckRepository } from '@/modules/flashcard/application/repositories/deck.repository.interface';
+import type { IPomodoroSessionRepository } from '@/modules/flashcard/application/repositories/pomodoro-session.repository.interface';
+import type { ICompletePomodoroSessionUseCase } from '@/modules/flashcard/application/use-cases/complete-pomodoro-session.use-case';
 import type { ICreateCardUseCase } from '@/modules/flashcard/application/use-cases/create-card.use-case';
 import type { ICreateDeckUseCase } from '@/modules/flashcard/application/use-cases/create-deck.use-case';
+import type { ICreatePomodoroSessionUseCase } from '@/modules/flashcard/application/use-cases/create-pomodoro-session.use-case';
 import type { IDeleteCardUseCase } from '@/modules/flashcard/application/use-cases/delete-card.use-case';
 import type { IDeleteDeckUseCase } from '@/modules/flashcard/application/use-cases/delete-deck.use-case';
 import type { IGetDeckWithCardsUseCase } from '@/modules/flashcard/application/use-cases/get-deck-with-cards.use-case';
@@ -20,6 +23,10 @@ import type { ICreateDeckController } from '@/modules/flashcard/interface-adapte
 import type { IGetDeckController } from '@/modules/flashcard/interface-adapters/controllers/get-deck.controller';
 import type { IGetDecksController } from '@/modules/flashcard/interface-adapters/controllers/get-decks.controller';
 import type { IGetDueCardsController } from '@/modules/flashcard/interface-adapters/controllers/get-due-cards.controller.interface';
+import type {
+  ICompletePomodoroSessionController,
+  ICreatePomodoroSessionController,
+} from '@/modules/flashcard/interface-adapters/controllers/pomodoro-session.controller';
 import type { IReviewCardController } from '@/modules/flashcard/interface-adapters/controllers/review-card.controller.interface';
 import type {
   IDeleteDeckController,
@@ -30,6 +37,9 @@ import type {
 export const Tokens = {
   DeckRepository: Symbol('DeckRepository') as InjectionToken<IDeckRepository>,
   CardRepository: Symbol('CardRepository') as InjectionToken<ICardRepository>,
+  PomodoroSessionRepository: Symbol(
+    'PomodoroSessionRepository',
+  ) as InjectionToken<IPomodoroSessionRepository>,
   GetDecksUseCase: Symbol('GetDecksUseCase') as InjectionToken<IGetDecksUseCase>,
   CreateDeckUseCase: Symbol('CreateDeckUseCase') as InjectionToken<ICreateDeckUseCase>,
   UpdateDeckUseCase: Symbol('UpdateDeckUseCase') as InjectionToken<IUpdateDeckUseCase>,
@@ -40,6 +50,12 @@ export const Tokens = {
   CreateCardUseCase: Symbol('CreateCardUseCase') as InjectionToken<ICreateCardUseCase>,
   UpdateCardUseCase: Symbol('UpdateCardUseCase') as InjectionToken<IUpdateCardUseCase>,
   DeleteCardUseCase: Symbol('DeleteCardUseCase') as InjectionToken<IDeleteCardUseCase>,
+  CreatePomodoroSessionUseCase: Symbol(
+    'CreatePomodoroSessionUseCase',
+  ) as InjectionToken<ICreatePomodoroSessionUseCase>,
+  CompletePomodoroSessionUseCase: Symbol(
+    'CompletePomodoroSessionUseCase',
+  ) as InjectionToken<ICompletePomodoroSessionUseCase>,
   GetDecksController: Symbol('GetDecksController') as InjectionToken<IGetDecksController>,
   CreateDeckController: Symbol('CreateDeckController') as InjectionToken<ICreateDeckController>,
   GetDeckController: Symbol('GetDeckController') as InjectionToken<IGetDeckController>,
@@ -52,4 +68,10 @@ export const Tokens = {
   ReviewCardUseCase: Symbol('ReviewCardUseCase') as InjectionToken<IReviewCardUseCase>,
   GetDueCardsController: Symbol('GetDueCardsController') as InjectionToken<IGetDueCardsController>,
   ReviewCardController: Symbol('ReviewCardController') as InjectionToken<IReviewCardController>,
+  CreatePomodoroSessionController: Symbol(
+    'CreatePomodoroSessionController',
+  ) as InjectionToken<ICreatePomodoroSessionController>,
+  CompletePomodoroSessionController: Symbol(
+    'CompletePomodoroSessionController',
+  ) as InjectionToken<ICompletePomodoroSessionController>,
 };

@@ -4,9 +4,13 @@ import type {
   CreateCardResponseDto,
   CreateDeckDto,
   CreateDeckResponseDto,
+  CreatePomodoroSessionDto,
+  CreatePomodoroSessionResponseDto,
   DeleteResponseDto,
   DeckWithCardsDto,
   GetDecksResponseDto,
+  CompletePomodoroSessionDto,
+  CompletePomodoroSessionResponseDto,
   ReviewCardDto,
   ReviewCardResponseDto,
   StudyCardsResponseDto,
@@ -20,6 +24,10 @@ import {
   deckSchema,
   getDecksResponseSchema,
 } from '@/modules/flashcard/entities/models/deck.schema';
+import {
+  completePomodoroSessionResponseSchema,
+  createPomodoroSessionResponseSchema,
+} from '@/modules/flashcard/entities/models/pomodoro-session.schema';
 
 const deckWithCardsResponseSchema = z.object({
   deck: deckSchema,
@@ -110,6 +118,27 @@ export async function reviewCard(props: {
   return await httpJson(`/api/decks/${props.deckId}/cards/${props.cardId}/review`, {
     method: 'POST',
     schema: cardResponseSchema,
+    body: props.input,
+  });
+}
+
+export async function createPomodoroSession(props: {
+  input: CreatePomodoroSessionDto;
+}): Promise<CreatePomodoroSessionResponseDto> {
+  return await httpJson('/api/pomodoro', {
+    method: 'POST',
+    schema: createPomodoroSessionResponseSchema,
+    body: props.input,
+  });
+}
+
+export async function completePomodoroSession(props: {
+  sessionId: string;
+  input: CompletePomodoroSessionDto;
+}): Promise<CompletePomodoroSessionResponseDto> {
+  return await httpJson(`/api/pomodoro/${props.sessionId}/complete`, {
+    method: 'PATCH',
+    schema: completePomodoroSessionResponseSchema,
     body: props.input,
   });
 }
