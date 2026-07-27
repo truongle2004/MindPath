@@ -1,7 +1,7 @@
 'use client';
 
-import { Pause, Play, RotateCcw, Timer } from 'lucide-react';
-import { motion } from 'motion/react';
+import { Pause, Play, RotateCcw, Settings, Timer } from 'lucide-react';
+import { AnimatePresence, motion } from 'motion/react';
 import { useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -14,6 +14,8 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { useSidebar } from '@/components/ui/sidebar';
 import {
   completePomodoroSession,
@@ -21,10 +23,8 @@ import {
 } from '@/features/decks/services/decks.api';
 import { cn } from '@/lib/utils';
 
-const workMinutes = 25;
-const breakMinutes = 5;
-const workSeconds = workMinutes * 60;
-const breakSeconds = breakMinutes * 60;
+const defaultWorkMinutes = 25;
+const defaultBreakMinutes = 5;
 const progressRadius = 112;
 const progressCircumference = 2 * Math.PI * progressRadius;
 
@@ -42,8 +42,8 @@ function formatTime(seconds: number) {
   return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
 }
 
-function getModeDuration(mode: TimerMode) {
-  return mode === 'work' ? workSeconds : breakSeconds;
+function getModeDuration(props: { breakMinutes: number; mode: TimerMode; workMinutes: number }) {
+  return (props.mode === 'work' ? props.workMinutes : props.breakMinutes) * 60;
 }
 
 function FocusGlow(props: { isActive: boolean }) {
@@ -185,16 +185,74 @@ function TimerControls(props: {
   );
 }
 
+function TimerSettings(props: {
+  breakLabel: string;
+  breakMinutesInput: string;
+  disabled: boolean;
+  onBreakMinutesBlur: () => void;
+  onBreakMinutesChange: (value: string) => void;
+  onWorkMinutesBlur: () => void;
+  onWorkMinutesChange: (value: string) => void;
+  workLabel: string;
+  workMinutesInput: string;
+}) {
+  return (
+    <motion.div
+      animate={{ opacity: 1, height: 'auto' }}
+      className="grid w-full max-w-sm grid-cols-2 gap-3 overflow-hidden"
+      exit={{ opacity: 0, height: 0 }}
+      initial={{ opacity: 0, height: 0 }}
+      transition={{ duration: 0.2, ease: 'easeOut' }}
+    >
+      <div className="flex flex-col gap-1.5">
+        <Label htmlFor="pomodoro-work-minutes">{props.workLabel}</Label>
+        <Input
+          id="pomodoro-work-minutes"
+          type="number"
+          min={1}
+          max={180}
+          value={props.workMinutesInput}
+          disabled={props.disabled}
+          onBlur={props.onWorkMinutesBlur}
+          onChange={(event) => {
+            props.onWorkMinutesChange(event.currentTarget.value);
+          }}
+        />
+      </div>
+      <div className="flex flex-col gap-1.5">
+        <Label htmlFor="pomodoro-break-minutes">{props.breakLabel}</Label>
+        <Input
+          id="pomodoro-break-minutes"
+          type="number"
+          min={1}
+          max={60}
+          value={props.breakMinutesInput}
+          disabled={props.disabled}
+          onBlur={props.onBreakMinutesBlur}
+          onChange={(event) => {
+            props.onBreakMinutesChange(event.currentTarget.value);
+          }}
+        />
+      </div>
+    </motion.div>
+  );
+}
+
 export function PomodoroTimer(props: Readonly<PomodoroTimerProps>) {
   const t = useTranslations('StudyPage');
   const sidebar = useSidebar();
   const [status, setStatus] = useState<TimerStatus>('idle');
   const [mode, setMode] = useState<TimerMode>('work');
-  const [remainingSeconds, setRemainingSeconds] = useState(workSeconds);
+  const [workMinutes, setWorkMinutes] = useState(defaultWorkMinutes);
+  const [breakMinutes, setBreakMinutes] = useState(defaultBreakMinutes);
+  const [workMinutesInput, setWorkMinutesInput] = useState(String(defaultWorkMinutes));
+  const [breakMinutesInput, setBreakMinutesInput] = useState(String(defaultBreakMinutes));
+  const [remainingSeconds, setRemainingSeconds] = useState(defaultWorkMinutes * 60);
   const [completedCycles, setCompletedCycles] = useState(0);
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [savedFocusMinutes, setSavedFocusMinutes] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const isMountedRef = useRef(true);
 
   useEffect(() => {
@@ -223,7 +281,11 @@ export function PomodoroTimer(props: Readonly<PomodoroTimerProps>) {
                 return 'work';
               });
 
-              return mode === 'work' ? breakSeconds : workSeconds;
+              return getModeDuration({
+                breakMinutes,
+                mode: mode === 'work' ? 'break' : 'work',
+                workMinutes,
+              });
             });
           }, 1000)
         : null;
@@ -233,10 +295,51 @@ export function PomodoroTimer(props: Readonly<PomodoroTimerProps>) {
         window.clearInterval(intervalId);
       }
     };
-  }, [mode, status]);
+  }, [breakMinutes, mode, status, workMinutes]);
+
+  function commitWorkMinutes() {
+    const minutes = Number(workMinutesInput);
+
+    if (!workMinutesInput.trim() || !Number.isFinite(minutes)) {
+      setWorkMinutesInput(String(workMinutes));
+      return workMinutes;
+    }
+
+    const nextMinutes = Math.min(Math.max(Math.trunc(minutes), 1), 180);
+    setWorkMinutes(nextMinutes);
+    setWorkMinutesInput(String(nextMinutes));
+
+    if (status === 'idle' && mode === 'work') {
+      setRemainingSeconds(nextMinutes * 60);
+    }
+
+    return nextMinutes;
+  }
+
+  function commitBreakMinutes() {
+    const minutes = Number(breakMinutesInput);
+
+    if (!breakMinutesInput.trim() || !Number.isFinite(minutes)) {
+      setBreakMinutesInput(String(breakMinutes));
+      return breakMinutes;
+    }
+
+    const nextMinutes = Math.min(Math.max(Math.trunc(minutes), 1), 60);
+    setBreakMinutes(nextMinutes);
+    setBreakMinutesInput(String(nextMinutes));
+
+    if (status === 'idle' && mode === 'break') {
+      setRemainingSeconds(nextMinutes * 60);
+    }
+
+    return nextMinutes;
+  }
 
   async function handleStart() {
     setError(null);
+    const nextWorkMinutes = commitWorkMinutes();
+    const nextBreakMinutes = commitBreakMinutes();
+    setIsSettingsOpen(false);
     sidebar.setOpen(false);
     sidebar.setOpenMobile(false);
 
@@ -249,8 +352,8 @@ export function PomodoroTimer(props: Readonly<PomodoroTimerProps>) {
       const response = await createPomodoroSession({
         input: {
           ...(props.deckId ? { deckId: props.deckId } : {}),
-          workMinutes,
-          breakMinutes,
+          workMinutes: nextWorkMinutes,
+          breakMinutes: nextBreakMinutes,
           focusLabel: t('pomodoro_focus_label'),
         },
       });
@@ -274,7 +377,7 @@ export function PomodoroTimer(props: Readonly<PomodoroTimerProps>) {
   function handleReset() {
     setStatus('idle');
     setMode('work');
-    setRemainingSeconds(workSeconds);
+    setRemainingSeconds(workMinutes * 60);
     setCompletedCycles(0);
     setSessionId(null);
     setSavedFocusMinutes(null);
@@ -307,7 +410,7 @@ export function PomodoroTimer(props: Readonly<PomodoroTimerProps>) {
     }
   }
 
-  const duration = getModeDuration(mode);
+  const duration = getModeDuration({ breakMinutes, mode, workMinutes });
   const elapsedSeconds = duration - remainingSeconds;
   const progressValue = duration > 0 ? (elapsedSeconds / duration) * 100 : 0;
   const progressOffset = progressCircumference * (1 - progressValue / 100);
@@ -353,6 +456,34 @@ export function PomodoroTimer(props: Readonly<PomodoroTimerProps>) {
               progressValue={progressValue}
               remainingSeconds={remainingSeconds}
             />
+            <Button
+              variant="ghost"
+              onClick={() => {
+                setIsSettingsOpen((current) => !current);
+              }}
+              aria-expanded={isSettingsOpen}
+              aria-controls="pomodoro-settings"
+            >
+              <Settings data-icon="inline-start" />
+              {t('pomodoro_settings_button')}
+            </Button>
+            <AnimatePresence initial={false}>
+              {isSettingsOpen ? (
+                <div id="pomodoro-settings" className="flex w-full justify-center">
+                  <TimerSettings
+                    breakLabel={t('pomodoro_break_minutes_label')}
+                    breakMinutesInput={breakMinutesInput}
+                    disabled={status !== 'idle'}
+                    onBreakMinutesBlur={commitBreakMinutes}
+                    onBreakMinutesChange={setBreakMinutesInput}
+                    onWorkMinutesBlur={commitWorkMinutes}
+                    onWorkMinutesChange={setWorkMinutesInput}
+                    workLabel={t('pomodoro_work_minutes_label')}
+                    workMinutesInput={workMinutesInput}
+                  />
+                </div>
+              ) : null}
+            </AnimatePresence>
             <TimerControls
               isSaving={status === 'saving'}
               onPause={handlePause}
