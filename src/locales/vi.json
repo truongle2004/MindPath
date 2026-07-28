@@ -206,7 +206,9 @@
     "pomodoro_start_error": "Không thể bắt đầu đồng hồ.",
     "pomodoro_complete_error": "Không thể lưu thời gian tập trung.",
     "pomodoro_progress_label": "Tiến độ Pomodoro",
-    "pomodoro_focus_label": "Ôn thẻ ghi nhớ"
+    "pomodoro_focus_label": "Nhãn tập trung",
+    "pomodoro_focus_placeholder": "Bạn đang học nội dung gì?",
+    "pomodoro_focus_default": "Ôn thẻ ghi nhớ"
   },
   "ThemeToggle": {
     "toggle_label": "Chuyển giao diện",

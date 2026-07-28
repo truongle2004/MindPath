@@ -206,7 +206,9 @@
     "pomodoro_start_error": "Could not start timer.",
     "pomodoro_complete_error": "Could not save focus time.",
     "pomodoro_progress_label": "Pomodoro progress",
-    "pomodoro_focus_label": "Flashcard study"
+    "pomodoro_focus_label": "Focus label",
+    "pomodoro_focus_placeholder": "What are you working on?",
+    "pomodoro_focus_default": "Flashcard study"
   },
   "ThemeToggle": {
     "toggle_label": "Toggle theme",

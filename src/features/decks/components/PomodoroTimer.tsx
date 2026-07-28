@@ -189,8 +189,12 @@ function TimerSettings(props: {
   breakLabel: string;
   breakMinutesInput: string;
   disabled: boolean;
+  focusLabel: string;
+  focusLabelText: string;
+  focusPlaceholder: string;
   onBreakMinutesBlur: () => void;
   onBreakMinutesChange: (value: string) => void;
+  onFocusLabelChange: (value: string) => void;
   onWorkMinutesBlur: () => void;
   onWorkMinutesChange: (value: string) => void;
   workLabel: string;
@@ -199,40 +203,65 @@ function TimerSettings(props: {
   return (
     <motion.div
       animate={{ opacity: 1, height: 'auto' }}
-      className="grid w-full max-w-sm grid-cols-2 gap-3 overflow-hidden"
+      className="flex w-full max-w-sm flex-col gap-3 overflow-hidden rounded-lg border border-border bg-card p-3 text-left shadow-sm"
       exit={{ opacity: 0, height: 0 }}
       initial={{ opacity: 0, height: 0 }}
       transition={{ duration: 0.2, ease: 'easeOut' }}
     >
       <div className="flex flex-col gap-1.5">
-        <Label htmlFor="pomodoro-work-minutes">{props.workLabel}</Label>
+        <Label htmlFor="pomodoro-focus-label" className="text-muted-foreground">
+          {props.focusLabelText}
+        </Label>
         <Input
-          id="pomodoro-work-minutes"
-          type="number"
-          min={1}
-          max={180}
-          value={props.workMinutesInput}
+          id="pomodoro-focus-label"
+          type="text"
+          className="bg-background"
+          maxLength={100}
+          value={props.focusLabel}
           disabled={props.disabled}
-          onBlur={props.onWorkMinutesBlur}
+          placeholder={props.focusPlaceholder}
           onChange={(event) => {
-            props.onWorkMinutesChange(event.currentTarget.value);
+            props.onFocusLabelChange(event.currentTarget.value);
           }}
         />
       </div>
-      <div className="flex flex-col gap-1.5">
-        <Label htmlFor="pomodoro-break-minutes">{props.breakLabel}</Label>
-        <Input
-          id="pomodoro-break-minutes"
-          type="number"
-          min={1}
-          max={60}
-          value={props.breakMinutesInput}
-          disabled={props.disabled}
-          onBlur={props.onBreakMinutesBlur}
-          onChange={(event) => {
-            props.onBreakMinutesChange(event.currentTarget.value);
-          }}
-        />
+      <div className="grid grid-cols-2 gap-3">
+        <div className="flex flex-col gap-1.5">
+          <Label htmlFor="pomodoro-work-minutes" className="text-muted-foreground">
+            {props.workLabel}
+          </Label>
+          <Input
+            id="pomodoro-work-minutes"
+            type="text"
+            inputMode="numeric"
+            pattern="[0-9]*"
+            className="bg-background tabular-nums"
+            value={props.workMinutesInput}
+            disabled={props.disabled}
+            onBlur={props.onWorkMinutesBlur}
+            onChange={(event) => {
+              props.onWorkMinutesChange(event.currentTarget.value);
+            }}
+          />
+        </div>
+        <div className="flex flex-col gap-1.5">
+          <Label htmlFor="pomodoro-break-minutes" className="text-muted-foreground">
+            {props.breakLabel}
+          </Label>
+          <Input
+            id="pomodoro-break-minutes"
+            type="text"
+            inputMode="numeric"
+            pattern="[0-9]*"
+            className="bg-background tabular-nums"
+            value={props.breakMinutesInput}
+            disabled={props.disabled}
+            onBlur={props.onBreakMinutesBlur}
+            onChange={(event) => {
+              props.onBreakMinutesChange(event.currentTarget.value);
+            }}
+          />
+        </div>
       </div>
     </motion.div>
   );
@@ -245,6 +274,7 @@ export function PomodoroTimer(props: Readonly<PomodoroTimerProps>) {
   const [mode, setMode] = useState<TimerMode>('work');
   const [workMinutes, setWorkMinutes] = useState(defaultWorkMinutes);
   const [breakMinutes, setBreakMinutes] = useState(defaultBreakMinutes);
+  const [focusLabel, setFocusLabel] = useState(t('pomodoro_focus_default'));
   const [workMinutesInput, setWorkMinutesInput] = useState(String(defaultWorkMinutes));
   const [breakMinutesInput, setBreakMinutesInput] = useState(String(defaultBreakMinutes));
   const [remainingSeconds, setRemainingSeconds] = useState(defaultWorkMinutes * 60);
@@ -349,12 +379,13 @@ export function PomodoroTimer(props: Readonly<PomodoroTimerProps>) {
     }
 
     try {
+      const trimmedFocusLabel = focusLabel.trim();
       const response = await createPomodoroSession({
         input: {
           ...(props.deckId ? { deckId: props.deckId } : {}),
           workMinutes: nextWorkMinutes,
           breakMinutes: nextBreakMinutes,
-          focusLabel: t('pomodoro_focus_label'),
+          focusLabel: trimmedFocusLabel || null,
         },
       });
 
@@ -474,8 +505,12 @@ export function PomodoroTimer(props: Readonly<PomodoroTimerProps>) {
                     breakLabel={t('pomodoro_break_minutes_label')}
                     breakMinutesInput={breakMinutesInput}
                     disabled={status !== 'idle'}
+                    focusLabel={focusLabel}
+                    focusLabelText={t('pomodoro_focus_label')}
+                    focusPlaceholder={t('pomodoro_focus_placeholder')}
                     onBreakMinutesBlur={commitBreakMinutes}
                     onBreakMinutesChange={setBreakMinutesInput}
+                    onFocusLabelChange={setFocusLabel}
                     onWorkMinutesBlur={commitWorkMinutes}
                     onWorkMinutesChange={setWorkMinutesInput}
                     workLabel={t('pomodoro_work_minutes_label')}
