@@ -1,6 +1,6 @@
 'use client';
 
-import { Pause, Play, RotateCcw, Settings, Timer } from 'lucide-react';
+import { Settings, Timer } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
@@ -14,266 +14,32 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { useSidebar } from '@/components/ui/sidebar';
+import { FocusGlow } from '@/features/pomodoro/components/FocusGlow';
+import { ModeBadge } from '@/features/pomodoro/components/ModeBadge';
+import { ProgressDial } from '@/features/pomodoro/components/ProgressDial';
+import { TimerControls } from '@/features/pomodoro/components/TimerControls';
+import { TimerSettings } from '@/features/pomodoro/components/TimerSettings';
 import {
-  completePomodoroSession,
-  createPomodoroSession,
-} from '@/features/decks/services/decks.api';
+  defaultBreakMinutes,
+  defaultWorkMinutes,
+  maxBreakMinutes,
+  maxWorkMinutes,
+  timerTickMs,
+} from '@/features/pomodoro/constants/pomodoro.constants';
+import { usePomodoroSessionMutations } from '@/features/pomodoro/hooks/usePomodoroSessionMutations';
+import type {
+  PomodoroTimerProps,
+  TimerMode,
+  TimerStatus,
+} from '@/features/pomodoro/types/pomodoro-timer.types';
+import { getModeDuration, getProgressOffset } from '@/features/pomodoro/utils/pomodoro-timer.utils';
 import { cn } from '@/lib/utils';
-
-const defaultWorkMinutes = 25;
-const defaultBreakMinutes = 5;
-const progressRadius = 112;
-const progressCircumference = 2 * Math.PI * progressRadius;
-
-type TimerMode = 'work' | 'break';
-type TimerStatus = 'idle' | 'running' | 'paused' | 'saving' | 'completed';
-
-type PomodoroTimerProps = {
-  deckId?: string;
-};
-
-function formatTime(seconds: number) {
-  const minutes = Math.floor(seconds / 60);
-  const remainingSeconds = seconds % 60;
-
-  return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
-}
-
-function getModeDuration(props: { breakMinutes: number; mode: TimerMode; workMinutes: number }) {
-  return (props.mode === 'work' ? props.workMinutes : props.breakMinutes) * 60;
-}
-
-function FocusGlow(props: { isActive: boolean }) {
-  if (!props.isActive) {
-    return null;
-  }
-
-  return (
-    <motion.div
-      animate={{ opacity: [0.14, 0.24, 0.14], scale: [0.96, 1.04, 0.96] }}
-      className="pointer-events-none absolute inset-x-10 top-16 h-56 rounded-full bg-primary/20 blur-3xl"
-      transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-    />
-  );
-}
-
-function ModeBadge(props: { isActive: boolean; label: string }) {
-  return (
-    <motion.span
-      animate={props.isActive ? { opacity: [0.72, 1, 0.72] } : { opacity: 1 }}
-      className="rounded-full border border-border px-2 py-0.5 text-xs text-muted-foreground"
-      transition={{
-        duration: 1.8,
-        repeat: props.isActive ? Infinity : 0,
-        ease: 'easeInOut',
-      }}
-    >
-      {props.label}
-    </motion.span>
-  );
-}
-
-function ProgressDial(props: {
-  cyclesLabel: string;
-  isActive: boolean;
-  progressLabel: string;
-  progressOffset: number;
-  progressValue: number;
-  remainingSeconds: number;
-}) {
-  return (
-    <motion.div
-      animate={props.isActive ? { scale: 1.03 } : { scale: 1 }}
-      className="relative flex size-72 items-center justify-center sm:size-80"
-      transition={{ duration: 0.3, ease: 'easeOut' }}
-    >
-      <progress
-        className="sr-only"
-        aria-label={props.progressLabel}
-        max={100}
-        value={props.progressValue}
-      >
-        {props.progressValue}%
-      </progress>
-      <svg className="absolute inset-0 -rotate-90" viewBox="0 0 256 256" aria-hidden="true">
-        <circle
-          className="stroke-muted"
-          cx="128"
-          cy="128"
-          fill="none"
-          r={progressRadius}
-          strokeWidth="10"
-        />
-        <motion.circle
-          animate={
-            props.isActive
-              ? { opacity: [0.1, 0.38, 0.1], scale: [1, 1.03, 1] }
-              : { opacity: 0, scale: 1 }
-          }
-          className="origin-center stroke-primary"
-          cx="128"
-          cy="128"
-          fill="none"
-          r={progressRadius}
-          strokeLinecap="round"
-          strokeWidth="14"
-          transition={{
-            duration: 2.4,
-            repeat: props.isActive ? Infinity : 0,
-            ease: 'easeInOut',
-          }}
-        />
-        <motion.circle
-          animate={{ strokeDashoffset: props.progressOffset }}
-          className="stroke-primary drop-shadow-sm"
-          cx="128"
-          cy="128"
-          fill="none"
-          initial={false}
-          r={progressRadius}
-          strokeDasharray={progressCircumference}
-          strokeLinecap="round"
-          strokeWidth="10"
-          transition={{ duration: 0.2, ease: 'linear' }}
-        />
-      </svg>
-      <motion.div
-        animate={props.isActive ? { opacity: [0.9, 1, 0.9] } : { opacity: 1 }}
-        className="flex flex-col items-center"
-        transition={{
-          duration: 2.4,
-          repeat: props.isActive ? Infinity : 0,
-          ease: 'easeInOut',
-        }}
-      >
-        <output className="font-mono text-6xl font-semibold tracking-tight sm:text-7xl">
-          {formatTime(props.remainingSeconds)}
-        </output>
-        <p className="mt-2 text-sm text-muted-foreground">{props.cyclesLabel}</p>
-      </motion.div>
-    </motion.div>
-  );
-}
-
-function TimerControls(props: {
-  isSaving: boolean;
-  onPause: () => void;
-  onReset: () => void;
-  onStart: () => void;
-  pauseLabel: string;
-  resetLabel: string;
-  startLabel: string;
-  status: TimerStatus;
-}) {
-  return (
-    <div className="flex flex-wrap justify-center gap-2">
-      {props.status === 'running' ? (
-        <Button variant="outline" onClick={props.onPause}>
-          <Pause data-icon="inline-start" />
-          {props.pauseLabel}
-        </Button>
-      ) : (
-        <Button onClick={props.onStart} disabled={props.isSaving}>
-          <Play data-icon="inline-start" />
-          {props.startLabel}
-        </Button>
-      )}
-      <Button variant="outline" onClick={props.onReset} disabled={props.isSaving}>
-        <RotateCcw data-icon="inline-start" />
-        {props.resetLabel}
-      </Button>
-    </div>
-  );
-}
-
-function TimerSettings(props: {
-  breakLabel: string;
-  breakMinutesInput: string;
-  disabled: boolean;
-  focusLabel: string;
-  focusLabelText: string;
-  focusPlaceholder: string;
-  onBreakMinutesBlur: () => void;
-  onBreakMinutesChange: (value: string) => void;
-  onFocusLabelChange: (value: string) => void;
-  onWorkMinutesBlur: () => void;
-  onWorkMinutesChange: (value: string) => void;
-  workLabel: string;
-  workMinutesInput: string;
-}) {
-  return (
-    <motion.div
-      animate={{ opacity: 1, height: 'auto' }}
-      className="flex w-full max-w-sm flex-col gap-3 overflow-hidden rounded-lg border border-border bg-card p-3 text-left shadow-sm"
-      exit={{ opacity: 0, height: 0 }}
-      initial={{ opacity: 0, height: 0 }}
-      transition={{ duration: 0.2, ease: 'easeOut' }}
-    >
-      <div className="flex flex-col gap-1.5">
-        <Label htmlFor="pomodoro-focus-label" className="text-muted-foreground">
-          {props.focusLabelText}
-        </Label>
-        <Input
-          id="pomodoro-focus-label"
-          type="text"
-          className="bg-background"
-          maxLength={100}
-          value={props.focusLabel}
-          disabled={props.disabled}
-          placeholder={props.focusPlaceholder}
-          onChange={(event) => {
-            props.onFocusLabelChange(event.currentTarget.value);
-          }}
-        />
-      </div>
-      <div className="grid grid-cols-2 gap-3">
-        <div className="flex flex-col gap-1.5">
-          <Label htmlFor="pomodoro-work-minutes" className="text-muted-foreground">
-            {props.workLabel}
-          </Label>
-          <Input
-            id="pomodoro-work-minutes"
-            type="text"
-            inputMode="numeric"
-            pattern="[0-9]*"
-            className="bg-background tabular-nums"
-            value={props.workMinutesInput}
-            disabled={props.disabled}
-            onBlur={props.onWorkMinutesBlur}
-            onChange={(event) => {
-              props.onWorkMinutesChange(event.currentTarget.value);
-            }}
-          />
-        </div>
-        <div className="flex flex-col gap-1.5">
-          <Label htmlFor="pomodoro-break-minutes" className="text-muted-foreground">
-            {props.breakLabel}
-          </Label>
-          <Input
-            id="pomodoro-break-minutes"
-            type="text"
-            inputMode="numeric"
-            pattern="[0-9]*"
-            className="bg-background tabular-nums"
-            value={props.breakMinutesInput}
-            disabled={props.disabled}
-            onBlur={props.onBreakMinutesBlur}
-            onChange={(event) => {
-              props.onBreakMinutesChange(event.currentTarget.value);
-            }}
-          />
-        </div>
-      </div>
-    </motion.div>
-  );
-}
 
 export function PomodoroTimer(props: Readonly<PomodoroTimerProps>) {
   const t = useTranslations('StudyPage');
   const sidebar = useSidebar();
+  const mutations = usePomodoroSessionMutations();
   const [status, setStatus] = useState<TimerStatus>('idle');
   const [mode, setMode] = useState<TimerMode>('work');
   const [workMinutes, setWorkMinutes] = useState(defaultWorkMinutes);
@@ -323,7 +89,7 @@ export function PomodoroTimer(props: Readonly<PomodoroTimerProps>) {
                 workMinutes,
               });
             });
-          }, 1000)
+          }, timerTickMs)
         : null;
 
     return () => {
@@ -341,7 +107,7 @@ export function PomodoroTimer(props: Readonly<PomodoroTimerProps>) {
       return workMinutes;
     }
 
-    const nextMinutes = Math.min(Math.max(Math.trunc(minutes), 1), 180);
+    const nextMinutes = Math.min(Math.max(Math.trunc(minutes), 1), maxWorkMinutes);
     setWorkMinutes(nextMinutes);
     setWorkMinutesInput(String(nextMinutes));
 
@@ -360,7 +126,7 @@ export function PomodoroTimer(props: Readonly<PomodoroTimerProps>) {
       return breakMinutes;
     }
 
-    const nextMinutes = Math.min(Math.max(Math.trunc(minutes), 1), 60);
+    const nextMinutes = Math.min(Math.max(Math.trunc(minutes), 1), maxBreakMinutes);
     setBreakMinutes(nextMinutes);
     setBreakMinutesInput(String(nextMinutes));
 
@@ -398,7 +164,7 @@ export function PomodoroTimer(props: Readonly<PomodoroTimerProps>) {
 
     try {
       const trimmedFocusLabel = focusLabel.trim();
-      const response = await createPomodoroSession({
+      const response = await mutations.createSession.mutateAsync({
         input: {
           ...(props.deckId ? { deckId: props.deckId } : {}),
           workMinutes: nextWorkMinutes,
@@ -449,7 +215,7 @@ export function PomodoroTimer(props: Readonly<PomodoroTimerProps>) {
     setError(null);
 
     try {
-      const response = await completePomodoroSession({
+      const response = await mutations.completeSession.mutateAsync({
         sessionId,
         input: { completedCycles },
       });
@@ -469,7 +235,7 @@ export function PomodoroTimer(props: Readonly<PomodoroTimerProps>) {
   const duration = getModeDuration({ breakMinutes, mode, workMinutes });
   const elapsedSeconds = duration - remainingSeconds;
   const progressValue = duration > 0 ? (elapsedSeconds / duration) * 100 : 0;
-  const progressOffset = progressCircumference * (1 - progressValue / 100);
+  const progressOffset = getProgressOffset(progressValue);
   const canComplete = completedCycles > 0 && Boolean(sessionId);
   const isFocusActive = ['running', 'paused', 'saving', 'completed'].includes(status);
   const modeLabel = mode === 'work' ? t('pomodoro_work_mode') : t('pomodoro_break_mode');

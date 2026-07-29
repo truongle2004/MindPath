@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { PomodoroTimer } from '@/features/decks/components/PomodoroTimer';
+import { PomodoroTimer } from '@/features/pomodoro/components/PomodoroTimer';
 
 export function PomodoroPageContent() {
   const t = useTranslations('PomodoroPage');

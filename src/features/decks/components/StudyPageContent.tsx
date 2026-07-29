@@ -4,9 +4,9 @@ import { ArrowLeft, BookOpen, Check, RotateCcw, Shuffle, Sparkles } from 'lucide
 import { useTranslations } from 'next-intl';
 import { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { PomodoroTimer } from '@/features/decks/components/PomodoroTimer';
 import { Rating, useStudySession } from '@/features/decks/hooks/useStudySession';
 import type { RatingValue } from '@/features/decks/hooks/useStudySession';
+import { PomodoroTimer } from '@/features/pomodoro/components/PomodoroTimer';
 import { Link } from '@/lib/I18nNavigation';
 
 type StudyPageContentProps = {
