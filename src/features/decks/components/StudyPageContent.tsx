@@ -4,6 +4,7 @@ import { ArrowLeft, BookOpen, Check, RotateCcw, Shuffle, Sparkles } from 'lucide
 import { useTranslations } from 'next-intl';
 import { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
+import { PomodoroTimer } from '@/features/decks/components/PomodoroTimer';
 import { Rating, useStudySession } from '@/features/decks/hooks/useStudySession';
 import type { RatingValue } from '@/features/decks/hooks/useStudySession';
 import { Link } from '@/lib/I18nNavigation';
@@ -150,6 +151,8 @@ export function StudyPageContent(props: Readonly<StudyPageContentProps>) {
           </Button>
         </div>
       </header>
+
+      <PomodoroTimer deckId={props.deckId} />
 
       <div className="space-y-3">
         <div className="flex flex-wrap items-center justify-between gap-3 text-sm">

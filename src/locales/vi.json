@@ -91,6 +91,17 @@
     "billing": "Thanh toán",
     "security": "Bảo mật"
   },
+  "Sidebar": {
+    "group_label": "Nền tảng",
+    "flashcards_title": "Thẻ ghi nhớ",
+    "all_decks_title": "Tất cả bộ thẻ",
+    "pomodoro_title": "Pomodoro",
+    "focus_timer_title": "Đồng hồ tập trung"
+  },
+  "PomodoroPage": {
+    "page_title": "Pomodoro",
+    "page_description": "Bắt đầu một phiên học tập trung và lưu các chu kỳ đã hoàn thành vào tiến độ của bạn."
+  },
   "DecksPage": {
     "meta_title": "Bộ thẻ flashcard",
     "meta_description": "Tạo và quản lý bộ thẻ flashcard của bạn.",
@@ -174,7 +185,30 @@
     "done_good": "Ổn: {count}",
     "done_easy": "Dễ: {count}",
     "study_again": "Học lại",
-    "sync_failed_message": "Không thể đồng bộ lượt ôn tập."
+    "sync_failed_message": "Không thể đồng bộ lượt ôn tập.",
+    "pomodoro_title": "Đồng hồ tập trung",
+    "pomodoro_description": "Dùng nhịp Pomodoro nhẹ nhàng khi ôn bộ thẻ này.",
+    "pomodoro_work_mode": "Tập trung",
+    "pomodoro_break_mode": "Nghỉ",
+    "pomodoro_settings_button": "Cài đặt",
+    "pomodoro_work_minutes_label": "Phút tập trung",
+    "pomodoro_break_minutes_label": "Phút nghỉ",
+    "pomodoro_cycles": "{count, plural, =0 {Chưa có chu kỳ tập trung} =1 {1 chu kỳ tập trung} other {# chu kỳ tập trung}}",
+    "pomodoro_start_button": "Bắt đầu tập trung",
+    "pomodoro_resume_button": "Tiếp tục",
+    "pomodoro_pause_button": "Tạm dừng",
+    "pomodoro_reset_button": "Đặt lại",
+    "pomodoro_complete_button": "Lưu thời gian",
+    "pomodoro_saving_button": "Đang lưu…",
+    "pomodoro_complete_hint": "Lưu các chu kỳ tập trung đã hoàn thành khi học xong.",
+    "pomodoro_complete_disabled_hint": "Hoàn thành một chu kỳ tập trung trước khi lưu.",
+    "pomodoro_saved_message": "Đã lưu {count, plural, =1 {1 phút tập trung} other {# phút tập trung}}.",
+    "pomodoro_start_error": "Không thể bắt đầu đồng hồ.",
+    "pomodoro_complete_error": "Không thể lưu thời gian tập trung.",
+    "pomodoro_progress_label": "Tiến độ Pomodoro",
+    "pomodoro_focus_label": "Nhãn tập trung",
+    "pomodoro_focus_placeholder": "Bạn đang học nội dung gì?",
+    "pomodoro_focus_default": "Ôn thẻ ghi nhớ"
   },
   "ThemeToggle": {
     "toggle_label": "Chuyển giao diện",

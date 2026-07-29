@@ -91,6 +91,17 @@
     "billing": "Billing",
     "security": "Security"
   },
+  "Sidebar": {
+    "group_label": "Platform",
+    "flashcards_title": "Flashcards",
+    "all_decks_title": "All decks",
+    "pomodoro_title": "Pomodoro",
+    "focus_timer_title": "Focus timer"
+  },
+  "PomodoroPage": {
+    "page_title": "Pomodoro",
+    "page_description": "Start a focused study block and save completed focus cycles to your progress."
+  },
   "DecksPage": {
     "meta_title": "Flashcard decks",
     "meta_description": "Create and manage your flashcard decks.",
@@ -174,7 +185,30 @@
     "done_good": "Good: {count}",
     "done_easy": "Easy: {count}",
     "study_again": "Study again",
-    "sync_failed_message": "Review could not sync."
+    "sync_failed_message": "Review could not sync.",
+    "pomodoro_title": "Focus timer",
+    "pomodoro_description": "Use a calm Pomodoro rhythm while reviewing this deck.",
+    "pomodoro_work_mode": "Focus",
+    "pomodoro_break_mode": "Break",
+    "pomodoro_settings_button": "Settings",
+    "pomodoro_work_minutes_label": "Focus minutes",
+    "pomodoro_break_minutes_label": "Break minutes",
+    "pomodoro_cycles": "{count, plural, =0 {No focus cycles yet} =1 {1 focus cycle} other {# focus cycles}}",
+    "pomodoro_start_button": "Start focus",
+    "pomodoro_resume_button": "Resume",
+    "pomodoro_pause_button": "Pause",
+    "pomodoro_reset_button": "Reset",
+    "pomodoro_complete_button": "Save focus",
+    "pomodoro_saving_button": "Saving…",
+    "pomodoro_complete_hint": "Save completed focus cycles when you finish studying.",
+    "pomodoro_complete_disabled_hint": "Complete one focus cycle before saving.",
+    "pomodoro_saved_message": "Saved {count, plural, =1 {1 focus minute} other {# focus minutes}}.",
+    "pomodoro_start_error": "Could not start timer.",
+    "pomodoro_complete_error": "Could not save focus time.",
+    "pomodoro_progress_label": "Pomodoro progress",
+    "pomodoro_focus_label": "Focus label",
+    "pomodoro_focus_placeholder": "What are you working on?",
+    "pomodoro_focus_default": "Flashcard study"
   },
   "ThemeToggle": {
     "toggle_label": "Toggle theme",

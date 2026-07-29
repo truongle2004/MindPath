@@ -1,6 +1,7 @@
 'use client';
 
-import { AudioWaveform, Command, GalleryVerticalEnd, Layers } from 'lucide-react';
+import { AudioWaveform, Command, GalleryVerticalEnd, Layers, Timer } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import * as React from 'react';
 import { NavMain } from '@/components/NavMain';
 import { NavUser } from '@/components/NavUser';
@@ -37,30 +38,43 @@ const data = {
       plan: 'Free',
     },
   ],
-  navMain: [
+};
+
+export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const t = useTranslations('Sidebar');
+  const navMain = [
     {
-      title: 'Flashcards',
+      title: t('flashcards_title'),
       url: '/dashboard/decks',
       icon: Layers,
       isActive: true,
       items: [
         {
-          title: 'All decks',
+          title: t('all_decks_title'),
           url: '/dashboard/decks',
         },
       ],
     },
-  ],
-};
+    {
+      title: t('pomodoro_title'),
+      url: '/dashboard/pomodoro',
+      icon: Timer,
+      items: [
+        {
+          title: t('focus_timer_title'),
+          url: '/dashboard/pomodoro',
+        },
+      ],
+    },
+  ];
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         <TeamSwitcher teams={data.teams} />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain label={t('group_label')} items={navMain} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />

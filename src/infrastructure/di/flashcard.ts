@@ -80,3 +80,19 @@ export function getDueCardsController() {
 export function reviewCardController() {
   return resolve(FlashcardTokens.ReviewCardController);
 }
+
+/**
+ * Resolves the create-Pomodoro-session controller from the DI container.
+ * @returns The create-Pomodoro-session controller.
+ */
+export function createPomodoroSessionController() {
+  return resolve(FlashcardTokens.CreatePomodoroSessionController);
+}
+
+/**
+ * Resolves the complete-Pomodoro-session controller from the DI container.
+ * @returns The complete-Pomodoro-session controller.
+ */
+export function completePomodoroSessionController() {
+  return resolve(FlashcardTokens.CompletePomodoroSessionController);
+}
