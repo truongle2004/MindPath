@@ -14,10 +14,7 @@ import {
   SidebarMenuSubItem,
 } from '@/components/ui/sidebar';
 
-export function NavMain({
-  label,
-  items,
-}: {
+export function NavMain(props: {
   label: string;
   items: {
     title: string;
@@ -32,13 +29,13 @@ export function NavMain({
 }) {
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>{label}</SidebarGroupLabel>
+      <SidebarGroupLabel>{props.label}</SidebarGroupLabel>
       <SidebarMenu>
-        {items.map((item) => {
+        {props.items.map((item) => {
           if (!item.items?.length) {
             return (
               <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton tooltip={item.title} asChild>
+                <SidebarMenuButton tooltip={item.title} isActive={item.isActive} asChild>
                   <a href={item.url}>
                     {item.icon && <item.icon />}
                     <span>{item.title}</span>

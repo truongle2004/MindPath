@@ -3,6 +3,36 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { maxFocusLabelLength } from '@/features/pomodoro/constants/pomodoro.constants';
 
+function MinutesField(props: {
+  disabled: boolean;
+  id: string;
+  label: string;
+  onBlur: () => void;
+  onChange: (value: string) => void;
+  value: string;
+}) {
+  return (
+    <div className="flex flex-col gap-1.5">
+      <Label htmlFor={props.id} className="text-muted-foreground">
+        {props.label}
+      </Label>
+      <Input
+        id={props.id}
+        type="text"
+        inputMode="numeric"
+        pattern="[0-9]*"
+        className="bg-background tabular-nums"
+        value={props.value}
+        disabled={props.disabled}
+        onBlur={props.onBlur}
+        onChange={(event) => {
+          props.onChange(event.currentTarget.value);
+        }}
+      />
+    </div>
+  );
+}
+
 export function TimerSettings(props: {
   breakLabel: string;
   breakMinutesInput: string;
@@ -44,42 +74,22 @@ export function TimerSettings(props: {
         />
       </div>
       <div className="grid grid-cols-2 gap-3">
-        <div className="flex flex-col gap-1.5">
-          <Label htmlFor="pomodoro-work-minutes" className="text-muted-foreground">
-            {props.workLabel}
-          </Label>
-          <Input
-            id="pomodoro-work-minutes"
-            type="text"
-            inputMode="numeric"
-            pattern="[0-9]*"
-            className="bg-background tabular-nums"
-            value={props.workMinutesInput}
-            disabled={props.disabled}
-            onBlur={props.onWorkMinutesBlur}
-            onChange={(event) => {
-              props.onWorkMinutesChange(event.currentTarget.value);
-            }}
-          />
-        </div>
-        <div className="flex flex-col gap-1.5">
-          <Label htmlFor="pomodoro-break-minutes" className="text-muted-foreground">
-            {props.breakLabel}
-          </Label>
-          <Input
-            id="pomodoro-break-minutes"
-            type="text"
-            inputMode="numeric"
-            pattern="[0-9]*"
-            className="bg-background tabular-nums"
-            value={props.breakMinutesInput}
-            disabled={props.disabled}
-            onBlur={props.onBreakMinutesBlur}
-            onChange={(event) => {
-              props.onBreakMinutesChange(event.currentTarget.value);
-            }}
-          />
-        </div>
+        <MinutesField
+          disabled={props.disabled}
+          id="pomodoro-work-minutes"
+          label={props.workLabel}
+          onBlur={props.onWorkMinutesBlur}
+          onChange={props.onWorkMinutesChange}
+          value={props.workMinutesInput}
+        />
+        <MinutesField
+          disabled={props.disabled}
+          id="pomodoro-break-minutes"
+          label={props.breakLabel}
+          onBlur={props.onBreakMinutesBlur}
+          onChange={props.onBreakMinutesChange}
+          value={props.breakMinutesInput}
+        />
       </div>
     </motion.div>
   );
