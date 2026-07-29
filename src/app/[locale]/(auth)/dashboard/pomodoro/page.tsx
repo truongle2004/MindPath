@@ -1,5 +1,5 @@
 import { setRequestLocale } from 'next-intl/server';
-import { PomodoroPageContent } from '@/features/decks/components/PomodoroPageContent';
+import { PomodoroPageContent } from '@/features/pomodoro/components/PomodoroPageContent';
 
 export default async function PomodoroPage(props: { params: Promise<{ locale: string }> }) {
   const { locale } = await props.params;

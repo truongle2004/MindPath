@@ -59,12 +59,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       title: t('pomodoro_title'),
       url: '/dashboard/pomodoro',
       icon: Timer,
-      items: [
-        {
-          title: t('focus_timer_title'),
-          url: '/dashboard/pomodoro',
-        },
-      ],
     },
   ];
 
