@@ -65,7 +65,11 @@ function ModeBadge(props: { isActive: boolean; label: string }) {
     <motion.span
       animate={props.isActive ? { opacity: [0.72, 1, 0.72] } : { opacity: 1 }}
       className="rounded-full border border-border px-2 py-0.5 text-xs text-muted-foreground"
-      transition={{ duration: 1.8, repeat: props.isActive ? Infinity : 0, ease: 'easeInOut' }}
+      transition={{
+        duration: 1.8,
+        repeat: props.isActive ? Infinity : 0,
+        ease: 'easeInOut',
+      }}
     >
       {props.label}
     </motion.span>
@@ -284,6 +288,8 @@ export function PomodoroTimer(props: Readonly<PomodoroTimerProps>) {
   const [error, setError] = useState<string | null>(null);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const isMountedRef = useRef(true);
+  const isStartingSessionRef = useRef(false);
+  const pendingSessionRequestRef = useRef(0);
 
   useEffect(() => {
     isMountedRef.current = true;
@@ -378,6 +384,18 @@ export function PomodoroTimer(props: Readonly<PomodoroTimerProps>) {
       return;
     }
 
+    if (isStartingSessionRef.current) {
+      setStatus('running');
+      return;
+    }
+
+    const requestId = pendingSessionRequestRef.current + 1;
+    pendingSessionRequestRef.current = requestId;
+    isStartingSessionRef.current = true;
+    setSessionId(null);
+    setSavedFocusMinutes(null);
+    setStatus('running');
+
     try {
       const trimmedFocusLabel = focusLabel.trim();
       const response = await createPomodoroSession({
@@ -389,14 +407,19 @@ export function PomodoroTimer(props: Readonly<PomodoroTimerProps>) {
         },
       });
 
-      if (!isMountedRef.current) {
+      if (!isMountedRef.current || pendingSessionRequestRef.current !== requestId) {
         return;
       }
 
+      isStartingSessionRef.current = false;
       setSessionId(response.session.id);
-      setSavedFocusMinutes(null);
-      setStatus('running');
     } catch {
+      if (!isMountedRef.current || pendingSessionRequestRef.current !== requestId) {
+        return;
+      }
+
+      isStartingSessionRef.current = false;
+      setStatus('idle');
       setError(t('pomodoro_start_error'));
     }
   }
@@ -406,6 +429,8 @@ export function PomodoroTimer(props: Readonly<PomodoroTimerProps>) {
   }
 
   function handleReset() {
+    pendingSessionRequestRef.current += 1;
+    isStartingSessionRef.current = false;
     setStatus('idle');
     setMode('work');
     setRemainingSeconds(workMinutes * 60);
