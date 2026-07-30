@@ -154,6 +154,28 @@
     "save_error_message": "Could not save card.",
     "delete_error_message": "Could not delete."
   },
+  "Flashcards": {
+    "title": "Flashcards",
+    "hint": "Click the card to flip. Use arrow keys to navigate.",
+    "progress": "{current} / {total}",
+    "mastered_count": "{count} mastered",
+    "question_label": "Question",
+    "answer_label": "Answer",
+    "click_to_reveal": "Click to reveal answer",
+    "still_learning": "Still learning",
+    "mastered": "Mastered",
+    "shuffle_title": "Shuffle",
+    "reset_title": "Reset",
+    "previous_label": "Previous card",
+    "next_label": "Next card",
+    "keyboard_hint": "Press Space to flip • Arrow keys to navigate"
+  },
+  "FlashcardsExamplePage": {
+    "meta_title": "Flashcards example",
+    "meta_description": "Demo of the interactive flashcards reviewer.",
+    "page_title": "React basics",
+    "page_description": "Review the cards below. Progress is tracked as you go."
+  },
   "StudyPage": {
     "meta_title": "Study",
     "meta_description": "Review flashcards with spaced repetition.",
